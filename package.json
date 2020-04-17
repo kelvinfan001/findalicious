@@ -1,0 +1,23 @@
+{
+  "name": "chicken-tinder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelvinfan001/chicken-tinder.git"
+  },
+  "author": "Kelvin Fan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kelvinfan001/chicken-tinder/issues"
+  },
+  "homepage": "https://github.com/kelvinfan001/chicken-tinder#readme"
+}
