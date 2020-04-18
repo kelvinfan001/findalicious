@@ -56,6 +56,8 @@ app.use((req, res, next) => {
 var db = null,
     dbDetails = new Object();
 
+console.log("mongoURL is", mongoURL);
+
 var initDb = function (callback) {
     if (mongoURL == null) return;
 
@@ -67,8 +69,6 @@ var initDb = function (callback) {
             callback(err);
             return;
         }
-
-        console.log("mongoURL is", mongoURL);
 
         db = conn;
         dbDetails.databaseName = db.databaseName;
