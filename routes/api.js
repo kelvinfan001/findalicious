@@ -10,6 +10,10 @@ router.get('/todos', (req, res, next) => {
         .catch(next)
 });
 
+router.get('/test', (req, res) => {
+    res.send('test works!')
+});
+
 router.post('/todos', (req, res, next) => {
     if (req.body.action) {
         Todo.create(req.body)

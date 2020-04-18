@@ -2,6 +2,7 @@ const express = require('express');
 const routes = require('./routes/api');
 const bodyParser = require('body-parser');
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 
@@ -20,33 +21,17 @@ app.use((req, res, next) => {
     next();
 });
 
-var db = null,
-    dbDetails = new Object();
+// connect to db
+var mongoose = require('mongoose');
+mongoose.connect(mongoURL, { useNewUrlParser: true });
 
-var initDb = function (callback) {
-    if (mongoURL == null) return;
-
-    var mongodb = require('mongodb');
-    if (mongodb == null) return;
-
-    mongodb.connect(mongoURL, function (err, conn) {
-        if (err) {
-            callback(err);
-            return;
-        }
-
-        db = conn;
-        dbDetails.databaseName = db.databaseName;
-        dbDetails.url = mongoURLLabel;
-        dbDetails.type = 'MongoDB';
-
-        console.log('Connected to MongoDB at: %s', mongoURL);
-    });
-};
-
-initDb(function (err) {
-    console.log('Error connecting to Mongo. Message:\n' + err);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    // connection successful
+    console.log('Successfully connected to MongoDB at: %s', mongoURL);
 });
+
 
 app.use(bodyParser.json());
 
