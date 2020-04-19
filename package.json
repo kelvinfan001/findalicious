@@ -11,15 +11,14 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node bin/www"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kelvinfan001/chicken-tinder.git"
   },
   "author": "Kelvin Fan",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/kelvinfan001/chicken-tinder/issues"
   },

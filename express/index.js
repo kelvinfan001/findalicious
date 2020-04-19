@@ -6,10 +6,7 @@ require('dotenv').config();
 
 const app = express();
 
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
-    ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-    mongoURLLabel = "";
+var mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
 
 if (mongoURL == null) {
     mongoURL = 'mongodb://localhost:27017';
@@ -42,6 +39,4 @@ app.use((err, req, res, next) => {
     next();
 });
 
-app.listen(port, () => {
-    console.log('Server running on port', port);
-});
+module.exports = app;
