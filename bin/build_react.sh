@@ -1,3 +1,3 @@
-cd react
-npm install
-npm run-script build
+# cd react
+# npm install
+# npm run-script build
