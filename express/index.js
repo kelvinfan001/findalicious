@@ -32,11 +32,12 @@ db.once('open', function () {
 
 app.use(bodyParser.json());
 
+/* Routes */
 app.use('/api', routes);
-
+// React App
 app.use(express.static(path.join(__dirname, '../react/build')));
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get(['/*'], function (res) {
+    res.sendFile(path.join(__dirname, '../react/build', 'index.html'));
 });
 
 app.use((err, req, res, next) => {
