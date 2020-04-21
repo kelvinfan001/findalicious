@@ -21,9 +21,10 @@ p {
 }
 
 h1 {
-  font-family: 'Alatsi', sans-serif;
-  /* font-family: 'Damion', cursive; */
+  /* font-family: 'Alatsi', sans-serif; */
+  font-family: 'Damion', cursive;
   /* color: #F38D68; */
+  font-size: 50px;
   color: #fff;
   text-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30);
 }
@@ -88,4 +89,20 @@ h1 {
   } 100% {
     transform: scale(1);
   }
+}
+
+input[type=text]{
+    width:100%;
+    border:2px solid #aaa;
+    border-radius:4px;
+    margin:15px 0;
+    outline:none;
+    padding:15px;
+    box-sizing:border-box;
+    transition:.3s;
+  }
+  
+input[type=text]:focus{
+  border-color:dodgerBlue;
+  box-shadow:0 0 8px 0 dodgerBlue;
 }
