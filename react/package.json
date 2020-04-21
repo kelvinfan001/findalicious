@@ -9,7 +9,10 @@
     "p-sleep": "^1.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-dribble-button": "^0.2.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1",
+    "react-tinder-card": "^1.1.3"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -16,10 +16,6 @@
   justify-content: center;
 }
 
-p {
-  color: #fff;
-}
-
 h1 {
   font-family: 'Alatsi', sans-serif;
   /* font-family: 'Damion', cursive; */
@@ -70,12 +66,6 @@ h1 {
   /* color: #F38D68; */
   color: #fff;
   animation: popup 200ms;
-}
-
-.main-button {
-  animation: popup 200ms;
-  margin-top: 30px;
-  margin-bottom: 30;
 }
 
 @keyframes popup {
