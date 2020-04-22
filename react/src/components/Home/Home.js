@@ -12,12 +12,8 @@ function Home() {
             {/* <h1>Chicken Tinder</h1> */}
 
             <img src={logo} className="logo" />
-            <div className="main-button">
-                <JoinRoomForm />
-            </div>
-            {/* <div className="main-button">
-                <div className="button"> CREATE ROOM </div>
-            </div> */}
+            <JoinRoomForm />
+            <button> CREATE ROOM </button>
         </div>
     );
 }

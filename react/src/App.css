@@ -29,6 +29,10 @@ h1 {
   text-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30);
 }
 
+button {
+  outline: none;
+}
+
 .swipe {
   position: absolute;
 }
@@ -73,12 +77,6 @@ h1 {
   animation: popup 200ms;
 }
 
-.main-button {
-  animation: popup 200ms;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
 .main-page {
   animation: popup 400ms;
   padding: 20px;
@@ -99,7 +97,7 @@ h1 {
 }
 
 input[type=text]{
-    width:100%;
+    width: 95%;
     border:2px solid #fff;
     border-radius:8px;
     margin: 0px;
@@ -110,17 +108,14 @@ input[type=text]{
     background-color: rgba(0, 0, 0, 0.13);
     text-align: center;
     font-size: medium;
-    width: 95%;
   }
   
 input[type=text]:focus{
-  border-color:dodgerBlue;
-  box-shadow:0 0 8px 0 dodgerBlue;
+  border-color:#9198e5;
+  box-shadow:0 0 8px 0 #9198e5;
 }
 
-.button {
-  margin-left: auto;
-  margin-right: auto;
+button{
   /* position: relative; */
   /* background: linear-gradient(to left, #64e664, #e5b991); */
   background-color: #9198e5;
@@ -128,39 +123,27 @@ input[type=text]:focus{
   font-size: large;
   color: white;
   padding: 15px;
-  width:80%;
+  width:92%;
   text-align: center;
   text-decoration: none;
   overflow: hidden;
   border-radius: 8px;
-  margin:10px;
-  box-shadow: 0 3.5px rgba(153, 153, 153, 0.24);
+  margin:5px;
+  box-shadow: 0 3px rgba(153, 153, 153, 0.24);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  border: 0;
 }
 
-/* .button:after {
-  content: "";
-  background: white;
-  display: block;
-  position: absolute;
-  padding-top: 300%;
-  padding-left: 300%;
-  margin-left: -300px;
-  margin-top: -200%;
-  opacity: 0;
-  transition: all 0.5s
-}
-
-.button:active:after {
-  opacity: 0.5;
-  transition: 0.2s;
-  border-radius: 25px;
-} */
-
-.button:active {
+button:active {
   background-color: rgba(128, 138, 245, 0.555);
   box-shadow: 0 0px rgba(153, 153, 153, 0.24);
   transform: translateY(2.5px);
   transition: all 0.2s;
+  outline: none;
+  border: 0;
 }
 
 .logo {
