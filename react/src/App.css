@@ -75,8 +75,15 @@ h1 {
 
 .main-button {
   animation: popup 200ms;
-  margin-top: 30px;
-  margin-bottom: 30;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.main-page {
+  animation: popup 400ms;
+  padding: 20px;
+  background-color: white;
+  border-radius: 15px;
 }
 
 @keyframes popup {
@@ -93,16 +100,61 @@ h1 {
 
 input[type=text]{
     width:100%;
-    border:2px solid #aaa;
-    border-radius:4px;
-    margin:15px 0;
+    border:2px solid #fff;
+    border-radius:8px;
+    margin:9px 0;
     outline:none;
     padding:15px;
     box-sizing:border-box;
     transition:.3s;
+    background-color: rgba(0, 0, 0, 0.13);
+    text-align: center;
+    font-size: medium;
+    width: 95%;
   }
   
 input[type=text]:focus{
   border-color:dodgerBlue;
   box-shadow:0 0 8px 0 dodgerBlue;
+}
+
+.button {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  /* background: linear-gradient(to left, #64e664, #e5b991); */
+  background-color: #9198e5;
+  /* border: none; */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  color: white;
+  padding: 15px;
+  width:80%;
+  text-align: center;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  text-decoration: none;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.button:after {
+  content: "";
+  background: white;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 300%;
+  margin-left: -300px;
+  margin-top: -200%;
+  opacity: 0;
+  transition: all 0.5s
+}
+
+.button:active:after {
+  /* padding: 0;
+  margin: 0; */
+  opacity: 0.5;
+  transition: 0.2s;
+  border-radius: 25px;
 }

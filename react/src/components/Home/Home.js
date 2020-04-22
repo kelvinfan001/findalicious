@@ -4,7 +4,7 @@ import JoinRoomForm from '../Rooms/JoinRoom';
 
 function Home() {
     return (
-        <div className="main-button">
+        <div className="main-page">
             <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
             <h1>Chicken Tinder</h1>
             <div className="main-button">
@@ -14,9 +14,7 @@ function Home() {
                 <JoinRoomForm />
             </div>
             <div className="main-button">
-                <DribbleButton color="light-blue" animationDuration={300} >
-                    CREATE ROOM
-                </DribbleButton>
+                <div className="button"> CREATE ROOM </div>
             </div>
         </div>
     );
