@@ -25,7 +25,7 @@ h1 {
   font-family: 'Damion', cursive;
   /* color: #F38D68; */
   font-size: 50px;
-  color: rgb(247, 74, 74);
+  color: rgb(250, 109, 109);
   text-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30);
 }
 
@@ -102,7 +102,7 @@ input[type=text]{
     width:100%;
     border:2px solid #fff;
     border-radius:8px;
-    margin:9px 0;
+    margin: 0px;
     outline:none;
     padding:15px;
     box-sizing:border-box;
@@ -121,24 +121,23 @@ input[type=text]:focus{
 .button {
   margin-left: auto;
   margin-right: auto;
-  position: relative;
+  /* position: relative; */
   /* background: linear-gradient(to left, #64e664, #e5b991); */
   background-color: #9198e5;
-  /* border: none; */
   font-family: Arial, Helvetica, sans-serif;
   font-size: large;
   color: white;
   padding: 15px;
   width:80%;
   text-align: center;
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
   text-decoration: none;
   overflow: hidden;
   border-radius: 8px;
+  margin:10px;
+  box-shadow: 0 3.5px rgba(153, 153, 153, 0.24);
 }
 
-.button:after {
+/* .button:after {
   content: "";
   background: white;
   display: block;
@@ -152,14 +151,21 @@ input[type=text]:focus{
 }
 
 .button:active:after {
-  /* padding: 0;
-  margin: 0; */
   opacity: 0.5;
   transition: 0.2s;
   border-radius: 25px;
+} */
+
+.button:active {
+  background-color: rgba(128, 138, 245, 0.555);
+  box-shadow: 0 0px rgba(153, 153, 153, 0.24);
+  transform: translateY(2.5px);
+  transition: all 0.2s;
 }
 
 .logo {
-  height: 50px;
-  width: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  height: 60px;
+  width: 200px;
 }

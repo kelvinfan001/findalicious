@@ -38,6 +38,10 @@ class JoinRoomForm extends React.Component {
                     onMouseUp={this.submit}>
                     JOIN ROOM
                 </div>
+                <div
+                    className="button">
+                    CREATE ROOM
+                </div>
             </form >
         )
     }
