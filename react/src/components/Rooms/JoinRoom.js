@@ -29,13 +29,15 @@ class JoinRoomForm extends React.Component {
                     value={this.state.roomNumber}
                     placeholder="Room Number"
                     onChange={this.handleChange}
+                    required
+                    maxLength="4"
+                    pattern="[0-9]*"
                 />
-                <DribbleButton
-                    color="light-blue"
-                    animationDuration={300}
-                    onClick={this.submit}>
+                <div
+                    className="button"
+                    onMouseUp={this.submit}>
                     JOIN ROOM
-                </DribbleButton>
+                </div>
             </form >
         )
     }
