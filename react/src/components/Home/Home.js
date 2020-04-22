@@ -13,7 +13,7 @@ function Home() {
 
             <img src={logo} className="logo" />
             <JoinRoomForm />
-            <button> CREATE ROOM </button>
+            <button onTouchStart=""> CREATE ROOM </button>
         </div>
     );
 }
