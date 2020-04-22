@@ -33,7 +33,7 @@ class JoinRoomForm extends React.Component {
                     maxLength="4"
                     pattern="[0-9]*"
                 />
-                <button ontouchstart="">
+                <button onTouchStart="">
                     JOIN ROOM
                 </button>
             </form >
