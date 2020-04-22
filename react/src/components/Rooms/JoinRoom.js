@@ -33,17 +33,9 @@ class JoinRoomForm extends React.Component {
                     maxLength="4"
                     pattern="[0-9]*"
                 />
-                <div
-                    className="button"
-                    ontouchstart=""
-                    onMouseUp={this.submit}>
+                <button ontouchstart="">
                     JOIN ROOM
-                </div>
-                <div
-                    className="button"
-                    ontouchstart="">
-                    CREATE ROOM
-                </div>
+                </button>
             </form >
         )
     }
