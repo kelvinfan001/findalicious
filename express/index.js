@@ -31,7 +31,6 @@ db.once('open', function () {
 });
 
 // cors settings
-console.log(process.env.REACT_SERVER);
 const corsOptions = {
     origin: process.env.REACT_SERVER, // address of React server
     methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS", // type of actions allowed
