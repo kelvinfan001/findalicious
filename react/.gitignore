@@ -10,7 +10,7 @@
 
 # production
 # todo: should /build be pushed to deployment server or built locally in the container?
-# /build
+/build
 
 # misc
 .DS_Store
