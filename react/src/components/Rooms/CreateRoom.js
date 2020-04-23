@@ -1,14 +1,12 @@
 import React from 'react';
-// import JoinRoomForm from '../Rooms/JoinRoom';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
-console.log(expressServer);
 
 class CreateRoom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentCity: '',
+            currentCity: 'Retrieving Location...',
             longitude: 0,
             latitude: 0,
         };
@@ -51,7 +49,7 @@ class CreateRoom extends React.Component {
 
                 {/* <img src={logo} className="logo" /> */}
                 <h2> Create Room </h2>
-                <p>Location: {this.state.currentCity}</p>
+                <p>{this.state.currentCity}</p>
                 <button
                     onTouchStart="">
                     READY

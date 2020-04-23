@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Todo = require('../models/todo');
 const { Client, Status } = require("@googlemaps/google-maps-services-js");
+require('dotenv').config();
 
-let GOOGLE_MAPS_API_KEY = "AIzaSyDSCFSWvljJWqfABTqFeYPKGTzUoDn5TyE";
+let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
 router.get('/todos', (req, res, next) => {
 
