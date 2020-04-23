@@ -1,6 +1,6 @@
 import React from 'react';
 
-let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
+let expressServer = process.env.REACT_APP_EXPRESS_SERVER || process.env.REACT_APP_EXPRESS_SERVER_PROD;
 let googleKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 class CreateRoom extends React.Component {
