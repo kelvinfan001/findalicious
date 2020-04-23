@@ -52,7 +52,7 @@ router.get('/location', (req, res) => {
     })
         .then((r) => {
             if (r.data.status === Status.OK) {
-                res.send(r.data.results[0].address_components[2]);
+                res.json(r.data.results[0].address_components[2]);
             } else {
                 console.log(r.data.error_message);
             }

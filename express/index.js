@@ -30,7 +30,7 @@ db.once('open', function () {
     console.log('Successfully connected to MongoDB at: %s', mongoURL);
 });
 
-// cors settings
+// cors
 const corsOptions = {
     origin: process.env.REACT_SERVER, // address of React server
     methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS", // type of actions allowed
@@ -39,10 +39,7 @@ const corsOptions = {
 };
 // intercept pre-flight check for all routes. Pre-flight checks happen when dealing with special http headers.
 app.options("*", cors(corsOptions));
-
-// middleware
 app.use(cors(corsOptions)); // use cors to allow cross-origin resource sharing since React is making calls to Express
-
 
 app.use(bodyParser.json());
 
