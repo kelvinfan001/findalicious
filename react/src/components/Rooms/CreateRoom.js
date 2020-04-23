@@ -30,7 +30,7 @@ class CreateRoom extends React.Component {
                     let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
                     parentThis.setState(state);
                     fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
-                        method: "get",
+                        method: "GET",
                         headers: {
                             Accept: "application/json",
                             "Content-Type": "application/json"
