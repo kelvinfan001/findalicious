@@ -43,14 +43,13 @@ router.get('/location', (req, res) => {
 
     const client = new Client({});
 
-    client
-        .reverseGeocode({
-            params: {
-                latlng: latitudelongitude,
-                key: GOOGLE_MAPS_API_KEY,
-            },
-            timeout: 1000, // milliseconds
-        })
+    client.reverseGeocode({
+        params: {
+            latlng: latitudelongitude,
+            key: GOOGLE_MAPS_API_KEY,
+        },
+        timeout: 1000, // milliseconds
+    })
         .then((r) => {
             if (r.data.status === Status.OK) {
                 res.send(r.data.results[0].address_components[2]);
@@ -61,6 +60,6 @@ router.get('/location', (req, res) => {
         .catch((e) => {
             console.log(e);
         });
-})
+});
 
 module.exports = router;

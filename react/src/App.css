@@ -79,6 +79,7 @@ button {
   padding: 20px;
   background-color: white;
   border-radius: 15px;
+  box-shadow: 0 0 14px 0 #797986;
 }
 
 @keyframes popup {

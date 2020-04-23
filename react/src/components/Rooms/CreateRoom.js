@@ -1,6 +1,7 @@
 import React from 'react';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
+let googleKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 class CreateRoom extends React.Component {
     constructor(props) {
@@ -14,33 +15,50 @@ class CreateRoom extends React.Component {
 
     componentDidMount() {
         let parentThis = this;
-        navigator.geolocation.getCurrentPosition(function (position) {
-            let longitude = position.coords.longitude;
-            let latitude = position.coords.latitude;
-            parentThis.setState({ longitude: position.coords.longitude });
-            parentThis.setState({ latitude: position.coords.latitude });
-            fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
-                method: "get",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            }).then(res => {
-                if (res.status === 200) {
-                    res.json().then(resJSON => {
-                        let state = { currentCity: resJSON.long_name }
-                        parentThis.setState(state);
+
+        fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                res.json().then(resJSON => {
+                    let longitude = resJSON.location.lng;
+                    let latitude = resJSON.location.lat;
+                    let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
+                    parentThis.setState(state);
+                    fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
+                        method: "get",
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "include"
+                    }).then(res => {
+                        if (res.status === 200) {
+                            res.json().then(resJSON => {
+                                let state = { currentCity: resJSON.long_name }
+                                parentThis.setState(state);
+                            });
+                        } else {
+                            parentThis.setState({ currentCity: "Cannot get location" });
+                        }
+                    }).catch((e) => {
+                        parentThis.setState({ currentCity: "Cannot get location" });
+                        console.log(e);
                     });
-                } else {
-                    parentThis.setState({ currentCity: "Cannot get location" });
-                }
-            }).catch((e) => {
-                parentThis.setState({ currentCity: "Cannot get location" });
-                console.log(e);
-            });
+                });
+            } else {
+                parentThis.setState({ currentCity: "Cannot get coordinates..." });
+            }
+        }).catch((e) => {
+            parentThis.setState({ currentCity: "Cannot get location" });
+            console.log(e);
         });
     }
+
 
     render() {
         return (
