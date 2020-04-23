@@ -13,7 +13,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node bin/www"
+    "start": "node bin/www",
+    "postinstall": "npm run-script build",
+    "build": "./bin/build_react.sh"
   },
   "repository": {
     "type": "git",
