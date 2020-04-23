@@ -31,6 +31,7 @@ db.once('open', function () {
 });
 
 // cors settings
+console.log(process.env.REACT_SERVER);
 const corsOptions = {
     origin: process.env.REACT_SERVER, // address of React server
     methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS", // type of actions allowed
@@ -50,7 +51,7 @@ app.use(bodyParser.json());
 app.use('/api', routes);
 // React App
 app.use(express.static(path.join(__dirname, '../react/build')));
-app.get(['/*'], function (res) {
+app.get(['/*'], function (req, res) {
     res.sendFile(path.join(__dirname, '../react/build', 'index.html'));
 });
 
