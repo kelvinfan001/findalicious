@@ -15,32 +15,6 @@ class CreateRoom extends React.Component {
 
     componentDidMount() {
         let parentThis = this;
-        // navigator.geolocation.getCurrentPosition(function (position) {
-        //     let longitude = position.coords.longitude;
-        //     let latitude = position.coords.latitude;
-        //     parentThis.setState({ longitude: position.coords.longitude });
-        //     parentThis.setState({ latitude: position.coords.latitude });
-        //     fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
-        //         method: "get",
-        //         headers: {
-        //             Accept: "application/json",
-        //             "Content-Type": "application/json"
-        //         },
-        //         credentials: "include"
-        //     }).then(res => {
-        //         if (res.status === 200) {
-        //             res.json().then(resJSON => {
-        //                 let state = { currentCity: resJSON.long_name }
-        //                 parentThis.setState(state);
-        //             });
-        //         } else {
-        //             parentThis.setState({ currentCity: "Cannot get location" });
-        //         }
-        //     }).catch((e) => {
-        //         parentThis.setState({ currentCity: "Cannot get location" });
-        //         console.log(e);
-        //     });
-        // });
 
         fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
             method: "POST",
