@@ -1,5 +1,4 @@
 import React from 'react';
-import DribbleButton from 'react-dribble-button';
 
 class JoinRoomForm extends React.Component {
     constructor(props) {

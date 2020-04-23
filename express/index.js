@@ -2,11 +2,12 @@ const express = require('express');
 const routes = require('./routes/api');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require("cors");
 require('dotenv').config();
 
 const app = express();
 
-var mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
+const mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
 
 if (mongoURL == null) {
     mongoURL = 'mongodb://localhost:27017';
@@ -19,15 +20,28 @@ app.use((req, res, next) => {
 });
 
 // connect to db
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect(mongoURL, { useNewUrlParser: true });
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     // connection successful
     console.log('Successfully connected to MongoDB at: %s', mongoURL);
 });
+
+// cors settings
+const corsOptions = {
+    origin: process.env.REACT_SERVER, // address of React server
+    methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS", // type of actions allowed
+    credentials: true, // required to pass
+    allowedHeaders: "Content-Type, Authorization, X-Requested-With"
+};
+// intercept pre-flight check for all routes. Pre-flight checks happen when dealing with special http headers.
+app.options("*", cors(corsOptions));
+
+// middleware
+app.use(cors(corsOptions)); // use cors to allow cross-origin resource sharing since React is making calls to Express
 
 
 app.use(bodyParser.json());
