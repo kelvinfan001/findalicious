@@ -1,6 +1,5 @@
 import React from 'react';
 import JoinRoomForm from '../Rooms/JoinRoom';
-//todo: import logo properly
 
 class Home extends React.Component {
 
