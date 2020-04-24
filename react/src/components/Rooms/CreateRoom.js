@@ -39,6 +39,7 @@ class CreateRoom extends React.Component {
                     }).then(res => {
                         if (res.status === 200) {
                             res.json().then(resJSON => {
+                                console.log(resJSON)
                                 let state = { currentCity: resJSON.long_name }
                                 parentThis.setState(state);
                             });
