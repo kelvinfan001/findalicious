@@ -1,6 +1,5 @@
 import React from 'react';
 import JoinRoomForm from '../Rooms/JoinRoom';
-import logo from './logo.png';
 //todo: import logo properly
 
 class Home extends React.Component {
@@ -12,7 +11,7 @@ class Home extends React.Component {
     render() {
         return (
             <div className="main-page" >
-                <img src={logo} className="logo" alt="Chicken Tinder Icon" />
+                <img src={process.env.PUBLIC_URL + 'logo.png'} className="logo" alt="Chicken Tinder Icon" />
                 <JoinRoomForm />
                 <button
                     onTouchStart=""
