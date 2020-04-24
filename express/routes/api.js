@@ -51,7 +51,7 @@ router.get('/location', (req, res) => {
         timeout: 1000, // milliseconds
     }).then((r) => {
         if (r.data.status === Status.OK) {
-            res.jsonp(r.data.results[0].address_components[2]);
+            res.send(r.data.results[0].address_components[2]);
         } else {
             console.log(r.data.error_message);
         }
