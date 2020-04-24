@@ -49,17 +49,15 @@ router.get('/location', (req, res) => {
             key: GOOGLE_MAPS_API_KEY,
         },
         timeout: 1000, // milliseconds
-    })
-        .then((r) => {
-            if (r.data.status === Status.OK) {
-                res.json(r.data.results[0].address_components[2]);
-            } else {
-                console.log(r.data.error_message);
-            }
-        })
-        .catch((e) => {
-            console.log(e);
-        });
+    }).then((r) => {
+        if (r.data.status === Status.OK) {
+            res.jsonp(r.data.results[0].address_components[2]);
+        } else {
+            console.log(r.data.error_message);
+        }
+    }).catch((e) => {
+        console.log(e);
+    });
 });
 
 module.exports = router;
