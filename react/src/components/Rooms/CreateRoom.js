@@ -22,42 +22,36 @@ class CreateRoom extends React.Component {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             }
-        }).then(res => {
-            if (res.status === 200) {
-                res.json().then(resJSON => {
-                    let longitude = resJSON.location.lng;
-                    let latitude = resJSON.location.lat;
-                    let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
+        }).then(geolocationResult => {
+            if (geolocationResult.status === 200) {
+                return geolocationResult.json()
+            }
+        }).then(geolocationResultJSON => {
+            let longitude = geolocationResultJSON.location.lng;
+            let latitude = geolocationResultJSON.location.lat;
+            let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
+            parentThis.setState(state);
+            return fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                }
+            });
+        }).then(geocodeResult => {
+            if (geocodeResult.status === 200) {
+                geocodeResult.json().then(geocodeResultJSON => {
+                    let state = { currentCity: geocodeResultJSON.long_name }
                     parentThis.setState(state);
-                    fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
-                        method: "GET",
-                        headers: {
-                            Accept: "application/json",
-                            "Content-Type": "application/json"
-                        }
-                    }).then(res => {
-                        if (res.status === 200) {
-                            res.json().then(resJSON => {
-                                let state = { currentCity: resJSON.long_name }
-                                parentThis.setState(state);
-                            });
-                        } else {
-                            parentThis.setState({ currentCity: "Cannot get location" });
-                        }
-                    }).catch((e) => {
-                        parentThis.setState({ currentCity: "Cannot get location" });
-                        console.log(e);
-                    });
                 });
             } else {
-                parentThis.setState({ currentCity: "Cannot get coordinates..." });
+                parentThis.setState({ currentCity: "Cannot get location" });
             }
-        }).catch((e) => {
+        }).catch(e => {
             parentThis.setState({ currentCity: "Cannot get location" });
             console.log(e);
         });
     }
-
 
     render() {
         return (
