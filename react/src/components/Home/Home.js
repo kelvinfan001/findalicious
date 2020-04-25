@@ -10,15 +10,22 @@ class Home extends React.Component {
         }
     }
 
+
     render() {
         return (
-            <div className="main-page" >
-                <img src={process.env.PUBLIC_URL + 'logo.png'} className="logo" alt="Chicken Tinder Icon" />
+            <div className="main-page">
+                <img
+                    src={process.env.PUBLIC_URL + 'logo.png'}
+                    className="logo"
+                    alt="Chicken Tinder Icon"
+                    onClick={() => this.setState({ formShowing: false })}
+                />
                 <div>
                     {this.state.formShowing ?
                         <JoinRoomForm /> :
                         <div>
                             <button
+                                className="pop-up"
                                 onTouchStart=""
                                 onClick={e => {
                                     this.props.history.push("/create");

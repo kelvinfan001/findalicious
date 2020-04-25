@@ -22,7 +22,7 @@ class JoinRoomForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.submit} >
+            < form onSubmit={this.submit} ref={(node) => this.setWrapperRef = node}>
                 <input className="pop-up"
                     type="text"
                     value={this.state.roomNumber}
