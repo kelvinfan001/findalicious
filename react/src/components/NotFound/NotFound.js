@@ -7,7 +7,6 @@ function PageNotFound() {
     return (
         <div className="main-page">
             <h2>Page Not Found</h2>
-            {/* <a href="/">Go home to join a room or start a new room</a> */}
             <Link to="/">
                 <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
             </Link>

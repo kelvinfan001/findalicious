@@ -103,9 +103,9 @@ input[type=text]{
     width: 95%;
     border:2px solid #fff;
     border-radius:8px;
-    margin: 0px;
+    margin: 2px;
     outline:none;
-    padding:18px;
+    padding:17px;
     box-sizing:border-box;
     transition:.3s;
     background-color: rgba(0, 0, 0, 0.13);

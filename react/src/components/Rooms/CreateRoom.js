@@ -13,8 +13,12 @@ class CreateRoom extends React.Component {
             currentCity: 'Retrieving Location...',
             longitude: 0,
             latitude: 0,
-            radius: 0,
+            radius: 1,
         };
+    }
+
+    handleToUpdate(radius) {
+        this.setState({ radius: radius });
     }
 
     componentDidMount() {
@@ -62,6 +66,8 @@ class CreateRoom extends React.Component {
     }
 
     render() {
+        var handleToUpdate = this.handleToUpdate;
+
         return (
             <div className="main-page">
                 <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
@@ -70,9 +76,10 @@ class CreateRoom extends React.Component {
                     <FontAwesomeIcon icon={faLocationArrow} size="xs" />
                     <h4 style={{ display: "inline-block", margin: "6px" }}>{this.state.currentCity}</h4>
                 </div>
-                <RadiusButtons />
+                <RadiusButtons handleToUpdate={handleToUpdate.bind(this)} />
                 <button
-                    onTouchStart="">
+                    onTouchStart=""
+                    onClick={() => alert(this.state.radius)}>
                     CREATE
                 </button>
             </div>

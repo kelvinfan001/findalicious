@@ -5,12 +5,14 @@ class RadiusButtons extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            active: "one"
+            active: 1
         }
     }
 
     _handleClick(radius) {
         this.setState({ active: radius });
+        var handleToUpdate = this.props.handleToUpdate;
+        handleToUpdate(radius);
     }
 
     render() {
@@ -33,20 +35,20 @@ class RadiusButtons extends React.Component {
             <div style={{ paddingBottom: "20px", paddingTop: "20px" }}>
                 <button
                     onTouchStart=""
-                    onClick={this._handleClick.bind(this, "one")}
-                    style={this.state.active === "one" ? buttonActiveStyle : buttonStyle}>
+                    onClick={this._handleClick.bind(this, 1)}
+                    style={this.state.active === 1 ? buttonActiveStyle : buttonStyle}>
                     1KM
                 </button>
                 <button
                     onTouchStart=""
-                    onClick={this._handleClick.bind(this, "two")}
-                    style={this.state.active === "two" ? buttonActiveStyle : buttonStyle}>
+                    onClick={this._handleClick.bind(this, 2)}
+                    style={this.state.active === 2 ? buttonActiveStyle : buttonStyle}>
                     2KM
                 </button>
                 <button
                     onTouchStart=""
-                    onClick={this._handleClick.bind(this, "five")}
-                    style={this.state.active === "five" ? buttonActiveStyle : buttonStyle}>
+                    onClick={this._handleClick.bind(this, 5)}
+                    style={this.state.active === 5 ? buttonActiveStyle : buttonStyle}>
                     5KM
                 </button>
             </div >
