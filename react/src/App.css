@@ -16,18 +16,9 @@
   justify-content: center;
 }
 
-
-h1 {
-  /* font-family: 'Alatsi', sans-serif; */
-  font-family: 'Damion', cursive;
-  /* color: #F38D68; */
-  font-size: 50px;
-  color: rgb(250, 109, 109);
-  text-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30);
-}
-
-button {
-  outline: none;
+h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 
 .swipe {
@@ -82,6 +73,20 @@ button {
   box-shadow: 0 0 14px 0 #797986;
 }
 
+.pop-up {
+  /* animation: popup 400ms; */
+  animation: pop-up2 200ms;
+}
+
+@keyframes pop-up2 {
+  0% {
+    transform: scale(0.5);
+  } 100% {
+    transform: scale(1);
+  }
+}
+
+
 @keyframes popup {
   0% {
     transform: scale(0);
@@ -100,7 +105,7 @@ input[type=text]{
     border-radius:8px;
     margin: 0px;
     outline:none;
-    padding:15px;
+    padding:18px;
     box-sizing:border-box;
     transition:.3s;
     background-color: rgba(0, 0, 0, 0.13);
@@ -140,6 +145,9 @@ button:active {
   box-shadow: 0 0px rgba(153, 153, 153, 0.24);
   transform: translateY(2.5px);
   transition: all 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   outline: none;
   border: 0;
 }
@@ -149,4 +157,12 @@ button:active {
   padding-bottom: 50px;
   height: 60px;
   width: 200px;
+}
+
+.log2o {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  height: 60px;
+  width: 200px;
+  background-color: #858585;
 }

@@ -1,20 +1,28 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function PageNotFound() {
     return (
-        <div>
-            <h1>Page Not Found</h1>
-            <a href="/">Go back</a>
+        <div className="main-page">
+            <h2>Page Not Found</h2>
+            {/* <a href="/">Go home to join a room or start a new room</a> */}
+            <Link to="/">
+                <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
+            </Link>
         </div>
     );
 }
 
 function RoomNotFound() {
     return (
-        <div>
-            <h1>Room Not Found</h1>
+        <div className="main-page">
+            <h2>Room Not Found</h2>
             <p>Please make sure you've entered a valid room ID in the URL   </p>
-            <a href="/">Go back</a>
+            <Link to="/">
+                <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
+            </Link>
         </div>
     );
 }

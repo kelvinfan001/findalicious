@@ -4,7 +4,7 @@ class JoinRoomForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            roomNumber: '',
+            roomNumber: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.submit = this.submit.bind(this);
@@ -22,8 +22,8 @@ class JoinRoomForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.submit}>
-                <input
+            <form onSubmit={this.submit} >
+                <input className="pop-up"
                     type="text"
                     value={this.state.roomNumber}
                     placeholder="Room Number"
@@ -32,8 +32,8 @@ class JoinRoomForm extends React.Component {
                     maxLength="4"
                     pattern="[0-9]*"
                 />
-                <button onTouchStart="">
-                    JOIN ROOM
+                <button onTouchStart="" style={{ backgroundColor: "rgb(95, 204, 95)" }}>
+                    JOIN
                 </button>
             </form >
         )

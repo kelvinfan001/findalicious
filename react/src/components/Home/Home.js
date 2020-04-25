@@ -3,22 +3,34 @@ import JoinRoomForm from '../Rooms/JoinRoom';
 
 class Home extends React.Component {
 
-    goCreateRoom() {
-        this.props.history.push("/create");
+    constructor(props) {
+        super(props);
+        this.state = {
+            formShowing: false
+        }
     }
 
     render() {
         return (
             <div className="main-page" >
                 <img src={process.env.PUBLIC_URL + 'logo.png'} className="logo" alt="Chicken Tinder Icon" />
-                <JoinRoomForm />
-                <button
-                    onTouchStart=""
-                    onClick={e => {
-                        this.goCreateRoom();
-                    }}>
-                    NEW ROOM
-                </button>
+                <div>
+                    {this.state.formShowing ?
+                        <JoinRoomForm /> :
+                        <div>
+                            <button
+                                onTouchStart=""
+                                onClick={e => {
+                                    this.props.history.push("/create");
+                                }}>
+                                CREATE ROOM
+                            </button>
+                            <button onTouchStart="" onClick={() => this.setState({ formShowing: true })}>
+                                JOIN ROOM
+                            </button>
+                        </div>
+                    }
+                </div>
             </div>
         )
     }

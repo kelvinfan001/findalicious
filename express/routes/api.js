@@ -46,13 +46,18 @@ router.get('/location', (req, res) => {
     client.reverseGeocode({
         params: {
             latlng: latitudelongitude,
-            key: GOOGLE_MAPS_API_KEY,
+            key: GOOGLE_MAPS_API_KEY
+        },
+        body: {
+            radioType: "lte"
         },
         timeout: 1000, // milliseconds
     }).then((r) => {
         if (r.data.status === Status.OK) {
+            // first result (most precise), second address component to skip street number and street name
             res.send(r.data.results[0].address_components[2]);
         } else {
+            console.log(r);
             console.log(r.data.error_message);
         }
     }).catch((e) => {
