@@ -16,18 +16,9 @@
   justify-content: center;
 }
 
-
-h1 {
-  /* font-family: 'Alatsi', sans-serif; */
-  font-family: 'Damion', cursive;
-  /* color: #F38D68; */
-  font-size: 50px;
-  color: rgb(250, 109, 109);
-  text-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30);
-}
-
-button {
-  outline: none;
+h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 
 .swipe {
@@ -166,4 +157,12 @@ button:active {
   padding-bottom: 50px;
   height: 60px;
   width: 200px;
+}
+
+.log2o {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  height: 60px;
+  width: 200px;
+  background-color: #858585;
 }

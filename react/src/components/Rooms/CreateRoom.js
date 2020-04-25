@@ -1,4 +1,7 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
+import RadiusButtons from './RadiusButtons';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 let googleKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -10,6 +13,7 @@ class CreateRoom extends React.Component {
             currentCity: 'Retrieving Location...',
             longitude: 0,
             latitude: 0,
+            radius: 0,
         };
     }
 
@@ -25,6 +29,9 @@ class CreateRoom extends React.Component {
         }).then(geolocationResult => {
             if (geolocationResult.status === 200) {
                 return geolocationResult.json()
+            } else {
+                parentThis.setState({ currentCity: "Cannot get coordinates" });
+                return Promise.reject("Google geolocation API cannot get coordinates");
             }
         }).then(geolocationResultJSON => {
             let longitude = geolocationResultJSON.location.lng;
@@ -46,6 +53,7 @@ class CreateRoom extends React.Component {
                 });
             } else {
                 parentThis.setState({ currentCity: "Cannot get location" });
+                Promise.reject("Google geocoding API cannot get a location");
             }
         }).catch(e => {
             parentThis.setState({ currentCity: "Cannot get location" });
@@ -57,13 +65,15 @@ class CreateRoom extends React.Component {
         return (
             <div className="main-page">
                 <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
-
-                {/* <img src={logo} className="logo" /> */}
-                <h2> Create Room </h2>
-                <p>{this.state.currentCity}</p>
+                <h2> Restaurants Near </h2>
+                <div>
+                    <FontAwesomeIcon icon={faLocationArrow} size="xs" />
+                    <h4 style={{ display: "inline-block", margin: "6px" }}>{this.state.currentCity}</h4>
+                </div>
+                <RadiusButtons />
                 <button
                     onTouchStart="">
-                    READY
+                    CREATE
                 </button>
             </div>
         )
