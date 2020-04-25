@@ -115,7 +115,9 @@ input[type=text]{
   
 input[type=text]:focus{
   border-color:#9198e5;
-  box-shadow:0 0 8px 0 #9198e5;
+  box-shadow: 0 0 8px 0 #9198e5;
+  -webkit-appearance: none;
+  -webkit-box-shadow: 0 0 8px 0 #9198e5;
 }
 
 button{
@@ -133,6 +135,7 @@ button{
   border-radius: 8px;
   margin:5px;
   box-shadow: 0 3px rgba(153, 153, 153, 0.24);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -145,6 +148,7 @@ button:active {
   box-shadow: 0 0px rgba(153, 153, 153, 0.24);
   transform: translateY(2.5px);
   transition: all 0.2s;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
