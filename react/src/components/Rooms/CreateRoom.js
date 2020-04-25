@@ -17,7 +17,7 @@ class CreateRoom extends React.Component {
         };
     }
 
-    handleToUpdate(radius) {
+    updateRadius(radius) {
         this.setState({ radius: radius });
     }
 
@@ -66,7 +66,7 @@ class CreateRoom extends React.Component {
     }
 
     render() {
-        var handleToUpdate = this.handleToUpdate;
+        var updateRadius = this.updateRadius;
 
         return (
             <div className="main-page">
@@ -76,7 +76,7 @@ class CreateRoom extends React.Component {
                     <FontAwesomeIcon icon={faLocationArrow} size="xs" />
                     <h4 style={{ display: "inline-block", margin: "6px" }}>{this.state.currentCity}</h4>
                 </div>
-                <RadiusButtons handleToUpdate={handleToUpdate.bind(this)} />
+                <RadiusButtons updateRadius={updateRadius.bind(this)} />
                 <button
                     onTouchStart=""
                     onClick={() => alert(this.state.radius)}>
