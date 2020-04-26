@@ -156,6 +156,12 @@ button:active {
   border: 0;
 }
 
+button:disabled{
+  background-color: rgba(196, 196, 196, 0.514);
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
 .logo {
   padding-top: 50px;
   padding-bottom: 50px;

@@ -42,6 +42,7 @@ app.options("*", cors(corsOptions));
 app.use(cors(corsOptions)); // use cors to allow cross-origin resource sharing since React is making calls to Express
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 /* Routes */
 app.use('/api', routes);

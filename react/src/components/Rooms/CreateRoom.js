@@ -13,7 +13,8 @@ class CreateRoom extends React.Component {
             currentCity: 'Retrieving Location...',
             longitude: 0,
             latitude: 0,
-            radius: 1,
+            locationRetrieved: false,
+            radius: 1
         };
     }
 
@@ -52,7 +53,7 @@ class CreateRoom extends React.Component {
         }).then(geocodeResult => {
             if (geocodeResult.status === 200) {
                 geocodeResult.json().then(geocodeResultJSON => {
-                    let state = { currentCity: geocodeResultJSON.long_name }
+                    let state = { currentCity: geocodeResultJSON.long_name, locationRetrieved: true }
                     parentThis.setState(state);
                 });
             } else {
@@ -63,6 +64,22 @@ class CreateRoom extends React.Component {
             parentThis.setState({ currentCity: "Cannot get location" });
             console.log(e);
         });
+    }
+
+    createRoom() {
+        fetch(expressServer + "/api/create-room", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: {
+                longitude: this.state.longitude,
+                latitude: this.state.latitude,
+                radius: this.state.radius
+            }
+        })
     }
 
     render() {
@@ -79,6 +96,7 @@ class CreateRoom extends React.Component {
                 <RadiusButtons updateRadius={updateRadius.bind(this)} />
                 <button
                     onTouchStart=""
+                    disabled={!this.state.locationRetrieved}
                     onClick={() => alert(this.state.radius)}>
                     CREATE
                 </button>
