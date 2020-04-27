@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 import RadiusButtons from './RadiusButtons';
-import { socket } from '../../App';
+// import { socket } from '../../App';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 let googleKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -18,6 +18,7 @@ class CreateRoom extends React.Component {
             radius: 1
         };
         this.createJoinRoom = this.createJoinRoom.bind(this);
+        this.joinRoom = this.joinRoom.bind(this);
     }
 
     updateRadius(radius) {
@@ -25,10 +26,10 @@ class CreateRoom extends React.Component {
     }
 
     componentDidMount() {
+        let socket = this.props.socket;
         let parentThis = this;
-        socket.on('message', function (data) {
-            console.log('Incoming message:', data);
-
+        socket.on('room info', function (data) {
+            console.log(data);
         });
 
         fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
@@ -84,9 +85,9 @@ class CreateRoom extends React.Component {
             },
             // credentials: "include",
             body: JSON.stringify({
-                "longitude": longitude,
-                "latitude": latitude,
-                "radius": radius
+                longitude: longitude,
+                latitude: latitude,
+                radius: radius
             })
         }).then(result => {
             if (result.status === 200) {
@@ -94,12 +95,17 @@ class CreateRoom extends React.Component {
                 result.json().then(resultJSON => {
                     console.log(resultJSON)
                     let roomNumber = resultJSON.roomNumber;
-                    socket.emit('room', roomNumber);
+                    this.joinRoom(roomNumber);
                 });
             }
         }).catch(e => {
             console.log(e);
         });
+    }
+
+    joinRoom(roomNumber) {
+        let socket = this.props.socket;
+        socket.emit('room', roomNumber);
     }
 
 

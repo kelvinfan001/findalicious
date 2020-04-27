@@ -17,7 +17,12 @@ const RoomSchema = new Schema({
             likeCount: Number
         }
     ],
-    participantCount: { type: Number, default: 0 },
+    // participantCount: { type: Number, default: 0 },
+    participants: [
+        {
+            socketID: String
+        }
+    ],
     created: { type: Date, default: Date.now }
 })
 

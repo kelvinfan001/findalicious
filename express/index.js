@@ -34,7 +34,7 @@ if (mongoURL == null) {
     mongoURL = 'mongodb://localhost:27017';
 }
 const mongoose = require('mongoose');
-mongoose.connect(mongoURL, { useNewUrlParser: true });
+mongoose.connect(mongoURL, { useNewUrlParser: true, useFindAndModify: false });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {

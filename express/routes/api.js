@@ -53,7 +53,7 @@ function checkRoomAlreadyExists(roomNumber) {
 }
 
 function generateNewUniqueRoomNumber() {
-    let roomNumber = Math.floor(Math.random() * 10000);
+    let roomNumber = Math.floor(Math.random() * (10000 - 1000)) + 1000;
     let roomAlreadyExists = checkRoomAlreadyExists(roomNumber);
     while (roomAlreadyExists) {
         roomNumber = Math.floor(Math.random() * 10000);
@@ -62,6 +62,7 @@ function generateNewUniqueRoomNumber() {
     return roomNumber;
 }
 
+//TODO i think this needs to be an async function. review that pls
 function getRestaurants(longitude, latitude, radius) {
 
 
@@ -87,8 +88,7 @@ router.post('/create-room', (req, res, next) => {
         longitude: longitude,
         latitude: latitude,
         radius: radius,
-        restaurants: restaurantsArray,
-        participantCount: 1
+        restaurants: restaurantsArray
     }).then(data => {
         // req.session.roomNumber = roomNumber;
         res.json(data)

@@ -8,12 +8,12 @@ import './App.css';
 import io from 'socket.io-client';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
-let socket;
+let socket = io(expressServer);
 
 class App extends React.Component {
   constructor() {
     super();
-    socket = io(expressServer);
+    // socket = io(expressServer);
   }
 
   render() {
@@ -23,7 +23,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/rooms/:id" component={TinderCardComponent} />
             <Route exact path='/' component={Home} />
-            <Route exact path='/create' component={CreateRoom} />
+            <Route exact path='/create' render={(props) => (<CreateRoom socket={socket} />)} />
             <Route exact path="/rooms" component={RoomNotFound} />
             <Route component={PageNotFound} />
           </Switch>
