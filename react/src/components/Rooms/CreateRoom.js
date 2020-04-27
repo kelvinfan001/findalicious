@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 import RadiusButtons from './RadiusButtons';
+import { socket } from '../../App';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 let googleKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -16,6 +17,7 @@ class CreateRoom extends React.Component {
             locationRetrieved: false,
             radius: 1
         };
+        this.createJoinRoom = this.createJoinRoom.bind(this);
     }
 
     updateRadius(radius) {
@@ -24,6 +26,10 @@ class CreateRoom extends React.Component {
 
     componentDidMount() {
         let parentThis = this;
+        socket.on('message', function (data) {
+            console.log('Incoming message:', data);
+
+        });
 
         fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
             method: "POST",
@@ -66,24 +72,39 @@ class CreateRoom extends React.Component {
         });
     }
 
-    createRoom() {
+    createJoinRoom() {
+        let longitude = this.state.longitude;
+        let latitude = this.state.latitude;
+        let radius = this.state.radius;
         fetch(expressServer + "/api/create-room", {
             method: "POST",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json"
             },
-            credentials: "include",
-            body: {
-                longitude: this.state.longitude,
-                latitude: this.state.latitude,
-                radius: this.state.radius
+            // credentials: "include",
+            body: JSON.stringify({
+                "longitude": longitude,
+                "latitude": latitude,
+                "radius": radius
+            })
+        }).then(result => {
+            if (result.status === 200) {
+                alert("Room Created!");
+                result.json().then(resultJSON => {
+                    console.log(resultJSON)
+                    let roomNumber = resultJSON.roomNumber;
+                    socket.emit('room', roomNumber);
+                });
             }
-        })
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
+
     render() {
-        var updateRadius = this.updateRadius;
+        let updateRadius = this.updateRadius;
 
         return (
             <div className="main-page">
@@ -97,7 +118,7 @@ class CreateRoom extends React.Component {
                 <button
                     onTouchStart=""
                     disabled={!this.state.locationRetrieved}
-                    onClick={() => alert(this.state.radius)}>
+                    onClick={this.createJoinRoom}>
                     CREATE
                 </button>
             </div>

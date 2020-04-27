@@ -7,37 +7,13 @@ require('dotenv').config();
 
 let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
-router.get('/todos', (req, res, next) => {
-
-    //this will return all the data, exposing only the id and action field to the client
-    Todo.find({ action: 'foos' })
-        .then(data => res.json(data))
-        .catch(next)
-});
-
-router.get('/test', (req, res) => {
-    res.send('test works!')
-});
-
-router.post('/todos', (req, res, next) => {
-    if (req.body.action) {
-        Todo.create(req.body)
-            .then(data => res.json(data))
-            .catch(next)
-    } else {
-        res.json({
-            error: "The input field is empty"
-        })
-    }
-});
-
 router.delete('/todos/:id', (req, res, next) => {
     Todo.findOneAndDelete({ "_id": req.params.id })
         .then(data => res.json(data))
         .catch(next)
 })
 
-router.get('/location', (req, res) => {
+router.get('/location', (req, res, next) => {
     let latitude = req.query.latitude;
     let longitude = req.query.longitude;
     let latitudelongitude = latitude + "," + longitude;
@@ -63,6 +39,7 @@ router.get('/location', (req, res) => {
         }
     }).catch((e) => {
         console.log(e);
+        next;
     });
 });
 
@@ -86,6 +63,8 @@ function generateNewUniqueRoomNumber() {
 }
 
 function getRestaurants(longitude, latitude, radius) {
+
+
     return [
         {
             name: "Kailong's Restaurant",
@@ -97,7 +76,7 @@ function getRestaurants(longitude, latitude, radius) {
     ]
 }
 
-router.post('/create-room', (req, res) => {
+router.post('/create-room', (req, res, next) => {
     let longitude = req.body.longitude;
     let latitude = req.body.latitude;
     let radius = req.body.radius;
@@ -108,19 +87,29 @@ router.post('/create-room', (req, res) => {
         longitude: longitude,
         latitude: latitude,
         radius: radius,
-        restaurants: restaurantsArray
-    }).then(
-        data => res.json(data));
+        restaurants: restaurantsArray,
+        participantCount: 1
+    }).then(data => {
+        // req.session.roomNumber = roomNumber;
+        res.json(data)
+    }).catch(next);
 });
 
-router.get('/rooms', (req, res) => {
-    Room.findOne({ roomNumber: req.query.roomnumber }).then(result => {
-        if (result) {
-            res.json(result)
-        } else {
-            res.status(404).end();
-        }
-    })
+router.get('/rooms', (req, res, next) => {
+    if (req.query.roomNumber) {
+        Room.findOne({ roomNumber: req.query.roomNumber }).then(result => {
+            if (result) {
+                // req.session.roomNumber = req.query.roomNumber;
+                res.json(result);
+            } else {
+                res.status(404).end();
+            }
+        }).catch(next);
+    } else {
+        Room.find({}, ['roomNumber', 'participantCount']).then(
+            data => res.json(data)
+        ).catch(next);
+    }
 });
 
 module.exports = router;
