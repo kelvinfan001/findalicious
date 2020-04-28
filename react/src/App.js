@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
-import TinderCardComponent from './components/TinderCard/TinderCard';
+// import TinderCardComponent from './components/TinderCard/TinderCard';
 import Home from './components/Home/Home';
 import { RoomNotFound, PageNotFound } from './components/NotFound/NotFound';
 import CreateRoom from './components/Rooms/CreateRoom';
@@ -14,11 +14,6 @@ let socket = io.connect(expressServer, {
 });
 
 class App extends React.Component {
-  constructor() {
-    super();
-    // socket = io(expressServer);
-  }
-
   render() {
     return (
       <Router>

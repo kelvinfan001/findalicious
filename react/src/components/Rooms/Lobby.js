@@ -1,8 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
-import { useParams } from "react-router-dom";
-
 
 class Lobby extends React.Component {
     constructor(props) {
@@ -24,16 +22,6 @@ class Lobby extends React.Component {
 
         // Check if joined valid room
         socket.on('room info', function (result) {
-            // let data = JSON.parse(result);
-            // // Set participants
-            // let participantsObjectArray = data.participants;
-            // let participantsArray = [];
-            // for (let i = 0; i < participantsObjectArray.length; i++) {
-            //     participantsArray.push(participantsObjectArray[i].socketID)
-            // }
-            // parentThis.setState({ participants: participantsArray });
-            // // Set city
-            // parentThis.setState({ city: data.city });
             parentThis.updateStateInfo(result);
         });
 
