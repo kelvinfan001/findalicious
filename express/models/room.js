@@ -6,6 +6,7 @@ const RoomSchema = new Schema({
     roomNumber: { type: Number, required: true },
     latitude: String,
     radius: String,
+    city: String,
     restaurants: [
         {
             name: String,
@@ -23,7 +24,8 @@ const RoomSchema = new Schema({
             socketID: String
         }
     ],
-    created: { type: Date, default: Date.now }
+    created: { type: Date, default: Date.now },
+    isActive: { type: Boolean, default: false }
 })
 
 // create model for room

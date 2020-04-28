@@ -18,7 +18,7 @@ class CreateRoom extends React.Component {
             radius: 1
         };
         this.createJoinRoom = this.createJoinRoom.bind(this);
-        this.joinRoom = this.joinRoom.bind(this);
+        this.goToRoom = this.goToRoom.bind(this);
     }
 
     updateRadius(radius) {
@@ -77,6 +77,7 @@ class CreateRoom extends React.Component {
         let longitude = this.state.longitude;
         let latitude = this.state.latitude;
         let radius = this.state.radius;
+        let currentCity = this.state.currentCity;
         fetch(expressServer + "/api/create-room", {
             method: "POST",
             headers: {
@@ -87,15 +88,16 @@ class CreateRoom extends React.Component {
             body: JSON.stringify({
                 longitude: longitude,
                 latitude: latitude,
-                radius: radius
+                radius: radius,
+                city: currentCity
             })
         }).then(result => {
             if (result.status === 200) {
-                alert("Room Created!");
-                result.json().then(resultJSON => {
+                result.json().then((resultJSON) => {
                     console.log(resultJSON)
                     let roomNumber = resultJSON.roomNumber;
-                    this.joinRoom(roomNumber);
+                    let roomURL = "/rooms/" + roomNumber;
+                    this.goToRoom(roomURL);
                 });
             }
         }).catch(e => {
@@ -103,9 +105,8 @@ class CreateRoom extends React.Component {
         });
     }
 
-    joinRoom(roomNumber) {
-        let socket = this.props.socket;
-        socket.emit('room', roomNumber);
+    goToRoom(roomURL) {
+        this.props.history.push(roomURL);
     }
 
 

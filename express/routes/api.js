@@ -81,6 +81,7 @@ router.post('/create-room', (req, res, next) => {
     let longitude = req.body.longitude;
     let latitude = req.body.latitude;
     let radius = req.body.radius;
+    let city = req.body.city;
     let roomNumber = generateNewUniqueRoomNumber();
     let restaurantsArray = getRestaurants(longitude, latitude, radius);
     Room.create({
@@ -88,7 +89,8 @@ router.post('/create-room', (req, res, next) => {
         longitude: longitude,
         latitude: latitude,
         radius: radius,
-        restaurants: restaurantsArray
+        restaurants: restaurantsArray,
+        city: city
     }).then(data => {
         // req.session.roomNumber = roomNumber;
         res.json(data)
