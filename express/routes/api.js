@@ -11,7 +11,78 @@ router.delete('/todos/:id', (req, res, next) => {
     Todo.findOneAndDelete({ "_id": req.params.id })
         .then(data => res.json(data))
         .catch(next)
-})
+});
+
+router.get('/imagesURL', (req, res, next) => {
+    let photoReference = req.query.photoReference;
+    const client = new Client();
+
+    client.placePhoto({
+        params: {
+            photoreference: photoReference,
+            key: GOOGLE_MAPS_API_KEY,
+            maxwidth: 480
+        }
+    }).then(result => {
+        if (result.status === 200) {
+            let url = result.request.res.responseUrl;
+            res.send(url);
+        } else {
+            res.status(500).send("Google API error.").end();
+        }
+    }).catch(e => {
+        console.error(e);
+        res.status(500).send("An unknown error occurred").end();
+        next;
+    });
+});
+
+router.post('/create-room', async (req, res, next) => {
+    let longitude = req.body.longitude;
+    let latitude = req.body.latitude;
+    let radius = req.body.radius;
+    let city = req.body.city;
+    let roomNumber = generateNewUniqueRoomNumber();
+    let restaurantsArray;
+    try {
+        restaurantsArray = await getRestaurants(longitude, latitude, radius);
+        if (restaurantsArray.length === 0) {
+            res.status(404).send("No restaurants found.").end();
+        } else {
+            Room.create({
+                roomNumber: roomNumber,
+                longitude: longitude,
+                latitude: latitude,
+                radius: radius,
+                restaurants: restaurantsArray,
+                city: city
+            }).then(data => {
+                res.json(data)
+            }).catch(next);
+        }
+    } catch (e) {
+        res.status(500).send("Google API error.").end();
+        console.error(error);
+    }
+});
+
+router.get('/rooms', (req, res, next) => {
+    if (req.query.roomNumber) {
+        Room.findOne({ roomNumber: req.query.roomNumber }).then(result => {
+            if (result) {
+                // req.session.roomNumber = req.query.roomNumber;
+                res.json(result);
+            } else {
+                res.status(404).end();
+            }
+        }).catch(next);
+    } else {
+        Room.find({}, ['roomNumber', 'participantCount']).then(
+            data => res.json(data)
+        ).catch(next);
+    }
+});
+
 
 router.get('/location', (req, res, next) => {
     let latitude = req.query.latitude;
@@ -38,6 +109,7 @@ router.get('/location', (req, res, next) => {
             console.log(r.data.error_message);
         }
     }).catch((e) => {
+        res.status(500).send("An unknown error occurred").end();
         console.log(e);
         next;
     });
@@ -62,56 +134,72 @@ function generateNewUniqueRoomNumber() {
     return roomNumber;
 }
 
-//TODO i think this needs to be an async function. review that pls
-function getRestaurants(longitude, latitude, radius) {
+async function getRestaurants(longitude, latitude, radius) {
+    let latlng = latitude + "," + longitude;
+    let radiusMetres = radius * 1000;
+    let restaurantAPIResults = [];
+    let restaurantResults = [];
 
+    const client = new Client({});
 
-    return [
-        {
-            name: "Kailong's Restaurant",
-            address: "55 Spadina",
-            rating: 5,
-            photoReference: "CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU",
-            likeCount: 0
-        }
-    ]
+    return new Promise(function (resolve, reject) {
+        client.placesNearby({
+            params: {
+                key: GOOGLE_MAPS_API_KEY,
+                location: latlng,
+                radius: radiusMetres,
+                type: "restaurant"
+            },
+        }).then(results => {
+            if (results.data.status === Status.OK) {
+                restaurantAPIResults = results.data.results;
+                for (let i = 0; i < restaurantAPIResults.length; i++) {
+                    let curRestaurantLat = restaurantAPIResults[i].geometry.location.lat;
+                    let curRestaurantLng = restaurantAPIResults[i].geometry.location.lng;
+                    let curRestaurant = {
+                        name: restaurantAPIResults[i].name,
+                        address: restaurantAPIResults[i].vicinity,
+                        photoReference: restaurantAPIResults[i].photos[0].photo_reference,
+                        placeID: restaurantAPIResults[i].place_id,
+                        distance: distance(latitude, longitude, curRestaurantLat, curRestaurantLng, "K")
+                    };
+                    restaurantResults.push(curRestaurant);
+                }
+            } else if (results.data.status === "ZERO_RESULTS") {
+                console.log("Found zero results in a nearby places API call.");
+            }
+            resolve(restaurantResults);
+        }).catch(e => {
+            console.log(e);
+            next;
+        });
+    });
 }
 
-router.post('/create-room', (req, res, next) => {
-    let longitude = req.body.longitude;
-    let latitude = req.body.latitude;
-    let radius = req.body.radius;
-    let city = req.body.city;
-    let roomNumber = generateNewUniqueRoomNumber();
-    let restaurantsArray = getRestaurants(longitude, latitude, radius);
-    Room.create({
-        roomNumber: roomNumber,
-        longitude: longitude,
-        latitude: latitude,
-        radius: radius,
-        restaurants: restaurantsArray,
-        city: city
-    }).then(data => {
-        // req.session.roomNumber = roomNumber;
-        res.json(data)
-    }).catch(next);
-});
-
-router.get('/rooms', (req, res, next) => {
-    if (req.query.roomNumber) {
-        Room.findOne({ roomNumber: req.query.roomNumber }).then(result => {
-            if (result) {
-                // req.session.roomNumber = req.query.roomNumber;
-                res.json(result);
-            } else {
-                res.status(404).end();
-            }
-        }).catch(next);
-    } else {
-        Room.find({}, ['roomNumber', 'participantCount']).then(
-            data => res.json(data)
-        ).catch(next);
+/*
+This function's code was licensed under LGPLv3, retrieved from https://www.geodatasource.com/developers/javascript
+*/
+function distance(lat1, lon1, lat2, lon2, unit) {
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+        return 0;
     }
-});
+    else {
+        var radlat1 = Math.PI * lat1 / 180;
+        var radlat2 = Math.PI * lat2 / 180;
+        var theta = lon1 - lon2;
+        var radtheta = Math.PI * theta / 180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = dist * 180 / Math.PI;
+        dist = dist * 60 * 1.1515;
+        if (unit == "K") { dist = dist * 1.609344 }
+        if (unit == "N") { dist = dist * 0.8684 }
+        return dist;
+    }
+}
+
 
 module.exports = router;

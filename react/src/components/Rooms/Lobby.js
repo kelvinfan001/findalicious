@@ -20,19 +20,26 @@ class Lobby extends React.Component {
         this.joinRoom(this.state.roomNumber);
         let parentThis = this;
 
-        // Check if joined valid room
+        // Listen on new user joining room
         socket.on('room info', function (result) {
             parentThis.updateStateInfo(result);
         });
 
-        // Check if joined invalid room
+        // Listen on whether joined invalid room
         socket.on('error', () => {
             parentThis.props.history.push("/rooms");
         });
 
+        // Listen on user disconnect
         socket.on('user disconnect', function (result) {
             parentThis.updateStateInfo(result);
         });
+
+        // Listen on attempting to join active room
+        socket.on('room active', () => {
+            alert("Room" + this.state.roomNumber + "has already begun swiping!");
+            parentThis.props.history.push("/");
+        })
     }
 
     updateStateInfo(result) {
@@ -46,6 +53,8 @@ class Lobby extends React.Component {
         this.setState({ participants: participantsArray });
         // Set city
         this.setState({ city: data.city });
+        // Set radius
+        this.setState({ radius: data.radius });
     }
 
     joinRoom(roomNumber) {
@@ -58,11 +67,17 @@ class Lobby extends React.Component {
             <div className="main-page">
                 <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
                 <h2> Room {this.state.roomNumber} </h2>
-                <div>
+                <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
+                    <h4> Looking for restaurants in</h4>
                     <FontAwesomeIcon icon={faLocationArrow} size="xs" />
-                    <h4 style={{ display: "inline-block", margin: "6px" }}>{this.state.city}</h4>
+                    <h4 style={{ display: "inline-block", margin: "2px" }}>{this.state.city}</h4>
+                    <h4 style={{ padding: "0px" }}>
+                        {this.state.radius ? "(" + this.state.radius + "KM radius)" : ""}
+                    </h4>
                 </div>
-                <h4> {this.state.participants.length} user(s) in this room </h4>
+                <h4>
+                    {this.state.participants.length} user{(this.state.participants.length === 1) ? "" : "s"} in this room
+                </h4>
                 <button
                     onTouchStart="">
                     EVERYONE IS IN

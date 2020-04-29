@@ -19,6 +19,7 @@ class CreateRoom extends React.Component {
         };
         this.createJoinRoom = this.createJoinRoom.bind(this);
         this.goToRoom = this.goToRoom.bind(this);
+        this.updateRadius = this.updateRadius.bind(this);
     }
 
     updateRadius(radius) {
@@ -93,12 +94,16 @@ class CreateRoom extends React.Component {
             })
         }).then(result => {
             if (result.status === 200) {
-                result.json().then((resultJSON) => {
+                result.json().then(resultJSON => {
                     console.log(resultJSON)
                     let roomNumber = resultJSON.roomNumber;
                     let roomURL = "/rooms/" + roomNumber;
                     this.goToRoom(roomURL);
                 });
+            } else if (result.status === 404) {
+                alert("No restaurants found in your area. Try a larger radius.");
+            } else {
+                alert("Unknown error. Server may be down.");
             }
         }).catch(e => {
             console.log(e);
@@ -109,9 +114,8 @@ class CreateRoom extends React.Component {
         this.props.history.push(roomURL);
     }
 
-
     render() {
-        let updateRadius = this.updateRadius;
+        // let updateRadius = this.updateRadius;
 
         return (
             <div className="main-page">
@@ -121,7 +125,7 @@ class CreateRoom extends React.Component {
                     <FontAwesomeIcon icon={faLocationArrow} size="xs" />
                     <h4 style={{ display: "inline-block", margin: "6px" }}>{this.state.currentCity}</h4>
                 </div>
-                <RadiusButtons updateRadius={updateRadius.bind(this)} />
+                <RadiusButtons updateRadius={this.updateRadius.bind(this)} />
                 <button
                     onTouchStart=""
                     disabled={!this.state.locationRetrieved}
