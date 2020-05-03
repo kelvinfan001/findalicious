@@ -7,6 +7,7 @@ import Lobby from './components/Rooms/Lobby';
 import './App.css';
 import io from 'socket.io-client';
 import TinderCardComponent from './components/TinderCard/TinderCard';
+import Swiping from './components/Swiping/Swiping';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 let socket = io.connect(expressServer, {
@@ -22,6 +23,7 @@ class App extends React.Component {
             <Route exact path="/rooms/:roomNumber" render={(props) => (<Lobby {...props} socket={socket} />)} />
             <Route exact path='/' component={Home} />
             <Route exact path='/create' render={(props) => (<CreateRoom {...props} socket={socket} />)} />
+            <Route exact path='/swiping' render={(props) => (<Swiping {...props} socket={socket} />)} />
             <Route exact path="/rooms" component={RoomNotFound} />
             <Route exact path="/test" component={TinderCardComponent} />
             <Route component={PageNotFound} />

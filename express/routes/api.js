@@ -45,7 +45,9 @@ router.post('/create-room', async (req, res, next) => {
     let roomNumber = generateNewUniqueRoomNumber();
     let restaurantsArray;
     try {
+        // The following two functions are separated because it involves calling two different APIs
         restaurantsArray = await getRestaurants(longitude, latitude, radius);
+        await addRestaurantsURL(restaurantsArray);
         if (restaurantsArray.length === 0) {
             res.status(404).send("No restaurants found.").end();
         } else {
@@ -61,7 +63,7 @@ router.post('/create-room', async (req, res, next) => {
             }).catch(next);
         }
     } catch (e) {
-        res.status(500).send("Google API error.").end();
+        res.status(500).send(e).end();
         console.error(error);
     }
 });
@@ -70,16 +72,19 @@ router.get('/rooms', (req, res, next) => {
     if (req.query.roomNumber) {
         Room.findOne({ roomNumber: req.query.roomNumber }).then(result => {
             if (result) {
-                // req.session.roomNumber = req.query.roomNumber;
                 res.json(result);
             } else {
                 res.status(404).end();
             }
-        }).catch(next);
+        }).catch(e => {
+            res.status(500).end();
+        });
     } else {
         Room.find({}, ['roomNumber', 'participantCount']).then(
             data => res.json(data)
-        ).catch(next);
+        ).catch(e => {
+            res.status(500).end();
+        });
     }
 });
 
@@ -134,6 +139,41 @@ function generateNewUniqueRoomNumber() {
     return roomNumber;
 }
 
+function addRestaurantsURL(restaurantsArray) {
+    return new Promise(async function (resolve, reject) {
+        for (let i = 0; i < restaurantsArray.length; i++) {
+            let photoReference = restaurantsArray[i].photoReference;
+            let photoURL = await getPhotoURL(photoReference);
+            restaurantsArray[i].photoURL = photoURL;
+        }
+        resolve(restaurantsArray);
+    });
+}
+
+function getPhotoURL(photoReference) {
+    const client = new Client({});
+
+    return new Promise(function (resolve, reject) {
+        client.placePhoto({
+            params: {
+                photoreference: photoReference,
+                key: GOOGLE_MAPS_API_KEY,
+                maxwidth: 480
+            }
+        }).then(result => {
+            if (result.status === 200) {
+                let url = result.request.res.responseUrl;
+                resolve(url);
+            } else {
+                reject(new Error("Google API error."));
+            }
+        }).catch(e => {
+            console.log(e);
+            reject(new Error("An unknown error occurred"));
+        });
+    });
+}
+
 async function getRestaurants(longitude, latitude, radius) {
     let latlng = latitude + "," + longitude;
     let radiusMetres = radius * 1000;
@@ -167,9 +207,12 @@ async function getRestaurants(longitude, latitude, radius) {
                 }
             } else if (results.data.status === "ZERO_RESULTS") {
                 console.log("Found zero results in a nearby places API call.");
+            } else {
+                reject("Google API error");
             }
             resolve(restaurantResults);
         }).catch(e => {
+            reject(e);
             console.log(e);
             next;
         });

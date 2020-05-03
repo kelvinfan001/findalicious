@@ -13,6 +13,7 @@ class Lobby extends React.Component {
         }
         this.joinRoom = this.joinRoom.bind(this);
         this.updateStateInfo = this.updateStateInfo.bind(this);
+        this.startSwiping = this.startSwiping.bind(this);
     }
 
     componentDidMount() {
@@ -26,20 +27,25 @@ class Lobby extends React.Component {
         });
 
         // Listen on whether joined invalid room
-        socket.on('error', () => {
+        socket.on('general error', () => {
             parentThis.props.history.push("/rooms");
         });
 
         // Listen on user disconnect
-        socket.on('user disconnect', function (result) {
+        socket.on('user disconnect', (result) => {
             parentThis.updateStateInfo(result);
         });
 
-        // Listen on attempting to join active room
+        // Listen on attempting to join an already active room
         socket.on('room active', () => {
-            alert("Room" + this.state.roomNumber + "has already begun swiping!");
+            alert("Room " + this.state.roomNumber + " has already begun swiping!");
             parentThis.props.history.push("/");
-        })
+        });
+
+        // Listen on room started swiping
+        socket.on('room started swiping', () => {
+            parentThis.props.history.push('/swiping', { roomNumber: this.state.roomNumber });
+        });
     }
 
     updateStateInfo(result) {
@@ -62,6 +68,11 @@ class Lobby extends React.Component {
         socket.emit('room', roomNumber);
     }
 
+    startSwiping() {
+        let socket = this.props.socket;
+        socket.emit('initiate swiping');
+    }
+
     render() {
         return (
             <div className="main-page">
@@ -78,8 +89,11 @@ class Lobby extends React.Component {
                 <h4>
                     {this.state.participants.length} user{(this.state.participants.length === 1) ? "" : "s"} in this room
                 </h4>
+
+                {/* TODO: DISABLE WHEN NOT ENTERED ROOM FULLY */}
                 <button
-                    onTouchStart="">
+                    onTouchStart=""
+                    onClick={this.startSwiping}>
                     EVERYONE IS IN
                 </button>
             </div>

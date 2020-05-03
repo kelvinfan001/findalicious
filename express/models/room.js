@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const RoomSchema = new Schema({
     roomNumber: { type: Number, required: true },
     latitude: String,
+    longitude: String,
     radius: Number,
     city: String,
     restaurants: [
@@ -17,10 +18,10 @@ const RoomSchema = new Schema({
             // photoReference is a string identifier that uniquely identifies a photo. Photo references are 
             // returned from either a Place Search or Place Details request by the Google Maps Places API.
             photoReference: String,
+            photoURL: String,
             likeCount: { type: Number, default: 0 }
         }
     ],
-    // participantCount: { type: Number, default: 0 },
     participants: [
         {
             socketID: String

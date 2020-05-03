@@ -2,6 +2,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 import RadiusButtons from './RadiusButtons';
+import LoadingOverlay from 'react-loading-overlay';
+import BeatLoader from 'react-spinners/BeatLoader'
 // import { socket } from '../../App';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
@@ -15,7 +17,8 @@ class CreateRoom extends React.Component {
             longitude: 0,
             latitude: 0,
             locationRetrieved: false,
-            radius: 1
+            radius: 1,
+            loading: false
         };
         this.createJoinRoom = this.createJoinRoom.bind(this);
         this.goToRoom = this.goToRoom.bind(this);
@@ -27,11 +30,40 @@ class CreateRoom extends React.Component {
     }
 
     componentDidMount() {
-        let socket = this.props.socket;
+        // let socket = this.props.socket;
         let parentThis = this;
-        socket.on('room info', function (data) {
-            console.log(data);
-        });
+
+        // if ("geolocation" in navigator) {
+        //     // check if geolocation is supported/enabled on current browser
+        //     navigator.geolocation.getCurrentPosition().then(
+        //         (position) => {
+        //             let state = {
+        //                 longitude: position.coords.longitude,
+        //                 latitude: position.coords.latitude,
+        //                 currentCity: "Coordinates Retrieved..."
+        //             }
+        //             this.setState(state);
+        //         }
+        //     );
+        // } else {
+        //     // geolocation is not supported
+        //     parentThis.setState({ currentCity: "Browser did not provide location" });
+        //     console.log('geolocation is not enabled on this browser');
+        //     fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
+        //         method: "POST",
+        //         headers: {
+        //             Accept: 'application/json',
+        //             'Content-Type': 'application/json',
+        //         }
+        //     }).then(geolocationResult => {
+        //         if (geolocationResult.status === 200) {
+        //             return geolocationResult.json();
+        //         } else {
+        //             parentThis.setState({ currentCity: "Cannot get coordinates" });
+        //             return Promise.reject("Google geolocation API cannot get coordinates");
+        //         }
+        //     });
+        // }
 
         fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
             method: "POST",
@@ -79,6 +111,7 @@ class CreateRoom extends React.Component {
         let latitude = this.state.latitude;
         let radius = this.state.radius;
         let currentCity = this.state.currentCity;
+        this.setState({ loading: true });
         fetch(expressServer + "/api/create-room", {
             method: "POST",
             headers: {
@@ -95,7 +128,6 @@ class CreateRoom extends React.Component {
         }).then(result => {
             if (result.status === 200) {
                 result.json().then(resultJSON => {
-                    console.log(resultJSON)
                     let roomNumber = resultJSON.roomNumber;
                     let roomURL = "/rooms/" + roomNumber;
                     this.goToRoom(roomURL);
@@ -118,21 +150,28 @@ class CreateRoom extends React.Component {
         // let updateRadius = this.updateRadius;
 
         return (
-            <div className="main-page">
-                <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
-                <h2> Restaurants Near </h2>
-                <div>
-                    <FontAwesomeIcon icon={faLocationArrow} size="xs" />
-                    <h4 style={{ display: "inline-block", margin: "6px" }}>{this.state.currentCity}</h4>
-                </div>
-                <RadiusButtons updateRadius={this.updateRadius.bind(this)} />
-                <button
-                    onTouchStart=""
-                    disabled={!this.state.locationRetrieved}
-                    onClick={this.createJoinRoom}>
-                    CREATE
+            <LoadingOverlay
+                active={this.state.loading}
+                spinner={<BeatLoader />}
+                text='Creating Room...'
+            >
+                <div className="main-page">
+                    <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
+                    <h2> Restaurants Near </h2>
+                    <div>
+                        <FontAwesomeIcon icon={faLocationArrow} size="xs" />
+                        <h4 style={{ display: "inline-block", margin: "6px" }}>{this.state.currentCity}</h4>
+                    </div>
+                    <RadiusButtons updateRadius={this.updateRadius.bind(this)} />
+                    <button
+                        onTouchStart=""
+                        disabled={!this.state.locationRetrieved}
+                        onClick={this.createJoinRoom}>
+                        CREATE
                 </button>
-            </div>
+                </div>
+            </LoadingOverlay>
+
         )
     }
 }

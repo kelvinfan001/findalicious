@@ -1,45 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Swiping.css';
 import TinderCard from 'react-tinder-card';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 
-const db = [
-    {
-        name: 'Richard Hendricks',
-        url: './img/richard.jpg'
-    },
-    {
-        name: 'Erlich Bachman',
-        url: './img/erlich.jpg'
-    },
-    {
-        name: 'Monica Hall',
-        url: './img/monica.jpg'
-    },
-    {
-        name: 'Jared Dunn',
-        url: './img/jared.jpg'
-    },
-    {
-        name: 'Dinesh Chugtai',
-        url: './img/dinesh.jpg'
-    }
-]
-
-let roomNumber = this.props.roomNumber;
-
 class Swiping extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            restaurants: [],
+        };
         // this.createJoinRoom = this.createJoinRoom.bind(this);
         // this.goToRoom = this.goToRoom.bind(this);
     }
+    // const db = this.state.restaurants;
 
-    swiped(direction, nameToDelete) {
-        console.log('removing: ' + nameToDelete)
-        setLastDirection(direction)
+    swiped(direction, placeID) {
+        if (direction === "right") {
+            let socket = this.props.socket;
+            socket.emit("swipe right", placeID);
+            console.log('removing: ' + placeID + ' after swiping ' + direction);
+        }
     }
 
     outOfFrame(name) {
@@ -47,72 +28,81 @@ class Swiping extends React.Component {
     }
 
     componentDidMount() {
+        let socket = this.props.socket;
+        let parentThis = this;
+        if (!this.props.location.state.roomNumber) {
+            this.props.history.push('/');
+        }
+        let roomNumber = this.props.location.state.roomNumber;
+        fetch(expressServer + "/api/rooms/?roomNumber=" + roomNumber, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            }
+        }).then(result => {
+            if (result.status === 200) {
+                result.json().then(resultJSON => {
+                    console.log(resultJSON);
+                    let restaurants = resultJSON.restaurants;
+                    parentThis.setState({ restaurants: restaurants });
+                });
+            } else if (result.status === 404) {
+                alert("Server error. This room could not be found.");
+                parentThis.props.history.push('/');
+            } else {
+                alert("Unknown error. Server may be down.");
+                parentThis.props.history.push('/');
+            }
+        }).catch(e => {
+            console.log(e);
+        });
 
+        // Listen for errors
+        socket.on('general error', (errMsg) => {
+            alert(errMsg);
+            parentThis.props.history.push("/rooms");
+        });
+
+        // Listen for matches
+        socket.on('match found', (placeID) => {
+            let restaurantName;
+            for (let i = 0; i < this.state.restaurants.length; i++) {
+                if (this.state.restaurants[i].placeID === placeID) {
+                    restaurantName = this.state.restaurants[i].name;
+                    break;
+                }
+            }
+            alert("You all liked " + restaurantName + "!");
+        });
+
+        // Listen on user disconnect
+        socket.on('user disconnect', () => {
+            alert("A user swiping in your room has disconnected!");
+        });
     }
 
     render() {
+
         return (
             <div>
-                {/* <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
-            <link href='https://fonts.googleapis.com/css?family=Alatsi&display=swap' rel='stylesheet' /> */}
-                <h1>React Tinder Card</h1>
                 <div className='cardContainer'>
-                    {characters.map((character) =>
+                    {this.state.restaurants.map((restaurant) =>
                         <TinderCard
                             className='swipe'
-                            key={character.name}
-                            onSwipe={(dir) => swiped(dir, character.name)}
-                            onCardLeftScreen={() => outOfFrame(character.name)}
+                            key={restaurant.name}
+                            onSwipe={(dir) => this.swiped(dir, restaurant.placeID)}
+                            onCardLeftScreen={() => this.outOfFrame(restaurant.name)}
                             preventSwipe={['up', 'down']}>
-                            <div style={{ backgroundImage: 'url(' + character.url + ')' }} className='card'>
-                                <h3>{character.name}</h3>
+                            <div style={{ backgroundImage: 'url(' + restaurant.photoURL + ')' }} className='card'>
+                                <h3>{restaurant.name}</h3>
                             </div>
                         </TinderCard>
                     )}
                 </div>
-                {lastDirection ? <h2 className='infoText'>You swiped {lastDirection}</h2> :
-                    <h2 className='infoText'>No direction swiped</h2>}
             </div >
         );
     }
-}
-
-function TinderCardComponent() {
-    const characters = db;
-    const [lastDirection, setLastDirection] = useState();
-
-    const swiped = (direction, nameToDelete) => {
-        console.log('removing: ' + nameToDelete)
-        setLastDirection(direction)
-    }
-
-    const outOfFrame = (name) => {
-        console.log(name + ' left the screen!')
-    }
-
-    return (
-        <div>
-            {/* <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
-            <link href='https://fonts.googleapis.com/css?family=Alatsi&display=swap' rel='stylesheet' /> */}
-            <h1>React Tinder Card</h1>
-            <div className='cardContainer'>
-                {characters.map((character) =>
-                    <TinderCard
-                        className='swipe'
-                        key={character.name}
-                        onSwipe={(dir) => swiped(dir, character.name)}
-                        onCardLeftScreen={() => outOfFrame(character.name)}
-                        preventSwipe={['up', 'down']}>
-                        <div style={{ backgroundImage: 'url(' + character.url + ')' }} className='card'>
-                            <h3>{character.name}</h3>
-                        </div>
-                    </TinderCard>
-                )}
-            </div>
-            {lastDirection ? <h2 className='infoText'>You swiped {lastDirection}</h2> :
-                <h2 className='infoText'>No direction swiped</h2>}
-        </div >
-    );
 }
 
 export default Swiping;
