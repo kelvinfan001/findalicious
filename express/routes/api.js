@@ -1,40 +1,19 @@
 const express = require('express');
+const fetch = require('node-fetch');
 const router = express.Router();
 const Todo = require('../models/todo');
 const Room = require('../models/room');
+const Restuarant = require('../models/restaurant');
 const { Client, Status } = require("@googlemaps/google-maps-services-js");
 require('dotenv').config();
 
 let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+let YELP_API_KEY = process.env.YELP_API_KEY;
 
 router.delete('/todos/:id', (req, res, next) => {
     Todo.findOneAndDelete({ "_id": req.params.id })
         .then(data => res.json(data))
         .catch(next)
-});
-
-router.get('/imagesURL', (req, res, next) => {
-    let photoReference = req.query.photoReference;
-    const client = new Client();
-
-    client.placePhoto({
-        params: {
-            photoreference: photoReference,
-            key: GOOGLE_MAPS_API_KEY,
-            maxwidth: 480
-        }
-    }).then(result => {
-        if (result.status === 200) {
-            let url = result.request.res.responseUrl;
-            res.send(url);
-        } else {
-            res.status(500).send("Google API error.").end();
-        }
-    }).catch(e => {
-        console.error(e);
-        res.status(500).send("An unknown error occurred").end();
-        next;
-    });
 });
 
 router.post('/create-room', async (req, res, next) => {
@@ -45,9 +24,7 @@ router.post('/create-room', async (req, res, next) => {
     let roomNumber = generateNewUniqueRoomNumber();
     let restaurantsArray;
     try {
-        // The following two functions are separated because it involves calling two different APIs
         restaurantsArray = await getRestaurants(longitude, latitude, radius);
-        await addRestaurantsURL(restaurantsArray);
         if (restaurantsArray.length === 0) {
             res.status(404).send("No restaurants found.").end();
         } else {
@@ -64,7 +41,7 @@ router.post('/create-room', async (req, res, next) => {
         }
     } catch (e) {
         res.status(500).send(e).end();
-        console.error(error);
+        console.error(e);
     }
 });
 
@@ -116,7 +93,6 @@ router.get('/location', (req, res, next) => {
     }).catch((e) => {
         res.status(500).send("An unknown error occurred").end();
         console.log(e);
-        next;
     });
 });
 
@@ -139,6 +115,7 @@ function generateNewUniqueRoomNumber() {
     return roomNumber;
 }
 
+// This function is no longer in use after switching to Yelp API.
 function addRestaurantsURL(restaurantsArray) {
     return new Promise(async function (resolve, reject) {
         for (let i = 0; i < restaurantsArray.length; i++) {
@@ -150,6 +127,7 @@ function addRestaurantsURL(restaurantsArray) {
     });
 }
 
+// This function is no longer in use after switch to Yelp API.
 function getPhotoURL(photoReference) {
     const client = new Client({});
 
@@ -174,7 +152,77 @@ function getPhotoURL(photoReference) {
     });
 }
 
-async function getRestaurants(longitude, latitude, radius) {
+function getRestaurants(longitude, latitude, radius) {
+    let radiusMetres = radius * 1000;
+    let restaurantApiResults = [];
+    let restaurantResults = [];
+
+    let url = "https://api.yelp.com/v3/businesses/search?open_now=true&categories=restaurants"
+    let headers = {
+        "Authorization": "Bearer " + YELP_API_KEY
+    };
+
+    return new Promise(function (resolve, reject) {
+        fetch(url +
+            "&latitude=" + latitude +
+            "&longitude=" + longitude +
+            "&radius=" + radiusMetres,
+            { method: "GET", headers: headers })
+            .then(results => {
+                if (results.status !== 200) {
+                    throw new Error("Could not get a response from API.");
+                }
+                return results.json();
+            })
+            .then(resultsJSON => {
+                restaurantApiResults = resultsJSON.businesses;
+                for (let i = 0; i < restaurantApiResults.length; i++) {
+                    let curRestaurant = {
+                        placeID: (restaurantApiResults[i].id),
+                        name: restaurantApiResults[i].name,
+                        yelpURL: restaurantApiResults[i].url,
+                        address: restaurantApiResults[i].location.address1,
+                        distance: restaurantApiResults[i].distance,
+                        photoURL: restaurantApiResults[i].image_url,
+                        price: restaurantApiResults[i].price
+                    };
+                    restaurantResults.push(curRestaurant);
+                }
+                resolve(restaurantResults);
+            })
+            .catch(e => {
+                reject(e);
+                console.error(e);
+            });
+    });
+}
+
+// This function is no longer needed after switch to Yelp API.
+router.get('/imagesURL', (req, res, next) => {
+    let photoReference = req.query.photoReference;
+    const client = new Client();
+
+    client.placePhoto({
+        params: {
+            photoreference: photoReference,
+            key: GOOGLE_MAPS_API_KEY,
+            maxwidth: 480
+        }
+    }).then(result => {
+        if (result.status === 200) {
+            let url = result.request.res.responseUrl;
+            res.send(url);
+        } else {
+            res.status(500).send("Google API error.").end();
+        }
+    }).catch(e => {
+        console.error(e);
+        res.status(500).send("An unknown error occurred").end();
+        next;
+    });
+});
+
+async function getRestaurantsGoogle(longitude, latitude, radius) {
     let latlng = latitude + "," + longitude;
     let radiusMetres = radius * 1000;
     let restaurantAPIResults = [];
@@ -188,7 +236,8 @@ async function getRestaurants(longitude, latitude, radius) {
                 key: GOOGLE_MAPS_API_KEY,
                 location: latlng,
                 radius: radiusMetres,
-                type: "restaurant"
+                type: "restaurant",
+                opennow
             },
         }).then(results => {
             if (results.data.status === Status.OK) {

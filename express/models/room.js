@@ -12,13 +12,12 @@ const RoomSchema = new Schema({
         {
             placeID: String,
             name: String,
+            yelpURL: String,
             address: String,
             distance: Number,
             rating: Number,
-            // photoReference is a string identifier that uniquely identifies a photo. Photo references are 
-            // returned from either a Place Search or Place Details request by the Google Maps Places API.
-            photoReference: String,
             photoURL: String,
+            price: String,
             likeCount: { type: Number, default: 0 }
         }
     ],

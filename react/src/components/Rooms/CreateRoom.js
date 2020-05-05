@@ -136,6 +136,7 @@ class CreateRoom extends React.Component {
                 alert("No restaurants found in your area. Try a larger radius.");
             } else {
                 alert("Unknown error. Server may be down.");
+                this.props.history.push('/');
             }
         }).catch(e => {
             console.log(e);

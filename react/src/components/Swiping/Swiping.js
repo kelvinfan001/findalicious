@@ -12,13 +12,15 @@ class Swiping extends React.Component {
         };
         // this.createJoinRoom = this.createJoinRoom.bind(this);
         // this.goToRoom = this.goToRoom.bind(this);
+        this.swiped = this.swiped.bind(this);
     }
     // const db = this.state.restaurants;
 
     swiped(direction, placeID) {
         if (direction === "right") {
+            let participantCount = this.state.participants.length;
             let socket = this.props.socket;
-            socket.emit("swipe right", placeID);
+            socket.emit("swipe right", placeID, participantCount);
             console.log('removing: ' + placeID + ' after swiping ' + direction);
         }
     }
@@ -44,15 +46,19 @@ class Swiping extends React.Component {
             if (result.status === 200) {
                 result.json().then(resultJSON => {
                     console.log(resultJSON);
-                    let restaurants = resultJSON.restaurants;
-                    parentThis.setState({ restaurants: restaurants });
+                    // let restaurants = resultJSON.restaurants;
+                    parentThis.setState(resultJSON);
+                    console.log(parentThis.state); //todo remove
                 });
             } else if (result.status === 404) {
-                alert("Server error. This room could not be found.");
-                parentThis.props.history.push('/');
+                // Server failed to get the current roomNumber. This really should not happen.
+                // We make the client refresh so it can leave the room and join as a new socket connection. 
+                alert("Server error. Room could not be found.");
+                window.location.assign('/');
             } else {
-                alert("Unknown error. Server may be down.");
-                parentThis.props.history.push('/');
+                // We make the client refresh so it can leave the room and join as a new socket connection.
+                alert("Something went wrong.");
+                window.location.assign('/');
             }
         }).catch(e => {
             console.log(e);
@@ -61,7 +67,8 @@ class Swiping extends React.Component {
         // Listen for errors
         socket.on('general error', (errMsg) => {
             alert(errMsg);
-            parentThis.props.history.push("/rooms");
+            // We make the client refresh so it can leave the room and join as a new socket connection.
+            window.location.assign('/');
         });
 
         // Listen for matches
@@ -91,7 +98,7 @@ class Swiping extends React.Component {
                         <TinderCard
                             className='swipe'
                             key={restaurant.name}
-                            onSwipe={(dir) => this.swiped(dir, restaurant.placeID)}
+                            onSwipe={(dir) => this.swiped(dir, restaurant.placeID)} // todo change back to restaurantID
                             onCardLeftScreen={() => this.outOfFrame(restaurant.name)}
                             preventSwipe={['up', 'down']}>
                             <div style={{ backgroundImage: 'url(' + restaurant.photoURL + ')' }} className='card'>
