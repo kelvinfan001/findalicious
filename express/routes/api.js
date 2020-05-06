@@ -22,7 +22,6 @@ router.post('/create-room', async (req, res, next) => {
     let restaurantsArray;
     try {
         let roomNumber = await generateNewUniqueRoomNumber();
-        console.log("new unique room number is", roomNumber); //todo remove this line
         restaurantsArray = await getRestaurants(longitude, latitude, radius);
         // await addRestaurantsURL(restaurantsArray);
         if (restaurantsArray.length === 0) {
