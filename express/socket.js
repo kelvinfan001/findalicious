@@ -135,5 +135,15 @@ module.exports = (io) => {
             }
         });
 
+        // Heart beat to prevent idle
+        socket.on('pong', function (data) {
+            console.log("Pong received from client");
+        });
+
     });
+    function sendHeartbeat() {
+        console.log("sending ping");
+        io.sockets.emit('ping', { beat: 1 });
+    }
+    setTimeout(sendHeartbeat, 8000);
 }

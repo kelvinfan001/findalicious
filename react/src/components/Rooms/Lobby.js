@@ -46,6 +46,11 @@ class Lobby extends React.Component {
         socket.on('room started swiping', () => {
             parentThis.props.history.push('/swiping', { roomNumber: this.state.roomNumber });
         });
+
+        // Heart beat to prevent socket going idle
+        socket.on('ping', function (data) {
+            socket.emit('pong', { beat: 1 });
+        });
     }
 
     updateStateInfo(result) {
