@@ -95,11 +95,11 @@ class Swiping extends React.Component {
                 // Server failed to get the current roomNumber. This really should not happen.
                 // We make the client refresh so it can leave the room and join as a new socket connection. 
                 alert("Server error. Room could not be found.");
-                window.setTimeout(this.redirectHome, 1000);
+                window.setTimeout(this.redirectHome, 100);
             } else {
                 // We make the client refresh so it can leave the room and join as a new socket connection.
                 alert("Something went wrong.");
-                window.setTimeout(this.redirectHome, 1000);
+                window.setTimeout(this.redirectHome, 100);
             }
         }).catch(e => {
             console.log(e);
@@ -109,7 +109,7 @@ class Swiping extends React.Component {
         socket.on('general error', (errMsg) => {
             alert(errMsg);
             // We make the client refresh so it can leave the room and join as a new socket connection.
-            window.setTimeout(this.redirectHome, 1000);
+            window.setTimeout(this.redirectHome, 100);
         });
 
         // Listen for matches
@@ -128,7 +128,7 @@ class Swiping extends React.Component {
         socket.on('user disconnect', () => {
             alert("A user swiping in your room has disconnected!");
             // Make everyone disconnect for now, since it may be impossible to get matches
-            window.setTimeout(this.redirectHome, 1000);
+            window.setTimeout(this.redirectHome, 100);
         });
     }
 
