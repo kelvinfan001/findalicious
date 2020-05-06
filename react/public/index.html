@@ -25,5 +25,12 @@
 </html>
 
 <script>
-  document.addEventListener("touchstart", function () { }, true);
+  document.addEventListener("touchstart", event => {
+    if (event.touches.length > 1) {
+      console.log("stahp, plz no more zoom");
+      event.preventDefault();
+      event.stopPropagation(); // maybe useless
+    }
+  }, { passive: false });
+  document.addEventListener("click", event => { });
 </script>

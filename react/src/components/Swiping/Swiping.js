@@ -74,6 +74,9 @@ class Swiping extends React.Component {
 
 
     componentDidMount() {
+        // Disable double tap to zoom
+        document.body.addEventListener("click", event => { });
+
         let socket = this.props.socket;
         let parentThis = this;
         if (!this.props.location.state.roomNumber) {
