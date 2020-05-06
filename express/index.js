@@ -3,7 +3,6 @@ const routes = require('./routes/api');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require("cors");
-const session = require("express-session");
 require('dotenv').config();
 
 const app = express();
@@ -52,22 +51,6 @@ const corsOptions = {
 // intercept pre-flight check for all routes. Pre-flight checks happen when dealing with special http headers.
 app.options("*", cors(corsOptions));
 app.use(cors(corsOptions)); // use cors to allow cross-origin resource sharing since React is making calls to Express
-
-/* Session */
-const sessionSecret = process.env.SESSION_SECRET;
-app.use(
-    session({
-        // session for login
-        secret: sessionSecret, // for signing the cookie
-        resave: false,
-        saveUninitialized: true,
-        cookie: {
-            maxAge: 200000, // when the cookie/session expires
-            httpOnly: false,
-            secure: false
-        }
-    })
-);
 
 /* Routes */
 app.use('/api', routes);
