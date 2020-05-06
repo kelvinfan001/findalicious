@@ -27,6 +27,7 @@
   -ms-flex-align: end;
   align-items: center;
   z-index: 1;
+  touch-action: manipulation;
 }
 .container .cards_container .card_container {
   /* display: inline-block;
