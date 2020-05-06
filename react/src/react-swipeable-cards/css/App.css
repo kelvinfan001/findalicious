@@ -12,6 +12,7 @@
   position: relative;
   -webkit-transition: opacity 0.1s ease-in-out;
   transition: opacity 0.1s ease-in-out;
+  touch-action: manipulation;
 }
 .container .cards_container {
   -webkit-box-flex: 1;
