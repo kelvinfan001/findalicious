@@ -1,7 +1,6 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const router = express.Router();
-const Todo = require('../models/todo');
 const Room = require('../models/room');
 const { Client, Status } = require("@googlemaps/google-maps-services-js");
 require('dotenv').config();
