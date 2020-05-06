@@ -59,6 +59,7 @@
   transition: all 0.3s ease-in-out;
   cursor: -webkit-grab;
   cursor: grab;
+  touch-action: manipulation;
 }
 .container .cards_container .moving.card_container {
   -webkit-transition: none;
