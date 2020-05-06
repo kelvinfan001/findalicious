@@ -12,7 +12,6 @@
   position: relative;
   -webkit-transition: opacity 0.1s ease-in-out;
   transition: opacity 0.1s ease-in-out;
-  touch-action: manipulation;
 }
 .container .cards_container {
   -webkit-box-flex: 1;
@@ -28,7 +27,6 @@
   -ms-flex-align: end;
   align-items: center;
   z-index: 1;
-  touch-action: manipulation;
 }
 .container .cards_container .card_container {
   /* display: inline-block;
@@ -61,7 +59,6 @@
   transition: all 0.3s ease-in-out;
   cursor: -webkit-grab;
   cursor: grab;
-  touch-action: manipulation;
 }
 .container .cards_container .moving.card_container {
   -webkit-transition: none;
