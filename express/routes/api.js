@@ -3,7 +3,6 @@ const fetch = require('node-fetch');
 const router = express.Router();
 const Todo = require('../models/todo');
 const Room = require('../models/room');
-const Restuarant = require('../models/restaurant');
 const { Client, Status } = require("@googlemaps/google-maps-services-js");
 require('dotenv').config();
 
@@ -21,10 +20,12 @@ router.post('/create-room', async (req, res, next) => {
     let latitude = req.body.latitude;
     let radius = req.body.radius;
     let city = req.body.city;
-    let roomNumber = generateNewUniqueRoomNumber();
     let restaurantsArray;
     try {
+        let roomNumber = await generateNewUniqueRoomNumber();
+        console.log("new unique room number is", roomNumber); //todo remove this line
         restaurantsArray = await getRestaurants(longitude, latitude, radius);
+        // await addRestaurantsURL(restaurantsArray);
         if (restaurantsArray.length === 0) {
             res.status(404).send("No restaurants found.").end();
         } else {
@@ -97,22 +98,35 @@ router.get('/location', (req, res, next) => {
 });
 
 function checkRoomAlreadyExists(roomNumber) {
-    Room.find({ roomNumber: roomNumber }).then(result => {
-        if (result.length < 1) {
-            return false;
-        }
-        return true;
+    return new Promise((resolve, reject) => {
+        Room.findOne({ roomNumber: roomNumber }).then(result => {
+            if (result) {
+                resolve(true);
+            }
+            resolve(false);
+        }).catch(e => {
+            console.error(e);
+            reject(e);
+        });
     });
 }
 
 function generateNewUniqueRoomNumber() {
     let roomNumber = Math.floor(Math.random() * (10000 - 1000)) + 1000;
-    let roomAlreadyExists = checkRoomAlreadyExists(roomNumber);
-    while (roomAlreadyExists) {
-        roomNumber = Math.floor(Math.random() * 10000);
-        roomAlreadyExists = checkRoomAlreadyExists(roomNumber);
-    }
-    return roomNumber;
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            let roomAlreadyExists = await checkRoomAlreadyExists(roomNumber);
+            while (roomAlreadyExists) {
+                roomNumber = Math.floor(Math.random() * 10000);
+                roomAlreadyExists = await checkRoomAlreadyExists(roomNumber);
+            }
+            resolve(roomNumber);
+        } catch (e) {
+            console.error(e);
+            reject(e);
+        }
+    });
 }
 
 // This function is no longer in use after switching to Yelp API.
@@ -236,8 +250,7 @@ async function getRestaurantsGoogle(longitude, latitude, radius) {
                 key: GOOGLE_MAPS_API_KEY,
                 location: latlng,
                 radius: radiusMetres,
-                type: "restaurant",
-                opennow
+                type: "restaurant"
             },
         }).then(results => {
             if (results.data.status === Status.OK) {

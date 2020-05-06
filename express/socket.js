@@ -97,39 +97,98 @@ module.exports = (io) => {
             }).catch(e => console.error(e));
         });
 
-        // Listen on user swipe right
-        socket.on("swipe right", async (placeID, participantCount) => {
+        // socket.on("swipe right", async (placeID) => {
+        //     if (!currentRoomNumber) {
+        //         console.log("User " + socket.id + " attempted to swipe without being in a room");
+        //         return;
+        //     }
+        //     try {
+        //         let query = {
+        //             roomNumber: currentRoomNumber,
+        //             "restaurants.placeID": placeID
+        //         };
+        //         let updateResult = await Room.findOneAndUpdate(
+        //             query,
+        //             { $inc: { "restaurants.$.likeCount": 1 } },
+        //             { new: true }
+        //         );
+        //         if (!updateResult) {
+        //             socket.emit("general error", "Could not update database.");
+        //             return;
+        //         }
+        //         console.log(updateResult)
+        // let participantCount = updateResult.participants.length;
+        // query = {
+        //     roomNumber: currentRoomNumber
+        // }
+        // let conditions = {
+        //     restaurants: {
+        //         $elemMatch: {
+        //             placeID: placeID,
+        //             likeCount: participantCount
+        //         }
+        //     }
+        // }
+        // let queryResult = await Room.findOne(query, conditions);
+        // if (queryResult) {
+        //     io.sockets.in(currentRoomNumber).emit("match found", placeID);
+        // }
+
+
+        //         // TODO: make this more efficient. also only works for first match
+        //         // let participantCount = updateResult.participants.length;
+        //         // let updatedRestaurants = updateResult.restaurants;
+        //         // for (let i = 0; i < updatedRestaurants.length; i++) {
+        //         //     if (updatedRestaurants[i].likeCount >= participantCount) {
+        //         //         console.log(participantCount);
+        //         //         console.log(updatedRestaurants[i].likeCount);
+        //         //         io.sockets.in(currentRoomNumber).emit("match found", placeID);
+        //         //     }
+        //         // }
+        //     } catch (e) {
+        //         console.error(e);
+        //     }
+        // });
+
+        socket.on("swipe right", async (placeID) => {
             if (!currentRoomNumber) {
                 console.log("User " + socket.id + " attempted to swipe without being in a room");
                 return;
             }
-            console.log(placeID)
             try {
-                let query = {
-                    roomNumber: currentRoomNumber,
-                    "restuarants.placeID": placeID
-                };
-                let updateResult = await Room.findOne(
+                console.log("place id is", placeID);
+                let query = { roomNumber: currentRoomNumber, "restaurants.placeID": placeID };
+                let updateResult = await Room.findOneAndUpdate(
                     query,
-                    // { $inc: { "restaurants.$.likeCount": 1 } },
-                    // { new: true }
+                    { $inc: { "restaurants.$.likeCount": 1 } },
+                    { new: true }
                 );
-                // if (!updateResult) {
-                //     socket.emit("general error", "Could not update database.");
-                //     return;
-                // }
-                console.log(updateResult);
-                // TODO: make this more efficient. 
-                // let participantCount = updateResult.participants.length;
-                // let updatedRestaurants = updateResult.restaurants;
-                // for (let i = 0; i < updatedRestaurants.length; i++) {
-                //     if (updatedRestaurants[i].likeCount >= participantCount) {
-                //         io.sockets.in(currentRoomNumber).emit("match found", placeID);
-                //     }
-                // }
+                if (!updateResult) {
+                    socket.emit("general error", "Could not update database.");
+                    return;
+                }
+                // TODO: make checking if match more efficient.
+                // Check for any matches
+                let participantCount = updateResult.participants.length;
+                query = {
+                    roomNumber: currentRoomNumber,
+                    restaurants: {
+                        $elemMatch: {
+                            placeID: placeID,
+                            likeCount: participantCount
+                        }
+                    }
+                }
+                let queryResult = await Room.find(query);
+                console.log(participantCount)
+                console.log(queryResult)
+                if (queryResult.length > 0) {
+                    io.sockets.in(currentRoomNumber).emit("match found", placeID);
+                }
             } catch (e) {
                 console.error(e);
             }
         });
+
     });
 }

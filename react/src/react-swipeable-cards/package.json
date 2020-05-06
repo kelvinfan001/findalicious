@@ -1,0 +1,67 @@
+{
+  "_from": "react-swipeable-cards",
+  "_id": "react-swipeable-cards@1.0.6",
+  "_inBundle": false,
+  "_integrity": "sha512-DPqwJGtnPjcDng0BtCSjUTvJFXGlgfRrdVLIZSGKxU7ohbzBJPS4LhrqmnyhdZApCP+z0tT6+cJ412sPrz/Y7Q==",
+  "_location": "/react-swipeable-cards",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-swipeable-cards",
+    "name": "react-swipeable-cards",
+    "escapedName": "react-swipeable-cards",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-swipeable-cards/-/react-swipeable-cards-1.0.6.tgz",
+  "_shasum": "fa5fd13d764d6c3b6b75cbd24d873683fc696205",
+  "_spec": "react-swipeable-cards",
+  "_where": "/Users/kelvinfan/Projects/chicken-tinder/react",
+  "author": "",
+  "bundleDependencies": false,
+  "dependencies": {
+    "react-hammerjs": "^1.0.1"
+  },
+  "deprecated": false,
+  "description": "react-swipeable-cards React component",
+  "devDependencies": {
+    "nwb": "0.23.x",
+    "nwb-sass": "^0.9.0",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0"
+  },
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd"
+  ],
+  "homepage": "",
+  "keywords": [
+    "react-component"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "name": "react-swipeable-cards",
+  "peerDependencies": {
+    "react": "16.x"
+  },
+  "repository": "",
+  "scripts": {
+    "build": "nwb build-react-component",
+    "clean": "nwb clean-module && nwb clean-demo",
+    "prepublishOnly": "npm run build",
+    "start": "nwb serve-react-demo",
+    "test": "nwb test-react",
+    "test:coverage": "nwb test-react --coverage",
+    "test:watch": "nwb test-react --server"
+  },
+  "version": "1.0.6"
+}
