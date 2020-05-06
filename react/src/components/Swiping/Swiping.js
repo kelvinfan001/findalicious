@@ -1,6 +1,5 @@
 import React from 'react';
 import './Swiping.css';
-import TinderCard from 'react-tinder-card';
 import { Card, CardWrapper } from '../../react-swipeable-cards';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
@@ -13,15 +12,7 @@ class Swiping extends React.Component {
         };
         this.onSwipeRight = this.onSwipeRight.bind(this);
         this.onSwipeLeft = this.onSwipeLeft.bind(this);
-        this._swiped = this._swiped.bind(this);
-    }
-
-    _swiped(direction, placeID) {
-        if (direction === "right") {
-            let socket = this.props.socket;
-            socket.emit("swipe right", placeID);
-            console.log('removing: ' + placeID + ' after swiping ' + direction);
-        }
+        this.onDoubleTap = this.onDoubleTap.bind(this);
     }
 
     onSwipeRight(restaurant) {
@@ -35,8 +26,46 @@ class Swiping extends React.Component {
         console.log('removing: ' + restaurant.placeID + ' after swiping left');
     }
 
-    outOfFrame(name) {
-        console.log(name + ' left the screen!')
+    onDoubleTap(restaurant) {
+        let parentThis = this;
+        let restaurantsArray = this.state.restaurants;
+        let restaurantIndex = restaurantsArray.indexOf(restaurant);
+        let url = expressServer + "/api/additionalPhotos/?id=" + restaurant.placeID;
+        if (!restaurantsArray[restaurantIndex].additionalPhotos) { // haven't fetched additional photos yet
+            fetch(url, {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                }
+            }).then(result => {
+                if (result.status === 200) {
+                    result.json().then(resultJSON => {
+                        let additionalPhotos = resultJSON.photos;
+                        restaurantsArray[restaurantIndex].additionalPhotos = additionalPhotos;
+                        restaurantsArray[restaurantIndex].photoURL = additionalPhotos[1];
+                        restaurantsArray[restaurantIndex].curPhotoIndex = 1;
+                        parentThis.setState({ restaurants: restaurantsArray });
+                    });
+                } else {
+                    // Yelp API server did not find business details.
+                    console.error("Yelp API server did not find business details.");
+                }
+            }).catch(e => {
+                console.log(e);
+            });
+        } else {
+            if (restaurantsArray[restaurantIndex].curPhotoIndex === 2) {
+                restaurantsArray[restaurantIndex].curPhotoIndex = 0;
+            } else {
+                restaurantsArray[restaurantIndex].curPhotoIndex += 1;
+            }
+            let curPhotoIndex = restaurantsArray[restaurantIndex].curPhotoIndex;
+            let additionalPhotos = restaurantsArray[restaurantIndex].additionalPhotos
+            restaurantsArray[restaurantIndex].photoURL = additionalPhotos[curPhotoIndex];
+            parentThis.setState({ restaurants: restaurantsArray });
+        }
+        console.log("Finding next photo");
     }
 
     redirectHome() {
@@ -60,7 +89,6 @@ class Swiping extends React.Component {
         }).then(result => {
             if (result.status === 200) {
                 result.json().then(resultJSON => {
-                    console.log(resultJSON)
                     parentThis.setState(resultJSON);
                 });
             } else if (result.status === 404) {
@@ -116,28 +144,15 @@ class Swiping extends React.Component {
 
         return (
             <div>
-                {/* <div className='cardContainer'>
-                    {this.state.restaurants.map((restaurant) =>
-                        <TinderCard
-                            className='swipe'
-                            key={restaurant.name}
-                            onSwipe={(dir) => this._swiped(dir, restaurant.placeID)}
-                            onCardLeftScreen={() => this.outOfFrame(restaurant.name)}
-                            preventSwipe={['up', 'down']}>
-                            <div style={{ backgroundImage: 'url(' + restaurant.photoURL + ')' }} className='card'>
-                                <h3 className='restaurantname'>{restaurant.name}</h3>
-                            </div>
-                        </TinderCard>
-                    )}
-                </div> */}
                 <CardWrapper style={wrapperStyle}>
                     {this.state.restaurants.map((restaurant) =>
                         <Card
-                            key={restaurant}
+                            key={restaurant.placeID}
                             data={restaurant}
                             style={{ backgroundImage: 'url(' + restaurant.photoURL + ')' }}
                             onSwipeRight={this.onSwipeRight.bind(this)}
                             onSwipeLeft={this.onSwipeLeft.bind(this)}
+                            onDoubleTap={this.onDoubleTap.bind(this)}
                         >
                             <div className="restaurantName">
                                 <h3>{restaurant.name}</h3>

@@ -12,12 +12,11 @@
     "p-sleep": "^1.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-hammerjs": "^1.0.1",
     "react-loading-overlay": "^1.0.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-spinners": "^0.8.3",
-    "react-swipeable-cards": "^1.0.6",
-    "react-tinder-card": "^1.1.3",
     "socket.io-client": "^2.3.0",
     "typescript": "^3.8.3"
   },

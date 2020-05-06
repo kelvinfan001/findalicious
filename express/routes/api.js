@@ -66,6 +66,30 @@ router.get('/rooms', (req, res, next) => {
     }
 });
 
+router.get('/additionalPhotos', (req, res) => {
+    if (req.query.id) {
+        let url = "https://api.yelp.com/v3/businesses/" + req.query.id;
+        let headers = {
+            "Authorization": "Bearer " + YELP_API_KEY
+        };
+        fetch(url,
+            { method: "GET", headers: headers })
+            .then(results => {
+                if (results.status !== 200) {
+                    throw new Error("Could not get a response from API.");
+                }
+                return results.json();
+            })
+            .then(resultsJSON => {
+                res.json(resultsJSON);
+            })
+            .catch(e => {
+                console.error(e);
+                res.status(500).send(e).end();
+            })
+    }
+});
+
 
 router.get('/location', (req, res, next) => {
     let latitude = req.query.latitude;

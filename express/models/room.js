@@ -18,7 +18,8 @@ const RoomSchema = new Schema({
             rating: Number,
             photoURL: String,
             price: String,
-            likeCount: { type: Number, default: 0 }
+            likeCount: { type: Number, default: 0 },
+            curPhotoIndex: { type: Number, default: 0 }
         }
     ],
     participants: [

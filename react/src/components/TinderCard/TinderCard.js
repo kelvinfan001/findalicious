@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './TinderCard.css';
-import TinderCard from 'react-tinder-card'
+// import TinderCard from 'react-tinder-card'
 import { Card, CardWrapper } from '../../react-swipeable-cards';
 
 const db = [
