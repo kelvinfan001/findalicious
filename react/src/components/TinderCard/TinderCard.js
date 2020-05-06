@@ -88,7 +88,15 @@ function TinderCardComponent() {
             <CardWrapper style={wrapperStyle}>
                 {characters.map((character) =>
                     <Card style={{ backgroundImage: 'url(' + character.url + ')' }}>
-                        <h3 className="restaurantName">{character.name}</h3>
+                        <div className="restaurantName">
+                            <h3>{character.name}</h3>
+                        </div>
+                        <div className="restaurantRatingPrice">
+                            <h5> 4.6 | $$ </h5>
+                        </div>
+                        <div className="restaurantDistance">
+                            <h5> 1.2KM </h5>
+                        </div>
                     </Card>
                 )}
 

@@ -21,6 +21,16 @@ h2 {
   font-weight: bold;
 }
 
+h3 {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
+
+h5 {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
+
 .swipe {
   position: absolute;
 }
@@ -182,21 +192,36 @@ button:disabled{
 }
 
 .restaurantName {
-  padding: 6px;
+  padding: 5px;
+  margin: 10px;
   background-color: rgba(0, 0, 0, 0.356);
   border-radius: 10px;
   color: white;
   display: inline-block;
+  /* position: absolute; */
+  left: 0px;
 }
 
-.restaurantPrice {
-
-}
-
-.restaurantRating {
-
+.restaurantRatingPrice {
+  padding: 5px;
+  margin: 10px;
+  background-color: rgba(0, 0, 0, 0.356);
+  border-radius: 10px;
+  color: white;
+  display: inline-block;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
 }
 
 .restaurantDistance {
-
+padding: 5px;
+  margin: 10px;
+  background-color: rgba(0, 0, 0, 0.356);
+  border-radius: 10px;
+  color: white;
+  display: inline-block;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
 }

@@ -60,6 +60,7 @@ class Swiping extends React.Component {
         }).then(result => {
             if (result.status === 200) {
                 result.json().then(resultJSON => {
+                    console.log(resultJSON)
                     parentThis.setState(resultJSON);
                 });
             } else if (result.status === 404) {
@@ -138,7 +139,15 @@ class Swiping extends React.Component {
                             onSwipeRight={this.onSwipeRight.bind(this)}
                             onSwipeLeft={this.onSwipeLeft.bind(this)}
                         >
-                            <h3 className="restaurantName">{restaurant.name}</h3>
+                            <div className="restaurantName">
+                                <h3>{restaurant.name}</h3>
+                            </div>
+                            <div className="restaurantRatingPrice">
+                                <h5> {restaurant.rating} | {restaurant.price} </h5>
+                            </div>
+                            <div className="restaurantDistance">
+                                <h5> {Math.floor(restaurant.distance)}M </h5>
+                            </div>
                         </Card>
                     )}
                 </CardWrapper>
