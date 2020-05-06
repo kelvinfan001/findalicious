@@ -46,7 +46,7 @@ var Card = function (_Component) {
 				});
 				this.setState({ classList: newClass });
 				var moveOutWidth = document.body.clientWidth;
-				var keep = Math.abs(event.deltaX) < 300;
+				var keep = Math.abs(event.deltaX) < 5;
 				event.target.classList.toggle('removed', !keep);
 				if (keep) {
 					event.target.style.transform = '';
