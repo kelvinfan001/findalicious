@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class JoinRoomForm extends React.Component {
     constructor(props) {
@@ -7,17 +8,16 @@ class JoinRoomForm extends React.Component {
             roomNumber: ''
         };
         this.handleChange = this.handleChange.bind(this);
-        this.submit = this.submit.bind(this);
+        this.goToRoom = this.goToRoom.bind(this);
     }
 
     handleChange(event) {
         this.setState({ roomNumber: event.target.value });
     }
 
-    submit(event) {
-        // ... use email and acceptedTerms in an ajax request or similar ...
-        alert('You submitted this room number:' + this.state.roomNumber);
-        event.preventDefault();
+    goToRoom() {
+        let roomURL = "/rooms/" + this.state.roomNumber;
+        this.props.history.push(roomURL);
     }
 
     render() {
@@ -32,7 +32,10 @@ class JoinRoomForm extends React.Component {
                     maxLength="4"
                     pattern="[0-9]*"
                 />
-                <button onTouchStart="" style={{ backgroundColor: "rgb(95, 204, 95)" }}>
+                <button
+                    onTouchStart=""
+                    style={{ backgroundColor: "rgb(95, 204, 95)" }}
+                    onClick={this.goToRoom}>
                     JOIN
                 </button>
             </form >
@@ -40,4 +43,4 @@ class JoinRoomForm extends React.Component {
     }
 }
 
-export default JoinRoomForm;
+export default withRouter(JoinRoomForm);
