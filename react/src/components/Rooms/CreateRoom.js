@@ -83,6 +83,8 @@ class CreateRoom extends React.Component {
             let latitude = geolocationResultJSON.location.lat;
             let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
             parentThis.setState(state);
+            console.log("longitude:", longitude);
+            console.log("latitude:", latitude);
             return fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
                 method: "GET",
                 headers: {
