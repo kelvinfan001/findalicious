@@ -30,7 +30,8 @@ class Swiping extends React.Component {
         let restaurantsArray = this.state.restaurants;
         let restaurantIndex = restaurantsArray.indexOf(restaurant);
         let url = expressServer + "/api/additionalPhotos/?id=" + restaurant.placeID;
-        if (!restaurantsArray[restaurantIndex].additionalPhotos) { // haven't fetched additional photos yet
+        if (!restaurantsArray[restaurantIndex].additionalPhotos) {
+            // haven't fetched additional photos yet
             fetch(url, {
                 method: "GET",
                 headers: {
@@ -54,6 +55,8 @@ class Swiping extends React.Component {
                 console.log(e);
             });
         } else {
+            // additional photos have already been fetched
+            // cycle through additional photos
             if (restaurantsArray[restaurantIndex].curPhotoIndex === 2) {
                 restaurantsArray[restaurantIndex].curPhotoIndex = 0;
             } else {
