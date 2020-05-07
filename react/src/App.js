@@ -8,7 +8,6 @@ import './App.css';
 import io from 'socket.io-client';
 import TinderCardComponent from './components/TinderCard/TinderCard';
 import Swiping from './components/Swiping/Swiping';
-// import { disableBodyScroll } from 'body-scroll-lock';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 let socket = io.connect(expressServer, {
@@ -16,9 +15,6 @@ let socket = io.connect(expressServer, {
 });
 
 class App extends React.Component {
-  // componentDidMount() {
-  //   disableBodyScroll();
-  // }
 
   render() {
     return (

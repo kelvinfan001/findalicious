@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   width: 100vw;
-  height: 50vh;
+  height: 100vh;
   overflow: hidden;
   background: linear-gradient(#e66465, #9198e5);
 }
@@ -14,12 +14,6 @@
   flex-direction: column;
   justify-content: center;
 }
-
-/* html, body {
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
-  touch-action: manipulation;
-} */
 
 h2 {
   font-family: Arial, Helvetica, sans-serif;
