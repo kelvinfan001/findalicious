@@ -6,8 +6,9 @@
   <link rel="icon" href="%PUBLIC_URL%/logo_small.ico" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Easily find a restaurant with friends!" />
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> -->
-  <meta name="viewport" content="width=device-width">
+  <!-- disables scrolling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <!-- <meta name="viewport" content="width=device-width"> -->
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo_small.ico" />
   <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -31,5 +32,10 @@
   //     event.preventDefault();
   //   }
   // }, { passive: false });
+
+  // Disable double tap to zoom ob mobile
   document.body.addEventListener("click", event => { });
+  document.ontouchstart = (e) => {
+    e.preventDefault();
+  }
 </script>
