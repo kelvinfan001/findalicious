@@ -137,7 +137,7 @@ class Swiping extends React.Component {
         // Heart beat to prevent socket going idle
         socket.on('ping', function (data) {
             console.log("ping received from server");
-            socket.emit('pong', { beat: 1 });
+            socket.emit('pong');
         });
     }
 
