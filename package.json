@@ -1,7 +1,7 @@
 {
   "name": "findalicious",
   "version": "1.0.0",
-  "description": "",
+  "description": "Swipe through restaurants with friends and decide on where to eat!",
   "main": "index.js",
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^2.5.5",
