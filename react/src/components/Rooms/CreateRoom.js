@@ -6,7 +6,6 @@ import LoadingOverlay from 'react-loading-overlay';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
-let googleKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 class CreateRoom extends React.Component {
     constructor(props) {
