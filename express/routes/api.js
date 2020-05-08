@@ -107,8 +107,11 @@ router.get('/location', (req, res, next) => {
         timeout: 1000, // milliseconds
     }).then((r) => {
         if (r.data.status === Status.OK) {
-            // first result (most precise), second address component to skip street number and street name
-            res.send(r.data.results[0].address_components[2]);
+            // first result (most precise)
+            let fullAddress = r.data.results[0].formatted_address;
+            let shortAddress = fullAddress.split(",")[0];
+            console.log(shortAddress)
+            res.send(shortAddress);
         } else {
             console.log(r);
             console.log(r.data.error_message);
