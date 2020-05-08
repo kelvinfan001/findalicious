@@ -210,7 +210,7 @@ button:disabled{
   position: absolute;
   left: 0px;
   bottom: 0px;
-  pointer-events: non
+  pointer-events: none;
 }
 
 .restaurantDistance {
@@ -223,5 +223,5 @@ padding: 5px;
   position: absolute;
   right: 0px;
   bottom: 0px;
-  pointer-events: non
+  pointer-events: none;
 }

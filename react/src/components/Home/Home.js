@@ -34,7 +34,7 @@ class Home extends React.Component {
                 <img
                     src={process.env.PUBLIC_URL + 'logo.png'}
                     className="logo"
-                    alt="Chicken Tinder Icon"
+                    alt="Findalicious Icon"
                     onClick={() => this.setState({ formShowing: false })}
                 />
                 <div>
