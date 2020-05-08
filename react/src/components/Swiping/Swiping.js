@@ -17,11 +17,13 @@ class Swiping extends React.Component {
 
     onSwipeRight(restaurant) {
         let socket = this.props.socket;
-        socket.emit("swipe right", restaurant.placeID);
+        socket.emit("swipe", restaurant.placeID);
         console.log('removing: ' + restaurant.placeID + ' after swiping right');
     }
 
     onSwipeLeft(restaurant) {
+        let socket = this.props.socket;
+        socket.emit("swipe");
         console.log('removing: ' + restaurant.placeID + ' after swiping left');
     }
 
@@ -139,12 +141,6 @@ class Swiping extends React.Component {
             alert("You've disconnected or refreshed the page.");
             window.setTimeout(this.redirectHome, 100);
         });
-
-        // // Heart beat to prevent socket going idle
-        // socket.on('ping', function (data) {
-        //     console.log("ping received from server");
-        //     socket.emit('pong');
-        // });
     }
 
     render() {

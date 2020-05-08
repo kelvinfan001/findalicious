@@ -110,10 +110,14 @@ module.exports = (io) => {
         });
 
         // Listen on user swipe right
-        socket.on("swipe right", async (placeID) => {
+        socket.on("swipe", async (placeID) => {
             if (!currentRoomNumber) {
                 console.log("User " + socket.id + " attempted to swipe without being in a room");
                 socket.emit("not in room swipe", "swiped when not in room");
+                return;
+            }
+            if (!placeID) {
+                // placeID argument is provided by client if right swipe
                 return;
             }
             try {
