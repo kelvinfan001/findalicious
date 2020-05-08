@@ -27,10 +27,10 @@ module.exports = (io) => {
                 return;
             }
 
-            // Check if room is already active
             let query = { roomNumber: roomNumber };
             let isActive;
             try {
+                // Check if room is already active
                 let result = await Room.findOne(query);
                 if (!result) {
                     console.log("User " + socket.id + " attempted to join an nonexistent room");
@@ -42,7 +42,7 @@ module.exports = (io) => {
                 if (isActive) {
                     socket.emit("room active", "Room is already active");
                 } else {
-                    // Update participants in room and get ino on roomNumber
+                    // If not active, pdate participants in room and get info on roomNumber
                     let roomInfo;
                     Room.findOneAndUpdate(query,
                         { $push: { participants: { socketID: socket.id } } },

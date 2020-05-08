@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 import RadiusButtons from './RadiusButtons';
 import LoadingOverlay from 'react-loading-overlay';
-import BeatLoader from 'react-spinners/BeatLoader'
-// import { socket } from '../../App';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 let googleKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;

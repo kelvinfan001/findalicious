@@ -82,6 +82,7 @@ class Swiping extends React.Component {
         if (!this.props.location.state.roomNumber) {
             this.props.history.push('/');
         }
+
         let roomNumber = this.props.location.state.roomNumber;
         fetch(expressServer + "/api/rooms/?roomNumber=" + roomNumber, {
             method: "GET",
