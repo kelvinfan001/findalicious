@@ -184,14 +184,6 @@ button:disabled{
   width: 200px;
 }
 
-.logo2 {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  height: 60px;
-  width: 200px;
-  background-color: #858585;
-}
-
 ._loading_overlay_overlay {
   border-radius: 15px;
 }

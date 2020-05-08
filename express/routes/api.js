@@ -259,6 +259,7 @@ router.get('/imagesURL', (req, res, next) => {
     });
 });
 
+// This function is no longer needed after switch to Yelp API.
 async function getRestaurantsGoogle(longitude, latitude, radius) {
     let latlng = latitude + "," + longitude;
     let radiusMetres = radius * 1000;

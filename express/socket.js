@@ -23,7 +23,7 @@ module.exports = (io) => {
             if (isNaN(roomNumber)) {
                 let errMsg = "Attempt to join invalid room";
                 socket.emit('general error', errMsg);
-                console.log("User" + socket.id + "attempted to join an invalid room");
+                onsole.log(`User ${socket.id} attempted to join an invalid room.`);
                 return;
             }
 
@@ -33,7 +33,7 @@ module.exports = (io) => {
                 // Check if room is already active
                 let result = await Room.findOne(query);
                 if (!result) {
-                    console.log("User " + socket.id + " attempted to join an nonexistent room");
+                    console.log(`User ${socket.id} attempted to join an nonexistent room.`);
                     let errMsg = "Attempt to join nonexistent room";
                     socket.emit('general error', errMsg);
                     return;
@@ -49,7 +49,7 @@ module.exports = (io) => {
                         { new: true }).then(result => {
                             roomInfo = JSON.stringify(result);
                             io.sockets.in(roomNumber).emit('room info', roomInfo);
-                            console.log("User " + socket.id + " has joined room " + roomNumber);
+                            console.log(`User ${socket.id} has joined room ${roomNumber}.`);
                         }).catch(e => console.error(e));
                 }
             } catch (e) {
@@ -63,7 +63,7 @@ module.exports = (io) => {
                 console.log("A user disconnection was initiated by the server");
             }
             if (!currentRoomNumber) {
-                console.log("User " + socket.id + " disconnected without having ever joined a room.");
+                console.log(`User ${socket.id} disconnected without having ever joined a room.`);
                 return;
             }
             // Update participants in room if a user is leaving a room
@@ -85,7 +85,7 @@ module.exports = (io) => {
                     }
                     roomInfo = JSON.stringify(result);
                     io.sockets.in(currentRoomNumber).emit('user disconnect', roomInfo);
-                    console.log("User " + socket.id + " has disconnected from room " + currentRoomNumber);
+                    console.log(`User ${socket.id} has disconnected from room ${currentRoomNumber}.`);
                 } else {
                     console.log("Room to disconnect from does not exist.");
                 }
@@ -97,7 +97,7 @@ module.exports = (io) => {
         // Listen on user initiate swiping after tapping "EVERYONE IS IN"
         socket.on("initiate swiping", () => {
             if (!currentRoomNumber) {
-                console.log("User" + socket.id + " attempted to initiate swiping without first joining a room.");
+                console.log(`User ${socket.id} attempted to initiate swiping without first joining a room.`);
                 return;
             }
             // Make room active
@@ -112,7 +112,7 @@ module.exports = (io) => {
         // Listen on user swipe right
         socket.on("swipe", async (placeID) => {
             if (!currentRoomNumber) {
-                console.log("User " + socket.id + " attempted to swipe without being in a room");
+                console.log(`User ${socket.id} attempted to swipe without being in a room`);
                 socket.emit("not in room swipe", "swiped when not in room");
                 return;
             }
