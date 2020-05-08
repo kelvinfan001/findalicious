@@ -57,7 +57,6 @@ class CreateRoom extends React.Component {
             let latitude = coords.latitude;
             let longitude = coords.longitude;
             let state = { latitude: latitude, longitude: longitude, currentCity: "Coordinates Retrieved..." }
-            console.log(pos.coords.accuracy);
             parentThis.setState(state);
             try {
                 let geocodeResult = await fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
@@ -68,8 +67,8 @@ class CreateRoom extends React.Component {
                     }
                 });
                 if (geocodeResult.status === 200) {
-                    geocodeResult.json().then(geocodeResultJSON => {
-                        let state = { currentCity: geocodeResultJSON.long_name, locationRetrieved: true }
+                    geocodeResult.text().then(geocodeResultText => {
+                        let state = { currentCity: geocodeResultText, locationRetrieved: true }
                         parentThis.setState(state);
                     });
                 } else {
