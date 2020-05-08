@@ -1,5 +1,5 @@
 {
-  "name": "chicken-tinder",
+  "name": "findalicious",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kelvinfan001/chicken-tinder.git"
+    "url": "git+https://github.com/kelvinfan001/findalicious.git"
   },
   "author": "Kelvin Fan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kelvinfan001/chicken-tinder/issues"
+    "url": "https://github.com/kelvinfan001/findalicious/issues"
   },
-  "homepage": "https://github.com/kelvinfan001/chicken-tinder#readme"
+  "homepage": "https://github.com/kelvinfan001/findalicious#readme"
 }

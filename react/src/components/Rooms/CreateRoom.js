@@ -49,8 +49,7 @@ class CreateRoom extends React.Component {
 
         // Geolocation and reverse geocoding
         let options = {
-            enableHighAccuracy: true,
-            timeout: 5000
+            enableHighAccuracy: true
         };
 
         async function success(pos) {

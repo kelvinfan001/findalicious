@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './TinderCard.css';
-// import TinderCard from 'react-tinder-card'
 import { Card, CardWrapper } from '../../react-swipeable-cards';
 
 const db = [
@@ -28,16 +27,6 @@ const db = [
 
 function TinderCardComponent() {
     const characters = db;
-    const [lastDirection, setLastDirection] = useState();
-
-    const swiped = (direction, nameToDelete) => {
-        console.log('removing: ' + nameToDelete)
-        setLastDirection(direction)
-    }
-
-    const outOfFrame = (name) => {
-        console.log(name + ' left the screen!')
-    }
 
     // return (
     //     <div>
@@ -72,17 +61,6 @@ function TinderCardComponent() {
         top: "0%",
     }
 
-    const cardStyle = {
-        // position: "relative",
-        // width: "80vw",
-        // maxWidth: "260px",
-        // height: "300px",
-        // borderRadius: "20px",
-        // justifyContent: "center",
-        // backgroundSize: "cover",
-        // backgroundPosition: "center",
-        // backgroundImage: 'url(' + character.url + ')',
-    }
     return (
         <div>
             <CardWrapper style={wrapperStyle}>

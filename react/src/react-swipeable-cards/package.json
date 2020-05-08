@@ -22,8 +22,8 @@
   "_resolved": "https://registry.npmjs.org/react-swipeable-cards/-/react-swipeable-cards-1.0.6.tgz",
   "_shasum": "fa5fd13d764d6c3b6b75cbd24d873683fc696205",
   "_spec": "react-swipeable-cards",
-  "_where": "/Users/kelvinfan/Projects/chicken-tinder/react",
-  "author": "",
+  "_where": "/Users/kelvinfan/Projects/findalicious/react",
+  "author": "William Ravelo Mendez",
   "bundleDependencies": false,
   "dependencies": {
     "react-hammerjs": "^1.0.1"
