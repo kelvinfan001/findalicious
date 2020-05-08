@@ -28,7 +28,6 @@ class Swiping extends React.Component {
     }
 
     onDoubleTap(restaurant) {
-        let parentThis = this;
         let restaurantsArray = this.state.restaurants;
         let restaurantIndex = restaurantsArray.indexOf(restaurant);
         let url = expressServer + "/api/additionalPhotos/?id=" + restaurant.placeID;
@@ -47,7 +46,7 @@ class Swiping extends React.Component {
                         restaurantsArray[restaurantIndex].additionalPhotos = additionalPhotos;
                         restaurantsArray[restaurantIndex].photoURL = additionalPhotos[1];
                         restaurantsArray[restaurantIndex].curPhotoIndex = 1;
-                        parentThis.setState({ restaurants: restaurantsArray });
+                        this.setState({ restaurants: restaurantsArray });
                     });
                 } else {
                     // Yelp API server did not find business details.
@@ -67,7 +66,7 @@ class Swiping extends React.Component {
             let curPhotoIndex = restaurantsArray[restaurantIndex].curPhotoIndex;
             let additionalPhotos = restaurantsArray[restaurantIndex].additionalPhotos
             restaurantsArray[restaurantIndex].photoURL = additionalPhotos[curPhotoIndex];
-            parentThis.setState({ restaurants: restaurantsArray });
+            this.setState({ restaurants: restaurantsArray });
         }
         console.log("Finding next photo");
     }
@@ -80,7 +79,6 @@ class Swiping extends React.Component {
 
     componentDidMount() {
         let socket = this.props.socket;
-        let parentThis = this;
         if (!this.props.location.state.roomNumber) {
             this.props.history.push('/');
         }
@@ -95,7 +93,7 @@ class Swiping extends React.Component {
         }).then(result => {
             if (result.status === 200) {
                 result.json().then(resultJSON => {
-                    parentThis.setState(resultJSON);
+                    this.setState(resultJSON);
                 });
             } else if (result.status === 404) {
                 // Server failed to get the current roomNumber. This really should not happen.
