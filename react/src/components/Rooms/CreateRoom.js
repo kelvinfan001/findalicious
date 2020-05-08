@@ -32,6 +32,7 @@ class CreateRoom extends React.Component {
         window.location.assign('/');
     }
 
+
     componentDidMount() {
         let parentThis = this;
 
@@ -47,78 +48,95 @@ class CreateRoom extends React.Component {
             }
         });
 
-        // if ("geolocation" in navigator) {
-        //     // check if geolocation is supported/enabled on current browser
-        //     navigator.geolocation.getCurrentPosition().then(
-        //         (position) => {
-        //             let state = {
-        //                 longitude: position.coords.longitude,
-        //                 latitude: position.coords.latitude,
-        //                 currentCity: "Coordinates Retrieved..."
-        //             }
-        //             this.setState(state);
-        //         }
-        //     );
-        // } else {
-        //     // geolocation is not supported
-        //     parentThis.setState({ currentCity: "Browser did not provide location" });
-        //     console.log('geolocation is not enabled on this browser');
-        //     fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
-        //         method: "POST",
-        //         headers: {
-        //             Accept: 'application/json',
-        //             'Content-Type': 'application/json',
-        //         }
-        //     }).then(geolocationResult => {
-        //         if (geolocationResult.status === 200) {
-        //             return geolocationResult.json();
-        //         } else {
-        //             parentThis.setState({ currentCity: "Cannot get coordinates" });
-        //             return Promise.reject("Google geolocation API cannot get coordinates");
-        //         }
-        //     });
-        // }
+        // Geolocation and reverse geocoding
+        let options = {
+            enableHighAccuracy: true,
+            timeout: 5000
+        };
 
-        fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
-            method: "POST",
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            }
-        }).then(geolocationResult => {
-            if (geolocationResult.status === 200) {
-                return geolocationResult.json()
-            } else {
-                parentThis.setState({ currentCity: "Cannot get coordinates" });
-                return Promise.reject("Google geolocation API cannot get coordinates");
-            }
-        }).then(geolocationResultJSON => {
-            let longitude = geolocationResultJSON.location.lng;
-            let latitude = geolocationResultJSON.location.lat;
-            let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
+        async function success(pos) {
+            let coords = pos.coords;
+            let latitude = coords.latitude;
+            let longitude = coords.longitude;
+            let state = { latitude: latitude, longitude: longitude, currentCity: "Coordinates Retrieved..." }
+            console.log(pos.coords.accuracy);
             parentThis.setState(state);
-            return fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                }
-            });
-        }).then(geocodeResult => {
-            if (geocodeResult.status === 200) {
-                geocodeResult.json().then(geocodeResultJSON => {
-                    let state = { currentCity: geocodeResultJSON.long_name, locationRetrieved: true }
-                    parentThis.setState(state);
+            try {
+                let geocodeResult = await fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json"
+                    }
                 });
-            } else {
+                if (geocodeResult.status === 200) {
+                    geocodeResult.json().then(geocodeResultJSON => {
+                        let state = { currentCity: geocodeResultJSON.long_name, locationRetrieved: true }
+                        parentThis.setState(state);
+                    });
+                } else {
+                    parentThis.setState({ currentCity: "Cannot get location" });
+                    throw new Error("Google geocoding API cannot get a location");
+                }
+            } catch (e) {
                 parentThis.setState({ currentCity: "Cannot get location" });
-                Promise.reject("Google geocoding API cannot get a location");
+                console.error(e);
             }
-        }).catch(e => {
-            parentThis.setState({ currentCity: "Cannot get location" });
-            console.log(e);
-        });
+        }
+
+        function error(err) {
+            alert(err.message);
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        }
+
+        if (!navigator.geolocation) {
+            alert("Browser geolocation must be enabled.");
+            console.warn("Geolocation not enabled on this browser.");
+        }
+
+        navigator.geolocation.getCurrentPosition(success, error, options);
     }
+
+    //     fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
+    //         method: "POST",
+    //         headers: {
+    //             Accept: 'application/json',
+    //             'Content-Type': 'application/json',
+    //         }
+    //     }).then(geolocationResult => {
+    //         if (geolocationResult.status === 200) {
+    //             return geolocationResult.json()
+    //         } else {
+    //             parentThis.setState({ currentCity: "Cannot get coordinates" });
+    //             return Promise.reject("Google geolocation API cannot get coordinates");
+    //         }
+    //     }).then(geolocationResultJSON => {
+    //         let longitude = geolocationResultJSON.location.lng;
+    //         let latitude = geolocationResultJSON.location.lat;
+    //         let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
+    //         parentThis.setState(state);
+    //         return fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
+    //             method: "GET",
+    //             headers: {
+    //                 Accept: "application/json",
+    //                 "Content-Type": "application/json"
+    //             }
+    //         });
+    //     }).then(geocodeResult => {
+    //         if (geocodeResult.status === 200) {
+    //             geocodeResult.json().then(geocodeResultJSON => {
+    //                 let state = { currentCity: geocodeResultJSON.long_name, locationRetrieved: true }
+    //                 parentThis.setState(state);
+    //             });
+    //         } else {
+    //             parentThis.setState({ currentCity: "Cannot get location" });
+    //             Promise.reject("Google geocoding API cannot get a location");
+    //         }
+    //     }).catch(e => {
+    //         parentThis.setState({ currentCity: "Cannot get location" });
+    //         console.log(e);
+    //     });
+    // }
 
     createJoinRoom() {
         let longitude = this.state.longitude;
