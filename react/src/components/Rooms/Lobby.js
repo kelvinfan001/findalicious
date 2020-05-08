@@ -16,6 +16,10 @@ class Lobby extends React.Component {
         this.startSwiping = this.startSwiping.bind(this);
     }
 
+    redirectHome() {
+        window.location.assign('/');
+    }
+
     componentDidMount() {
         let socket = this.props.socket;
         this.joinRoom(this.state.roomNumber);
@@ -39,7 +43,7 @@ class Lobby extends React.Component {
         // Listen on attempting to join an already active room
         socket.on('room active', () => {
             alert("Room " + this.state.roomNumber + " has already begun swiping!");
-            parentThis.props.history.push("/");
+            parentThis.redirectHome();
         });
 
         // Listen on room started swiping
@@ -47,11 +51,11 @@ class Lobby extends React.Component {
             parentThis.props.history.push('/swiping', { roomNumber: this.state.roomNumber });
         });
 
-        // Heart beat to prevent socket going idle
-        socket.on('ping', function (data) {
-            console.log("ping received from server");
-            socket.emit('pong');
-        });
+        // // Heart beat to prevent socket going idle
+        // socket.on('ping', function (data) {
+        //     console.log("ping received from server");
+        //     socket.emit('pong');
+        // });
     }
 
     updateStateInfo(result) {

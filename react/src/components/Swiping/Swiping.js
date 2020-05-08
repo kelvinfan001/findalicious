@@ -82,6 +82,7 @@ class Swiping extends React.Component {
         if (!this.props.location.state.roomNumber) {
             this.props.history.push('/');
         }
+
         let roomNumber = this.props.location.state.roomNumber;
         fetch(expressServer + "/api/rooms/?roomNumber=" + roomNumber, {
             method: "GET",
@@ -134,11 +135,17 @@ class Swiping extends React.Component {
             window.setTimeout(this.redirectHome, 100);
         });
 
-        // Heart beat to prevent socket going idle
-        socket.on('ping', function (data) {
-            console.log("ping received from server");
-            socket.emit('pong');
+        // Listen on user attempting to swipe when not in a room
+        socket.on("not in room swipe", () => {
+            alert("You've disconnected");
+            window.setTimeout(this.redirectHome, 100);
         });
+
+        // // Heart beat to prevent socket going idle
+        // socket.on('ping', function (data) {
+        //     console.log("ping received from server");
+        //     socket.emit('pong');
+        // });
     }
 
     render() {

@@ -22,7 +22,7 @@ class App extends React.Component {
         <div>
           <Switch>
             <Route exact path="/rooms/:roomNumber" render={(props) => (<Lobby {...props} socket={socket} />)} />
-            <Route exact path='/' component={Home} />
+            <Route exact path='/' render={(props) => (<Home {...props} socket={socket} />)} />
             <Route exact path='/create' render={(props) => (<CreateRoom {...props} socket={socket} />)} />
             <Route exact path='/swiping' render={(props) => (<Swiping {...props} socket={socket} />)} />
             <Route exact path="/rooms" component={RoomNotFound} />

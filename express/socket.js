@@ -6,6 +6,15 @@ module.exports = (io) => {
         console.log("User connected with socket id", socket.id);
         let currentRoomNumber;
 
+        // Listen on check if joined room
+        socket.on('check joined room', () => {
+            if (currentRoomNumber) {
+                socket.emit('has joined room response', true);
+            } else {
+                socket.emit('has joined room response', false);
+            }
+        })
+
         // Listen on attempt to join room
         socket.on('room', async (roomNumber) => {
             socket.join(roomNumber); // join client into room roomNumber
@@ -18,10 +27,10 @@ module.exports = (io) => {
                 return;
             }
 
-            // Check if room is already active
             let query = { roomNumber: roomNumber };
             let isActive;
             try {
+                // Check if room is already active
                 let result = await Room.findOne(query);
                 if (!result) {
                     console.log("User " + socket.id + " attempted to join an nonexistent room");
@@ -33,7 +42,7 @@ module.exports = (io) => {
                 if (isActive) {
                     socket.emit("room active", "Room is already active");
                 } else {
-                    // Update participants in room and get ino on roomNumber
+                    // If not active, pdate participants in room and get info on roomNumber
                     let roomInfo;
                     Room.findOneAndUpdate(query,
                         { $push: { participants: { socketID: socket.id } } },
@@ -49,7 +58,10 @@ module.exports = (io) => {
         });
 
         // Listen on user disconnect
-        socket.on("disconnect", async () => {
+        socket.on("disconnect", async (reason) => {
+            if (reason === 'io server disconnect') {
+                console.log("A user disconnection was initiated by the server");
+            }
             if (!currentRoomNumber) {
                 console.log("User " + socket.id + " disconnected without having ever joined a room.");
                 return;
@@ -101,6 +113,7 @@ module.exports = (io) => {
         socket.on("swipe right", async (placeID) => {
             if (!currentRoomNumber) {
                 console.log("User " + socket.id + " attempted to swipe without being in a room");
+                socket.emit("not in room swipe", "swiped when not in room");
                 return;
             }
             try {
@@ -135,15 +148,15 @@ module.exports = (io) => {
             }
         });
 
-        // Heart beat to prevent idle
-        socket.on('pong', () => {
-            console.log("Pong received from client");
-        });
+        // // Heart beat to prevent idle
+        // socket.on('pong', () => {
+        //     console.log("Pong received from client");
+        // });
 
-        function sendHeartbeat() {
-            console.log("sending ping");
-            socket.emit('ping');
-        }
-        setInterval(sendHeartbeat, 15000);
+        // function sendHeartbeat() {
+        //     console.log("sending ping");
+        //     socket.emit('ping');
+        // }
+        // setTimeout(sendHeartbeat, 8000);
     });
 }

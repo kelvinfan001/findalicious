@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 import RadiusButtons from './RadiusButtons';
 import LoadingOverlay from 'react-loading-overlay';
-import BeatLoader from 'react-spinners/BeatLoader'
-// import { socket } from '../../App';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 let googleKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -29,9 +28,24 @@ class CreateRoom extends React.Component {
         this.setState({ radius: radius });
     }
 
+    redirectHome() {
+        window.location.assign('/');
+    }
+
     componentDidMount() {
-        // let socket = this.props.socket;
         let parentThis = this;
+
+        // Check if already joined a room (e.g. if user clicked browser prev page to this page after joining a room)
+        let socket = this.props.socket;
+        socket.emit("check joined room");
+
+        // Listen on already joined room response
+        socket.on('has joined room response', (hasJoinedRoom) => {
+            if (hasJoinedRoom) {
+                // We make the client refresh so it can leave the room and join as a new socket connection.
+                this.redirectHome();
+            }
+        });
 
         // if ("geolocation" in navigator) {
         //     // check if geolocation is supported/enabled on current browser
@@ -83,8 +97,6 @@ class CreateRoom extends React.Component {
             let latitude = geolocationResultJSON.location.lat;
             let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
             parentThis.setState(state);
-            console.log("longitude:", longitude);
-            console.log("latitude:", latitude);
             return fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
                 method: "GET",
                 headers: {
