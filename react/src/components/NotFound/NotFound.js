@@ -26,4 +26,17 @@ function RoomNotFound() {
     );
 }
 
-export { PageNotFound, RoomNotFound };
+function UserDisconnect() {
+    return (
+        <div className="main-page">
+            <h2>User Disconnected</h2>
+            <p>A user in your room has disconnected.</p>
+            <p>Tip: Make sure not to refresh your browser while swiping. </p>
+            <Link to="/">
+                <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
+            </Link>
+        </div>
+    );
+}
+
+export { PageNotFound, RoomNotFound, UserDisconnect };

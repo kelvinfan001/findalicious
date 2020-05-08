@@ -130,14 +130,13 @@ class Swiping extends React.Component {
 
         // Listen on user disconnect
         socket.on('user disconnect', () => {
-            alert("A user swiping in your room has disconnected!");
             // Make everyone disconnect for now, since it may be impossible to get matches
-            window.setTimeout(this.redirectHome, 100);
+            window.location.assign('/disconnect');
         });
 
         // Listen on user attempting to swipe when not in a room
         socket.on("not in room swipe", () => {
-            alert("You've disconnected");
+            alert("You've disconnected or refreshed the page.");
             window.setTimeout(this.redirectHome, 100);
         });
 
