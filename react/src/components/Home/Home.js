@@ -43,14 +43,14 @@ class Home extends React.Component {
                         <div>
                             <button
                                 className="pop-up"
-                                onTouchStart=""
+                                // onTouchStart=""
                                 onClick={e => {
                                     this.props.history.push("/create");
                                 }}>
                                 CREATE ROOM
                             </button>
                             <button
-                                onTouchStart=""
+                                // onTouchStart=""
                                 onClick={() => this.setState({ formShowing: true })}>
                                 JOIN ROOM
                             </button>

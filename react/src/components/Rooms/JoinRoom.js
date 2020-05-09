@@ -12,10 +12,15 @@ class JoinRoomForm extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({ roomNumber: event.target.value });
+        this.setState({ roomNumber: event.target.value.replace(/\D/, '') });
     }
 
     goToRoom() {
+        if (this.state.roomNumber.length !== 4) {
+            alert("Please enter a 4 digit room number.");
+            this.setState({ roomNumber: "" });
+            return;
+        }
         let roomURL = "/rooms/" + this.state.roomNumber;
         this.props.history.push(roomURL);
     }
@@ -33,7 +38,7 @@ class JoinRoomForm extends React.Component {
                     pattern="[0-9]*"
                 />
                 <button
-                    onTouchStart=""
+                    // onTouchStart=""
                     style={{ backgroundColor: "rgb(95, 204, 95)" }}
                     onClick={this.goToRoom}>
                     JOIN
