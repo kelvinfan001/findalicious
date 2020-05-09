@@ -26,6 +26,7 @@
 </html>
 
 <script>
+  // Disable zoom on mobile
   // document.addEventListener("touchstart", event => {
   //   if (event.touches.length > 1) {
   //     console.log("stahp, plz no more zoom");
@@ -33,7 +34,7 @@
   //   }
   // }, { passive: false });
 
-  // Disable double tap to zoom ob mobile
+  // Disable double tap to zoom on mobile
   document.body.addEventListener("click", event => { });
   document.ontouchstart = (e) => {
     e.preventDefault();

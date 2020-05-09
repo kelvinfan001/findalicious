@@ -18,7 +18,6 @@ module.exports = (io) => {
         // Listen on attempt to join room
         socket.on('room', async (roomNumber) => {
             socket.join(roomNumber); // join client into room roomNumber
-            currentRoomNumber = roomNumber;
             // Exit function if not a number
             if (isNaN(roomNumber)) {
                 let errMsg = "Attempt to join invalid room";
@@ -49,6 +48,7 @@ module.exports = (io) => {
                         { new: true }).then(result => {
                             roomInfo = JSON.stringify(result);
                             io.sockets.in(roomNumber).emit('room info', roomInfo);
+                            currentRoomNumber = roomNumber;
                             console.log(`User ${socket.id} has joined room ${roomNumber}.`);
                         }).catch(e => console.error(e));
                 }
