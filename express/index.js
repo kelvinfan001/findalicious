@@ -2,6 +2,7 @@ const express = require('express');
 const routes = require('./routes/api');
 const bodyParser = require('body-parser');
 const path = require('path');
+const sslRedirect = require('heroku-ssl-redirect');
 const cors = require("cors");
 require('dotenv').config();
 
@@ -26,6 +27,8 @@ app.use((req, res, next) => {
 });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+// enable ssl redirect
+app.use(sslRedirect());
 
 /* Database */
 const mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
