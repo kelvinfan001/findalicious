@@ -110,7 +110,6 @@ router.get('/location', (req, res, next) => {
             // first result (most precise)
             let fullAddress = r.data.results[0].formatted_address;
             let shortAddress = fullAddress.split(",")[0];
-            console.log(shortAddress)
             res.send(shortAddress);
         } else {
             console.log(r);

@@ -94,47 +94,6 @@ class CreateRoom extends React.Component {
         navigator.geolocation.getCurrentPosition(success, error, options);
     }
 
-    //     fetch("https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey, {
-    //         method: "POST",
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //         }
-    //     }).then(geolocationResult => {
-    //         if (geolocationResult.status === 200) {
-    //             return geolocationResult.json()
-    //         } else {
-    //             parentThis.setState({ currentCity: "Cannot get coordinates" });
-    //             return Promise.reject("Google geolocation API cannot get coordinates");
-    //         }
-    //     }).then(geolocationResultJSON => {
-    //         let longitude = geolocationResultJSON.location.lng;
-    //         let latitude = geolocationResultJSON.location.lat;
-    //         let state = { longitude: longitude, latitude: latitude, currentCity: "Coordinates Retrieved..." }
-    //         parentThis.setState(state);
-    //         return fetch(expressServer + "/api/location?longitude=" + longitude + "&latitude=" + latitude, {
-    //             method: "GET",
-    //             headers: {
-    //                 Accept: "application/json",
-    //                 "Content-Type": "application/json"
-    //             }
-    //         });
-    //     }).then(geocodeResult => {
-    //         if (geocodeResult.status === 200) {
-    //             geocodeResult.json().then(geocodeResultJSON => {
-    //                 let state = { currentCity: geocodeResultJSON.long_name, locationRetrieved: true }
-    //                 parentThis.setState(state);
-    //             });
-    //         } else {
-    //             parentThis.setState({ currentCity: "Cannot get location" });
-    //             Promise.reject("Google geocoding API cannot get a location");
-    //         }
-    //     }).catch(e => {
-    //         parentThis.setState({ currentCity: "Cannot get location" });
-    //         console.log(e);
-    //     });
-    // }
-
     createJoinRoom() {
         let longitude = this.state.longitude;
         let latitude = this.state.latitude;
@@ -147,7 +106,6 @@ class CreateRoom extends React.Component {
                 Accept: "application/json",
                 "Content-Type": "application/json"
             },
-            // credentials: "include",
             body: JSON.stringify({
                 longitude: longitude,
                 latitude: latitude,
@@ -177,8 +135,6 @@ class CreateRoom extends React.Component {
     }
 
     render() {
-        // let updateRadius = this.updateRadius;
-
         return (
             <LoadingOverlay
                 active={this.state.loading}
@@ -201,7 +157,6 @@ class CreateRoom extends React.Component {
                 </button>
                 </div>
             </LoadingOverlay>
-
         )
     }
 }

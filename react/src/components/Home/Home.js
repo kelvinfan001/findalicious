@@ -49,7 +49,9 @@ class Home extends React.Component {
                                 }}>
                                 CREATE ROOM
                             </button>
-                            <button onTouchStart="" onClick={() => this.setState({ formShowing: true })}>
+                            <button
+                                onTouchStart=""
+                                onClick={() => this.setState({ formShowing: true })}>
                                 JOIN ROOM
                             </button>
                         </div>
