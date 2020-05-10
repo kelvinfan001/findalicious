@@ -31,7 +31,7 @@ function UserDisconnect() {
         <div className="main-page">
             <h2>User Disconnected</h2>
             <p>A user in your room has disconnected.</p>
-            <p>Tip: Make sure not to refresh your browser while swiping. </p>
+            <p>Tip: Make sure your friends don't refresh their browsers while swiping. </p>
             <Link to="/">
                 <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
             </Link>
@@ -39,4 +39,16 @@ function UserDisconnect() {
     );
 }
 
-export { PageNotFound, RoomNotFound, UserDisconnect };
+function RoomAlreadyStartedSwiping() {
+    return (
+        <div className="main-page">
+            <h2>Room Already Swiping</h2>
+            <p>Make sure you are in the room before your friends press "EVERYONE IS IN".</p>
+            <Link to="/">
+                <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
+            </Link>
+        </div>
+    );
+}
+
+export { PageNotFound, RoomNotFound, UserDisconnect, RoomAlreadyStartedSwiping };
