@@ -34,19 +34,16 @@ class RadiusButtons extends React.Component {
         return (
             <div style={{ paddingBottom: "20px", paddingTop: "20px" }}>
                 <button
-                    // onTouchStart=""
                     onClick={this._handleClick.bind(this, 1)}
                     style={this.state.active === 1 ? buttonActiveStyle : buttonStyle}>
                     1KM
                 </button>
                 <button
-                    // onTouchStart=""
                     onClick={this._handleClick.bind(this, 2)}
                     style={this.state.active === 2 ? buttonActiveStyle : buttonStyle}>
                     2KM
                 </button>
                 <button
-                    // onTouchStart=""
                     onClick={this._handleClick.bind(this, 5)}
                     style={this.state.active === 5 ? buttonActiveStyle : buttonStyle}>
                     5KM

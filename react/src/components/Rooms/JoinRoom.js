@@ -38,7 +38,6 @@ class JoinRoomForm extends React.Component {
                     pattern="[0-9]*"
                 />
                 <button
-                    // onTouchStart=""
                     style={{ backgroundColor: "rgb(95, 204, 95)" }}
                     onClick={this.goToRoom}>
                     JOIN

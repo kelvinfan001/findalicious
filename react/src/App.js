@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import Home from './components/Home/Home';
-import { RoomNotFound, PageNotFound, UserDisconnect } from './components/NotFound/NotFound';
+import { RoomNotFound, PageNotFound, UserDisconnect, RoomAlreadyStartedSwiping } from './components/NotFound/NotFound';
 import CreateRoom from './components/Rooms/CreateRoom';
 import Lobby from './components/Rooms/Lobby';
 import './App.css';
@@ -28,6 +28,7 @@ class App extends React.Component {
             <Route exact path="/rooms" component={RoomNotFound} />
             <Route exact path="/test" component={TinderCardComponent} />
             <Route exact path="/disconnect" component={UserDisconnect} />
+            <Route exact path="/already-swiping" component={RoomAlreadyStartedSwiping} />
             <Route component={PageNotFound} />
           </Switch>
         </div>

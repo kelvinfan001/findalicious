@@ -98,8 +98,10 @@ class Swiping extends React.Component {
             } else if (result.status === 404) {
                 // Server failed to get the current roomNumber. This really should not happen.
                 // We make the client refresh so it can leave the room and join as a new socket connection. 
-                alert("This room no longer exists.");
-                window.setTimeout(this.redirectHome, 100);
+                window.location.assign("/rooms");
+
+                // alert("This room no longer exists.");
+                // window.setTimeout(this.redirectHome, 100);
             } else {
                 // We make the client refresh so it can leave the room and join as a new socket connection.
                 alert("Something went wrong.");
