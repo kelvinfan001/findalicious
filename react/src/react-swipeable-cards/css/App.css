@@ -60,6 +60,35 @@
   cursor: -webkit-grab;
   cursor: grab;
 }
+
+.cards_container .end_card {
+  animation: 2s delayAppear;
+  animation-fill-mode: forwards;
+  visibility: hidden;
+  display: inline-block;
+  overflow: hidden;
+  background-color: #fff;
+  width: 80vw;
+  max-width: 260px;
+  height: 300px;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  will-change: transform;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+@keyframes delayAppear {
+  99% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}
+
 .container .cards_container .moving.card_container {
   -webkit-transition: none;
   transition: none;

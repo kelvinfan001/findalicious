@@ -1,6 +1,9 @@
 import React from 'react';
 import './TinderCard.css';
 import { Card, CardWrapper } from '../../react-swipeable-cards';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const db = [
     {
@@ -25,35 +28,36 @@ const db = [
     }
 ]
 
-function TinderCardComponent() {
-    const characters = db;
+class MyEndCard extends React.Component {
+    render() {
+        const textStyle = {
+            margin: "20px",
+            marginTop: "5px",
+            marginBottom: "35px",
+        }
+        return (
+            <div>
+                <img
+                    src={process.env.PUBLIC_URL + 'logo.png'}
+                    className="logo"
+                    alt="Findalicious Icon"
+                />
 
-    // return (
-    //     <div>
+                <h3> THE END </h3>
+                <p style={textStyle}> Your friends might still be swiping...</p>
 
-    //         <h1>React Tinder Card</h1>
-    //         <div className='cardContainer'>
-    //             {characters.map((character) =>
-    //                 <TinderCard
-    //                     className='swipe'
-    //                     key={character.name}
-    //                     onSwipe={(dir) => swiped(dir, character.name)}
-    //                     onCardLeftScreen={() => outOfFrame(character.name)}
-    //                     preventSwipe={['up', 'down']}>
-    //                     <div style={{ backgroundImage: 'url(' + character.url + ')' }} className='card'>
-    //                         <h4> $$</h4>
-    //                         <h3> {character.name}</h3>
-    //                     </div>
-    //                 </TinderCard>
-    //             )}
-    //         </div>
-    //         {
-    //             lastDirection ? <h2 className='infoText'>You swiped {lastDirection}</h2> :
-    //                 <h2 className='infoText'>No direction swiped</h2>
-    //         }
-    //     </div >
-    // );
-    const wrapperStyle = {
+                <Link to="/">
+                    <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
+                </Link>
+            </div>
+        );
+    }
+}
+
+class TinderCardComponent extends React.Component {
+    characters = db;
+
+    wrapperStyle = {
         width: "100vw",
         height: "100vh",
         position: "absolute",
@@ -61,26 +65,35 @@ function TinderCardComponent() {
         top: "0%",
     }
 
-    return (
-        <div>
-            <CardWrapper style={wrapperStyle}>
-                {characters.map((character) =>
-                    <Card style={{ backgroundImage: 'url(' + character.url + ')' }}>
-                        <div className="restaurantName">
-                            <h3>{character.name}</h3>
-                        </div>
-                        <div className="restaurantRatingPrice">
-                            <h5> 4.6 | $$ </h5>
-                        </div>
-                        <div className="restaurantDistance">
-                            <h5> 1.2KM </h5>
-                        </div>
-                    </Card>
-                )}
+    getEndCard() {
+        return (
+            <MyEndCard />
+        );
+    }
 
-            </CardWrapper>
-        </div >
-    );
+    render() {
+        return (
+            <div>
+                <CardWrapper style={this.wrapperStyle} addEndCard={this.getEndCard.bind(this)}>
+                    {this.characters.map((character) =>
+                        <Card style={{ backgroundImage: 'url(' + character.url + ')' }}>
+                            <div className="restaurantName">
+                                <h3>{character.name}</h3>
+                            </div>
+                            <div className="restaurantRatingPrice">
+                                <h5> 4.6 | $$ </h5>
+                            </div>
+                            <div className="restaurantDistance">
+                                <h5> 1.2KM </h5>
+                            </div>
+                        </Card>
+                    )}
+
+                </CardWrapper>
+            </div >
+        );
+
+    }
 }
 
 export default TinderCardComponent;

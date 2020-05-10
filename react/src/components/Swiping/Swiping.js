@@ -1,8 +1,37 @@
 import React from 'react';
 import './Swiping.css';
 import { Card, CardWrapper } from '../../react-swipeable-cards';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
+
+class MyEndCard extends React.Component {
+    render() {
+        const textStyle = {
+            margin: "20px",
+            marginTop: "5px",
+            marginBottom: "35px",
+        }
+        return (
+            <div>
+                <img
+                    src={process.env.PUBLIC_URL + 'logo.png'}
+                    className="logo"
+                    alt="Findalicious Icon"
+                />
+
+                <h3> THE END </h3>
+                <p style={textStyle}> Your friends might still be swiping...</p>
+
+                <Link to="/">
+                    <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
+                </Link>
+            </div>
+        );
+    }
+}
 
 class Swiping extends React.Component {
     constructor(props) {
@@ -13,6 +42,12 @@ class Swiping extends React.Component {
         this.onSwipeRight = this.onSwipeRight.bind(this);
         this.onSwipeLeft = this.onSwipeLeft.bind(this);
         this.onDoubleTap = this.onDoubleTap.bind(this);
+    }
+
+    getEndCard() {
+        return (
+            <MyEndCard />
+        );
     }
 
     onSwipeRight(restaurant) {
@@ -155,7 +190,7 @@ class Swiping extends React.Component {
 
         return (
             <div>
-                <CardWrapper style={wrapperStyle}>
+                <CardWrapper style={wrapperStyle} addEndCard={this.getEndCard.bind(this)}>
                     {this.state.restaurants.map((restaurant) =>
                         <Card
                             key={restaurant.placeID}

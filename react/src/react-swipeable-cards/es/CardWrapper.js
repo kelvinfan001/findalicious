@@ -34,7 +34,7 @@ var CardWrapper = function (_Component) {
 		newCards.forEach(function (card, index) {
 			card.style.zIndex = allCards.length - index;
 			card.style.transform = 'scale(' + (20 - index) / 20 + ') translateY(-' + 30 * index + 'px)';
-			card.style.opacity = (10 - index) / 10;
+			// card.style.opacity = (10 - index) / 10;
 		});
 		container.classList.add('loaded');
 	};

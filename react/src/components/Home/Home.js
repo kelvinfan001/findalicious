@@ -34,24 +34,22 @@ class Home extends React.Component {
                     alt="Findalicious Icon"
                     onClick={() => this.setState({ formShowing: false })}
                 />
-                <div>
-                    {this.state.formShowing ?
-                        <JoinRoomForm /> :
-                        <div>
-                            <button
-                                className="pop-up"
-                                onClick={e => {
-                                    this.props.history.push("/create");
-                                }}>
-                                CREATE ROOM
+                {this.state.formShowing ?
+                    <JoinRoomForm /> :
+                    <div>
+                        <button
+                            className="pop-up"
+                            onClick={e => {
+                                this.props.history.push("/create");
+                            }}>
+                            CREATE ROOM
                             </button>
-                            <button
-                                onClick={() => this.setState({ formShowing: true })}>
-                                JOIN ROOM
+                        <button
+                            onClick={() => this.setState({ formShowing: true })}>
+                            JOIN ROOM
                             </button>
-                        </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
         )
     }
