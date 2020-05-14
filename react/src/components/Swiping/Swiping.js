@@ -212,7 +212,7 @@ class Swiping extends React.Component {
 
         return (
             <div>
-                <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'></link>
+                {/* <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'></link> */}
                 <CardWrapper style={wrapperStyle} addEndCard={this.getEndCard.bind(this)}>
                     {this.state.restaurants.map((restaurant) =>
                         <Card
