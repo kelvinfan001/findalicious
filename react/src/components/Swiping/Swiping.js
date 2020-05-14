@@ -212,7 +212,6 @@ class Swiping extends React.Component {
 
         return (
             <div>
-                {/* <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'></link> */}
                 <CardWrapper style={wrapperStyle} addEndCard={this.getEndCard.bind(this)}>
                     {this.state.restaurants.map((restaurant) =>
                         <Card
@@ -245,7 +244,7 @@ class Swiping extends React.Component {
                         <h3 className="matchTitle">You all liked</h3>
                         <h2 className="matchName"> {restaurant.name}</h2>
                         <div>
-                            <a href={restaurant.yelpURL}>
+                            <a href={restaurant.yelpURL} target="_blank">
                                 <img src={restaurant.photoURL} style={this.restaurantPhotoStyle} />
                             </a>
                             <div className="restaurantRatingPrice">
@@ -256,7 +255,7 @@ class Swiping extends React.Component {
                             </div>
                         </div>
                         <h4>{restaurant.address}</h4>
-                        <a href={googleDirectionsURL}>
+                        <a href={googleDirectionsURL} target="_blank">
                             <FontAwesomeIcon style={{ color: "#797986" }} icon={faDirections} size="2x" />
                         </a>
                     </div>
