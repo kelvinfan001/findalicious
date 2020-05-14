@@ -17,6 +17,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-spinners": "^0.8.3",
+    "reactjs-popup": "^1.5.0",
     "socket.io-client": "^2.3.0",
     "typescript": "^3.8.3"
   },

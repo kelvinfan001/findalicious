@@ -8,12 +8,12 @@
   background: linear-gradient(#e66465, #9198e5);
 }
 
-#root>div {
+/* #root>div {
   width: 260px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
+} */
 
 html, body {
   overflow: hidden;
@@ -36,56 +36,32 @@ h5 {
   margin-block-end: 0em;
 }
 
-.swipe {
-  position: absolute;
+.matchTitle {
+  font: 400 30px/1.3 'Pacifico', Helvetica, sans-serif;
+  color: #2b2b2b;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.31);
+  margin-bottom: 20px;
 }
 
-.cardContainer {
-  width: 90vw;
-  max-width: 260px;
-  height: 300px;
-}
-
-.card {
-  position: relative;
-  background-color: #fff;
-  width: 80vw;
-  max-width: 260px;
-  height: 300px;
-  /* box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30); */
-  border-radius: 20px;
-  background-size: cover;
-  background-position: center;
-}
-
-.cardContent {
-  width: 100%;
-  height: 100%;
-}
-
-.card h3 {
-  position: absolute;
-  bottom: 0;
-  margin: 10px;
-  color: #fff;
-}
-
-.infoText {
-  width: 100%;
-  height: 28px;
-  justify-content: center;
-  display: flex;
-  /* color: #F38D68; */
-  color: #fff;
-  animation: popup 200ms;
+.matchName {
+  margin: 4px;
 }
 
 .main-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto;
   animation: popup 400ms;
   padding: 20px;
   background-color: white;
   border-radius: 15px;
   box-shadow: 0 0 14px 0 #797986;
+}
+
+.main-page>div {
+  width: 220px;
 }
 
 .pop-up {
@@ -115,10 +91,11 @@ h5 {
 }
 
 input[type=text]{
-    width: 95%;
-    border:2px solid #fff;
+    width: 200px;
+    border:0px;
     border-radius:8px;
-    margin: 2px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     outline:none;
     padding:17px;
     box-sizing:border-box;
@@ -136,19 +113,18 @@ input[type=text]:focus{
 }
 
 button{
-  /* position: relative; */
-  /* background: linear-gradient(to left, #64e664, #e5b991); */
   background-color: #9198e5;
   font-family: Arial, Helvetica, sans-serif;
   font-size: large;
   color: white;
   padding: 15px;
-  width:92%;
+  width:200px;
   text-align: center;
   text-decoration: none;
   overflow: hidden;
   border-radius: 8px;
-  margin:5px;
+  margin-bottom:5px;
+  margin-top: 5px;
   box-shadow: 0 3px rgba(153, 153, 153, 0.24);
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-appearance: none;
@@ -208,20 +184,20 @@ button:disabled{
   color: white;
   display: inline-block;
   position: absolute;
-  left: 0px;
+  left: 6px;
   bottom: 0px;
   pointer-events: none;
 }
 
 .restaurantDistance {
-padding: 5px;
+  padding: 5px;
   margin: 10px;
   background-color: rgba(0, 0, 0, 0.356);
   border-radius: 10px;
   color: white;
   display: inline-block;
   position: absolute;
-  right: 0px;
+  right: 6px;
   bottom: 0px;
   pointer-events: none;
 }

@@ -17,13 +17,13 @@ class RadiusButtons extends React.Component {
 
     render() {
         const buttonStyle = {
-            width: "27%",
+            width: "auto",
             display: "inline-block",
             fontSize: "small",
             backgroundColor: "#b6b6b6"
         };
         const buttonActiveStyle = {
-            width: "27%",
+            width: "auto",
             display: "inline-block",
             fontSize: "small",
             fontWeight: "bolder",
@@ -31,8 +31,16 @@ class RadiusButtons extends React.Component {
             boxShadow: "0 0px rgba(153, 153, 153, 0.24)",
             transform: "translateY(1px)"
         }
+
+        const containerStyle = {
+            paddingBottom: "20px",
+            paddingTop: "20px",
+            display: "flex",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+        }
         return (
-            <div style={{ paddingBottom: "20px", paddingTop: "20px" }}>
+            <div style={containerStyle}>
                 <button
                     onClick={this._handleClick.bind(this, 1)}
                     style={this.state.active === 1 ? buttonActiveStyle : buttonStyle}>

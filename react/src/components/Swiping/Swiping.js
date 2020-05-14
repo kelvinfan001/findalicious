@@ -1,6 +1,11 @@
 import React from 'react';
 import './Swiping.css';
+import EndCard from './EndCard';
+import Match from './Match';
 import { Card, CardWrapper } from '../../react-swipeable-cards';
+import Popup from "reactjs-popup";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDirections } from '@fortawesome/free-solid-svg-icons';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
 
@@ -9,10 +14,35 @@ class Swiping extends React.Component {
         super(props);
         this.state = {
             restaurants: [],
+            matchedRestaurant: {
+                "likeCount": 0,
+                "curPhotoIndex": 0,
+                "_id": "",
+                "placeID": "",
+                "name": "",
+                "yelpURL": "",
+                "address": "",
+                "distance": 0,
+                "photoURL": "",
+                "price": "",
+                "rating": 0
+            },
+            matchOpen: false
         };
         this.onSwipeRight = this.onSwipeRight.bind(this);
         this.onSwipeLeft = this.onSwipeLeft.bind(this);
         this.onDoubleTap = this.onDoubleTap.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+
+    closeModal() {
+        this.setState({ matchOpen: false });
+    }
+
+    getEndCard() {
+        return (
+            <EndCard />
+        );
     }
 
     onSwipeRight(restaurant) {
@@ -99,9 +129,6 @@ class Swiping extends React.Component {
                 // Server failed to get the current roomNumber. This really should not happen.
                 // We make the client refresh so it can leave the room and join as a new socket connection. 
                 window.location.assign("/rooms");
-
-                // alert("This room no longer exists.");
-                // window.setTimeout(this.redirectHome, 100);
             } else {
                 // We make the client refresh so it can leave the room and join as a new socket connection.
                 alert("Something went wrong.");
@@ -124,10 +151,10 @@ class Swiping extends React.Component {
             for (let i = 0; i < this.state.restaurants.length; i++) {
                 if (this.state.restaurants[i].placeID === placeID) {
                     restaurantName = this.state.restaurants[i].name;
+                    this.setState({ matchedRestaurant: this.state.restaurants[i], matchOpen: true });
                     break;
                 }
             }
-            alert("You all liked " + restaurantName + "!");
         });
 
         // Listen on user disconnect
@@ -143,6 +170,26 @@ class Swiping extends React.Component {
         });
     }
 
+    popupStyle = {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "240px",
+        animation: "popup 600ms",
+        padding: "15px",
+        backgroundColor: "white",
+        borderRadius: "15px",
+        boxShadow: "0 0 22px 2px #ffffffc4",
+        webkitBoxShadow: "0 0 18px 0px #ffffffc4"
+    }
+
+    restaurantPhotoStyle = {
+        width: "240px",
+        height: "240px",
+        borderRadius: "10px"
+    }
+
     render() {
 
         const wrapperStyle = {
@@ -153,9 +200,20 @@ class Swiping extends React.Component {
             top: "0%",
         }
 
+        let restaurant = this.state.matchedRestaurant
+
+        let googleDirectionParameterArray = restaurant.name.split(" ");
+        let googleDirectionsParameter = "";
+        for (let word = 0; word < googleDirectionParameterArray.length - 1; word++) {
+            googleDirectionsParameter += googleDirectionParameterArray[word] + "+";
+        }
+        googleDirectionsParameter += googleDirectionParameterArray[googleDirectionParameterArray.length - 1];
+        let googleDirectionsURL = "https://www.google.com/maps/dir/?api=1&destination=" + googleDirectionsParameter;
+
         return (
             <div>
-                <CardWrapper style={wrapperStyle}>
+                <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'></link>
+                <CardWrapper style={wrapperStyle} addEndCard={this.getEndCard.bind(this)}>
                     {this.state.restaurants.map((restaurant) =>
                         <Card
                             key={restaurant.placeID}
@@ -177,6 +235,32 @@ class Swiping extends React.Component {
                         </Card>
                     )}
                 </CardWrapper>
+                <Popup
+                    open={this.state.matchOpen}
+                    closeOnDocumentClick
+                    onClose={this.closeModal}
+                    contentStyle={this.popupStyle}
+                >
+                    <div>
+                        <h3 className="matchTitle">You all liked</h3>
+                        <h2 className="matchName"> {restaurant.name}</h2>
+                        <div>
+                            <a href={restaurant.yelpURL}>
+                                <img src={restaurant.photoURL} style={this.restaurantPhotoStyle} />
+                            </a>
+                            <div className="restaurantRatingPrice">
+                                <h5> {restaurant.rating} | {restaurant.price} </h5>
+                            </div>
+                            <div className="restaurantDistance">
+                                <h5> {Math.floor(restaurant.distance)} M</h5>
+                            </div>
+                        </div>
+                        <h4>{restaurant.address}</h4>
+                        <a href={googleDirectionsURL}>
+                            <FontAwesomeIcon style={{ color: "#797986" }} icon={faDirections} size="2x" />
+                        </a>
+                    </div>
+                </Popup>
             </div >
         );
     }
