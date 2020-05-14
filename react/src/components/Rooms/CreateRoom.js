@@ -116,6 +116,7 @@ class CreateRoom extends React.Component {
                     this.goToRoom(roomURL);
                 });
             } else if (result.status === 404) {
+                this.setState({ loading: false });
                 alert("No restaurants found in your area. Try a larger radius.");
             } else {
                 alert("Unknown error. Server may be down.");
