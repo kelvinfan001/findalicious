@@ -17,7 +17,7 @@ class Home extends React.Component {
     componentDidMount() {
         // Check if already joined a room (e.g. if user clicked browser prev page to this page after joining a room)
         let socket = this.props.socket;
-        socket.emit("check joined room", function (hasJoinedRoom) {
+        socket.emit("check joined room", hasJoinedRoom => {
             if (hasJoinedRoom) {
                 // Leave the previous room since client is at home page.
                 socket.emit('leave room');
