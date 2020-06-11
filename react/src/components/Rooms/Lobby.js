@@ -25,7 +25,7 @@ class Lobby extends React.Component {
         let parentThis = this;
 
         // Check if already joined a room (e.g. if user clicked browser prev page to this page after joining a room)
-        socket.emit("check joined room", function (hasJoinedRoom) {
+        socket.emit("check joined room", (hasJoinedRoom) => {
             if (hasJoinedRoom) {
                 // User should NOT have already joined a room at this page's mounting, so we redirect to home.
                 // No need to leave room since we are using location.assign. The user will get disconnected and

@@ -7,7 +7,7 @@ module.exports = (io) => {
         console.log(`User connected with socket id ${socket.id}.`);
         let currentRoomNumber;
 
-        /* Leave room in database helper */
+        /* Helper function for leaving room in database */
         async function leaveRoom(roomNumber) {
             // Update participants in room if a user is leaving a room
             let query = { roomNumber: roomNumber };
@@ -50,7 +50,7 @@ module.exports = (io) => {
             currentRoomNumber = 0; // set to zero so currentRoomNumber is falsey.
         });
 
-        /* Listen on check if joined room */
+        /* Listen on 'check joined room' */
         socket.on('check joined room', (ack) => {
             if (currentRoomNumber) {
                 ack(true); // client is already in a room
@@ -90,8 +90,9 @@ module.exports = (io) => {
                         { $push: { participants: { socketID: socket.id } } },
                         { new: true }).then(result => {
                             roomInfo = JSON.stringify(result);
-                            socket.join(roomNumber); // join client into room roomNumber
+                            socket.join(roomNumber); // join client into socket room roomNumber
                             io.sockets.in(roomNumber).emit('room info', roomInfo);
+                            socket.room = roomNumber
                             currentRoomNumber = roomNumber;
                             console.log(`User ${socket.id} has joined db and socket room ${roomNumber}.`);
                         }).catch(e => {
@@ -109,10 +110,13 @@ module.exports = (io) => {
             console.log(`User ${socket.id} has disconnected.`);
             if (reason === 'io server disconnect') {
                 console.log("A user disconnection was initiated by the server");
+            } else {
+                console.log(`User disconnected due to ${reason}`);
             }
             if (currentRoomNumber) {
                 // Leave database room
                 leaveRoom(currentRoomNumber);
+                currentRoomNumber = 0; // set to zero so currentRoomNumber is falsey.
                 console.log(`User ${socket.id} has left socket room ${currentRoomNumber}.`)
             }
         });

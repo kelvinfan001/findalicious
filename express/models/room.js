@@ -19,7 +19,8 @@ const RoomSchema = new Schema({
             photoURL: String,
             price: String,
             likeCount: { type: Number, default: 0 },
-            curPhotoIndex: { type: Number, default: 0 }
+            curPhotoIndex: { type: Number, default: 0 },
+            category: String
         }
     ],
     participants: [

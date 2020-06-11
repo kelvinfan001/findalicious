@@ -4,7 +4,6 @@ import { Card, CardWrapper } from '../../react-swipeable-cards';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft, faDirections } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import Match from '../Swiping/Match';
 import Popup from "reactjs-popup";
 
 const db = [
@@ -41,7 +40,8 @@ const restaurant = {
     "distance": 219.3041184346589,
     "photoURL": "https://s3-media4.fl.yelpcdn.com/bphoto/RRck-ty3S6iSzrvv2WlWGw/o.jpg",
     "price": "$$",
-    "rating": 4
+    "rating": 4,
+    "category": "chinese"
 }
 
 class MyEndCard extends React.Component {
@@ -99,7 +99,7 @@ class TinderCardComponent extends React.Component {
         backgroundColor: "white",
         borderRadius: "15px",
         boxShadow: "0 0 22px 2px #ffffffc4",
-        webkitBoxShadow: "0 0 18px 0px #ffffffc4"
+        webkitBoxShadow: "0 0 10px 0px #ffffffc4"
     }
 
     restaurantPhotoStyle = {
@@ -138,6 +138,10 @@ class TinderCardComponent extends React.Component {
                             <div className="restaurantDistance">
                                 <h5> 1.2KM </h5>
                             </div>
+                            <div>
+                                <h5> {"Chinese"} </h5>
+                            </div>
+
                         </Card>
                     )}
                 </CardWrapper>
@@ -149,6 +153,7 @@ class TinderCardComponent extends React.Component {
                     <div>
                         <h3 className="matchTitle">You all liked</h3>
                         <h2 className="matchName"> {restaurant.name}</h2>
+                        <h4> ({restaurant.category}) </h4>
                         <div>
                             <a href={restaurant.yelpURL}>
                                 <img src={restaurant.photoURL} style={this.restaurantPhotoStyle} />

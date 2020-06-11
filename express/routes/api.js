@@ -182,7 +182,8 @@ function getRestaurants(longitude, latitude, radius) {
                         distance: restaurantApiResults[i].distance,
                         photoURL: restaurantApiResults[i].image_url,
                         price: restaurantApiResults[i].price,
-                        rating: restaurantApiResults[i].rating
+                        rating: restaurantApiResults[i].rating,
+                        category: restaurantApiResults[i].categories[0].title
                     };
                     restaurantResults.push(curRestaurant);
                 }
