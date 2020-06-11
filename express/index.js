@@ -8,7 +8,16 @@ require('dotenv').config();
 
 const app = express();
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
+
+// Regarding pingTimeout and pingInterval:
+// https://github.com/socketio/socket.io/issues/3259#issuecomment-474523271, 
+// https://github.com/socketio/socket.io/issues/2769
+const io = require('socket.io')(server,
+    {
+        'pingTimeout': 50000,
+        'pingInterval': 8000
+    });
+// const io = require('socket.io')(server);
 
 
 /* Misc */
