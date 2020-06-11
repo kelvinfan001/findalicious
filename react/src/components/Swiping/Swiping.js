@@ -1,7 +1,6 @@
 import React from 'react';
 import './Swiping.css';
 import EndCard from './EndCard';
-import Match from './Match';
 import { Card, CardWrapper } from '../../react-swipeable-cards';
 import Popup from "reactjs-popup";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -180,13 +179,15 @@ class Swiping extends React.Component {
         padding: "15px",
         backgroundColor: "white",
         borderRadius: "15px",
-        boxShadow: "0 0 22px 2px #ffffffc4",
-        webkitBoxShadow: "0 0 18px 0px #ffffffc4"
+        boxShadow: "0 0 10px 2px #ffffffc4",
+        webkitBoxShadow: "0 0 10px 2px #ffffffc4"
     }
 
     restaurantPhotoStyle = {
-        width: "240px",
-        height: "240px",
+        width: "auto",
+        maxWidth: "240px",
+        height: "auto",
+        maxHeight: "240px",
         borderRadius: "10px"
     }
 
@@ -244,8 +245,8 @@ class Swiping extends React.Component {
                         <h3 className="matchTitle">You all liked</h3>
                         <h2 className="matchName"> {restaurant.name}</h2>
                         <div>
-                            <a href={restaurant.yelpURL} target="_blank">
-                                <img src={restaurant.photoURL} style={this.restaurantPhotoStyle} />
+                            <a href={restaurant.yelpURL} target="_blank" rel="noopener noreferrer">
+                                <img src={restaurant.photoURL} style={this.restaurantPhotoStyle} alt="Restaurant" />
                             </a>
                             <div className="restaurantRatingPrice">
                                 <h5> {restaurant.rating} | {restaurant.price} </h5>
@@ -255,7 +256,7 @@ class Swiping extends React.Component {
                             </div>
                         </div>
                         <h4>{restaurant.address}</h4>
-                        <a href={googleDirectionsURL} target="_blank">
+                        <a href={googleDirectionsURL} target="_blank" rel="noopener noreferrer">
                             <FontAwesomeIcon style={{ color: "#797986" }} icon={faDirections} size="2x" />
                         </a>
                     </div>
