@@ -244,6 +244,7 @@ class Swiping extends React.Component {
                     <div>
                         <h3 className="matchTitle">You all liked</h3>
                         <h2 className="matchName"> {restaurant.name}</h2>
+                        <h4> ({restaurant.category}) </h4>
                         <div>
                             <a href={restaurant.yelpURL} target="_blank" rel="noopener noreferrer">
                                 <img src={restaurant.photoURL} style={this.restaurantPhotoStyle} alt="Restaurant" />
