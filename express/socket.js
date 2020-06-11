@@ -5,10 +5,10 @@ module.exports = (io) => {
 
         // a client has connected
         console.log(`User connected with socket id ${socket.id}.`);
-        let currentRoomNumber;
+        // let currentRoomNumber;
 
         /* Helper function for leaving room in database */
-        async function leaveRoom(roomNumber) {
+        async function leaveDbRoom(roomNumber) {
             // Update participants in room if a user is leaving a room
             let query = { roomNumber: roomNumber };
             try {
@@ -28,7 +28,7 @@ module.exports = (io) => {
                     }
                     roomInfo = JSON.stringify(result);
                     io.sockets.in(roomNumber).emit('user disconnect', roomInfo);
-                    console.log(`User ${socket.id} has left from db room ${roomNumber}.`);
+                    console.log(`User ${socket.id} has left db room ${roomNumber}.`);
                 } else {
                     console.log("Room to disconnect from does not exist.");
                 }
@@ -39,20 +39,20 @@ module.exports = (io) => {
 
         /* Listen on client attempt to leave room */
         socket.on("leave room", () => {
-            if (!currentRoomNumber) {
+            if (!socket.room) {
                 // client was never in a room. This request should never have been sent.
                 console.warn("Client attempt to leave room without ever being in a room.");
                 return;
             }
-            socket.leave(currentRoomNumber);
-            console.log(`User ${socket.id} has left socket room ${currentRoomNumber}.`)
-            leaveRoom(currentRoomNumber);
-            currentRoomNumber = 0; // set to zero so currentRoomNumber is falsey.
+            socket.leave(socket.room);
+            console.log(`User ${socket.id} has left socket room ${socket.room}.`);
+            leaveDbRoom(socket.room);
+            socket.room = 0; // set to zero so currentRoomNumber is falsey.
         });
 
         /* Listen on 'check joined room' */
         socket.on('check joined room', (ack) => {
-            if (currentRoomNumber) {
+            if (socket.room) {
                 ack(true); // client is already in a room
             } else {
                 ack(false);
@@ -75,7 +75,7 @@ module.exports = (io) => {
                 // Check if room is already active
                 let result = await Room.findOne(query);
                 if (!result) {
-                    console.log(`User ${socket.id} attempted to join an nonexistent room.`);
+                    console.log(`User ${socket.id} attempted to join a nonexistent room.`);
                     let errMsg = "Attempt to join nonexistent room";
                     socket.emit('invalid room error', errMsg);
                     return;
@@ -93,7 +93,7 @@ module.exports = (io) => {
                             socket.join(roomNumber); // join client into socket room roomNumber
                             io.sockets.in(roomNumber).emit('room info', roomInfo);
                             socket.room = roomNumber
-                            currentRoomNumber = roomNumber;
+                            // currentRoomNumber = roomNumber;
                             console.log(`User ${socket.id} has joined db and socket room ${roomNumber}.`);
                         }).catch(e => {
                             console.error(e);
@@ -107,38 +107,35 @@ module.exports = (io) => {
 
         /* Listen on user disconnect */
         socket.on("disconnect", async (reason) => {
-            console.log(`User ${socket.id} has disconnected.`);
-            if (reason === 'io server disconnect') {
-                console.log("A user disconnection was initiated by the server");
-            } else {
-                console.log(`User disconnected due to ${reason}`);
-            }
-            if (currentRoomNumber) {
+            console.log(`User ${socket.id} disconnected due to ${reason}`);
+
+            if (socket.room) {
+                console.log(`User ${socket.id} has left socket room ${socket.room}.`);
                 // Leave database room
-                leaveRoom(currentRoomNumber);
-                currentRoomNumber = 0; // set to zero so currentRoomNumber is falsey.
-                console.log(`User ${socket.id} has left socket room ${currentRoomNumber}.`)
+                leaveDbRoom(socket.room);
+                socket.room = 0; // set to zero so currentRoomNumber is falsey.
             }
         });
 
         /* Listen on user initiate swiping after tapping "EVERYONE IS IN" */
         socket.on("initiate swiping", () => {
-            if (!currentRoomNumber) {
-                console.log(`User ${socket.id} attempted to initiate swiping without first joining a room.`);
+            if (!socket.room) {
+                console.warn(`User ${socket.id} attempted to initiate swiping without being in a socket room.`);
+                socket.emit('general error', "attempted to initiate swiping without being in a socket room.");
                 return;
             }
             // Make room active
-            let query = { roomNumber: currentRoomNumber };
+            let query = { roomNumber: socket.room };
             Room.findOneAndUpdate(query, { isActive: true }, { new: true }).then(result => {
                 if (result) {
-                    io.sockets.in(currentRoomNumber).emit("room started swiping");
+                    io.sockets.in(socket.room).emit("room started swiping");
                 }
             }).catch(e => console.error(e));
         });
 
         /* Listen on user swipe right */
         socket.on("swipe", async (placeID) => {
-            if (!currentRoomNumber) {
+            if (!socket.room) {
                 console.log(`User ${socket.id} attempted to swipe without being in a room`);
                 socket.emit("not in room swipe", "swiped when not in room");
                 return;
@@ -149,7 +146,7 @@ module.exports = (io) => {
                 return;
             }
             try {
-                let query = { roomNumber: currentRoomNumber, "restaurants.placeID": placeID };
+                let query = { roomNumber: socket.room, "restaurants.placeID": placeID };
                 let updateResult = await Room.findOneAndUpdate(
                     query,
                     { $inc: { "restaurants.$.likeCount": 1 } },
@@ -163,7 +160,7 @@ module.exports = (io) => {
                 // Check for any matches
                 let participantCount = updateResult.participants.length;
                 query = {
-                    roomNumber: currentRoomNumber,
+                    roomNumber: socket.room,
                     restaurants: {
                         $elemMatch: {
                             placeID: placeID,
@@ -173,7 +170,7 @@ module.exports = (io) => {
                 }
                 let queryResult = await Room.find(query);
                 if (queryResult.length > 0) {
-                    io.sockets.in(currentRoomNumber).emit("match found", placeID);
+                    io.sockets.in(socket.room).emit("match found", placeID);
                 }
             } catch (e) {
                 console.error(e);
