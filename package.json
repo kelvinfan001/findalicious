@@ -1,6 +1,6 @@
 {
   "name": "findalicious",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Swipe through restaurants with friends and decide on where to eat!",
   "main": "index.js",
   "dependencies": {
@@ -23,7 +23,7 @@
     "url": "git+https://github.com/kelvinfan001/findalicious.git"
   },
   "author": "Kelvin Fan",
-  "license": "MIT",
+  "license": "GNU General Public License v3.0",
   "bugs": {
     "url": "https://github.com/kelvinfan001/findalicious/issues"
   },
