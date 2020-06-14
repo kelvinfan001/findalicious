@@ -11,6 +11,7 @@
 # production
 # todo: should /build be pushed to deployment server or built locally in the container?
 # /build
+/src/components/TinderCard
 
 # misc
 .DS_Store
