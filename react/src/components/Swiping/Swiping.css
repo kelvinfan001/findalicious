@@ -8,7 +8,7 @@
   background: linear-gradient(#e66465, #9198e5);
 }
 
-#root >div {
+#root > div {
   width: 260px;
   display: flex;
   flex-direction: column;
@@ -64,8 +64,8 @@ h1 {
 }
 
 @keyframes popup {
-  0% {transform: scale(0)} 
-  70% {transform: scale(1.1)} 
-  85% {transform: scale(0.94)} 
-  100% {transform: scale(1)}
+  0% { transform: scale(0) } 
+  70% { transform: scale(1.1) } 
+  85% { transform: scale(0.94) } 
+  100% { transform: scale(1) }
 }
