@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(sslRedirect());
 
 /* Database */
-const mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
+let mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
 if (mongoURL === null) {
     mongoURL = 'mongodb://localhost:27017';
 }
