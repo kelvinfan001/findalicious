@@ -8,6 +8,9 @@
 <a href="https://github.com/kelvinfan001"><img alt="Github Follows" src="https://img.shields.io/github/followers/kelvinfan001?label=Follows&style=social"></a>
 </p>
 
+## Site
+https://findalicious.herokuapp.com
+
 ## Description
 A Tinder-style app for deciding where to eat with your friends. Quickly create a room with your friends and swipe through restaurants in your local area.
 
