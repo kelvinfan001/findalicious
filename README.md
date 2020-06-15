@@ -9,7 +9,7 @@
 </p>
 
 ## Site
-https://findalicious.herokuapp.com
+[findalicious.herokuapp.com](https://findalicious.herokuapp.com)
 
 ## Description
 A Tinder-style app for deciding where to eat with your friends. Quickly create a room with your friends and swipe through restaurants in your local area.
@@ -19,22 +19,22 @@ A Tinder-style app for deciding where to eat with your friends. Quickly create a
 ### Creating a Room
  1. Select `CREATE ROOM`.
  2. Allow browser to provide your location to Findalicious. Your location should be displayed if location was found successfully.
- 3. Select a radius (`1KM`, `2KM`, `5KM`) to search for restaurants.
+ 3. Select a radius to search for restaurants.
  4. Tap on `CREATE` to create room. 
  5. Your room number should be displayed at the top.
-<p> <img src="./readme_assets/create_room_demo.gif" width="270px"></p>
+<p> <img src="./readme_assets/create_room_demo.gif" width="270px"> </p>
 
 ### Joining a Room
  1. Tap on `JOIN ROOM` and enter room number OR
  2. Enter a URL in your browser `https://findalicious.herokuapp.com/rooms/<ROOM NUMBER>`.
-<p> <img src="./readme_assets/join_room_demo.gif" width="270px"></p>
+<p> <img src="./readme_assets/join_room_demo.gif" width="270px"> </p>
 
 ### Swiping
  1. When all your friends are in the room and ready, tap `EVERYONE IS IN`.
  2. Double tap on a restaurant to scroll through photos.
  3. Swipe *right* to "LIKE" a restaurant or swipe *left* to dismiss a restaurant.
  4. If everyone in the room swiped *right* on ("LIKED") a restaurant, it will show up as a match!
-<p> <img src="./readme_assets/swiping_demo.gif" width="270px"></p>
+<p> <img src="./readme_assets/swiping_demo.gif" width="270px"> </p>
 
 ### After Finding a Match
 Congrats! You've found a restaurant that everyone likes.
@@ -54,4 +54,4 @@ Shout out to my girlfriend who passive aggressively sent me [this post](https://
 ### Disclaimer
 The author is not responsible for arguments, breakups, shouting, or otherwise emotional trauma due to the usage of this app.
 
-> me: “Hey we finally matched on a restaurant” her: “ugh I’m not really in the mood for Chinese” me: “ THEN WHY DID YOU F\*\*KING SWIPE ON IT.” – Potential disgruntled user https://ifunny.co/picture/okay-so-hear-me-out-an-app-right-it-s-D8bQZLQU7?commentId=5e67e1cd6b014b5570533ca4
+> me: “Hey we finally matched on a restaurant” her: “ugh I’m not really in the mood for Chinese” me: “ THEN WHY DID YOU F\*\*KING SWIPE ON IT.” – Potential disgruntled user h<ttps://ifunny.co/picture/okay-so-hear-me-out-an-app-right-it-s-D8bQZLQU7?commentId=5e67e1cd6b014b5570533ca4>

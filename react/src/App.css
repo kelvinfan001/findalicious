@@ -10,14 +10,8 @@
   background: linear-gradient(#e66465, #9198e5);
 }
 
-/* #root>div {
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-} */
-
-html, body {
+html, 
+body {
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   touch-action: manipulation;
@@ -55,51 +49,42 @@ h5 {
   justify-content: center;
   align-items: center;
   width: auto;
-  animation: popup 400ms;
+  animation: popUp 400ms;
   padding: 20px;
   background-color: white;
   border-radius: 15px;
   box-shadow: 0 0 14px 0 #797986;
 }
 
-.main-page>div {
+.main-page >div {
   width: 220px;
 }
 
-.pop-up {
-  /* animation: popup 400ms; */
-  animation: pop-up2 200ms;
+.popUp {
+  animation: fastPopUp 200ms;
 }
 
-@keyframes pop-up2 {
-  0% {
-    transform: scale(0.5);
-  } 100% {
-    transform: scale(1);
-  }
+@keyframes fastPopUp {
+  0% {transform: scale(0.5)} 
+  100% {transform: scale(1)}
 }
 
 
-@keyframes popup {
-  0% {
-    transform: scale(0);
-  } 70% {
-    transform: scale(1.1);
-  } 85% {
-    transform: scale(0.94);
-  } 100% {
-    transform: scale(1);
-  }
+@keyframes popUp {
+  0% {transform: scale(0)} 
+  70% {transform: scale(1.1)} 
+  85% {transform: scale(0.94)} 
+  100% {transform: scale(1)}
 }
 
-input[type=text]{
+input[type=text] {
     width: 200px;
     border:0px;
     border-radius:8px;
     margin-top: 5px;
     margin-bottom: 5px;
-    outline:none;
-    padding:17px;
+    outline: none;
+    padding: 17px;
     box-sizing:border-box;
     transition:.3s;
     background-color: rgba(0, 0, 0, 0.13);
@@ -107,20 +92,20 @@ input[type=text]{
     font-size: medium;
   }
   
-input[type=text]:focus{
+input[type=text]:focus {
   border-color:#9198e5;
   box-shadow: 0 0 8px 0 #9198e5;
   -webkit-appearance: none;
   -webkit-box-shadow: 0 0 8px 0 #9198e5;
 }
 
-button{
+button {
   background-color: #9198e5;
   font-family: Arial, Helvetica, sans-serif;
   font-size: large;
   color: white;
   padding: 15px;
-  width:200px;
+  width: 200px;
   text-align: center;
   text-decoration: none;
   overflow: hidden;
@@ -173,8 +158,7 @@ button:disabled{
   border-radius: 10px;
   color: white;
   display: inline-block;
-  /* position: absolute; */
-  left: 0px;
+  left: 0;
   pointer-events: none;
 }
 
@@ -187,7 +171,7 @@ button:disabled{
   display: inline-block;
   position: absolute;
   left: 6px;
-  bottom: 0px;
+  bottom: 0;
   pointer-events: none;
 }
 
@@ -200,6 +184,6 @@ button:disabled{
   display: inline-block;
   position: absolute;
   right: 6px;
-  bottom: 0px;
+  bottom: 0;
   pointer-events: none;
 }

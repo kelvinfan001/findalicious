@@ -5,11 +5,10 @@
   width: 100vw;
   min-height: 100vh;
   overflow: hidden;
-  /* background: linear-gradient(#fff, #999); */
   background: linear-gradient(#e66465, #9198e5);
 }
 
-#root>div {
+#root >div {
   width: 260px;
   display: flex;
   flex-direction: column;
@@ -18,10 +17,8 @@
 
 h1 {
   font-family: 'Alatsi', sans-serif;
-  /* font-family: 'Damion', cursive; */
-  /* color: #F38D68; */
   color: #fff;
-  text-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30);
+  text-shadow: 0 0 60px 0 rgba(0,0,0,0.3);
 }
 
 .swipe {
@@ -40,7 +37,6 @@ h1 {
   width: 80vw;
   max-width: 260px;
   height: 300px;
-  /* box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.30); */
   border-radius: 20px;
   background-size: cover;
   background-position: center;
@@ -63,19 +59,13 @@ h1 {
   height: 28px;
   justify-content: center;
   display: flex;
-  /* color: #F38D68; */
   color: #fff;
   animation: popup 200ms;
 }
 
 @keyframes popup {
-  0% {
-    transform: scale(0);
-  } 70% {
-    transform: scale(1.1);
-  } 85% {
-    transform: scale(0.94);
-  } 100% {
-    transform: scale(1);
-  }
+  0% {transform: scale(0)} 
+  70% {transform: scale(1.1)} 
+  85% {transform: scale(0.94)} 
+  100% {transform: scale(1)}
 }
