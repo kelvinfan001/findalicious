@@ -146,10 +146,8 @@ class Swiping extends React.Component {
 
         // Listen for matches
         socket.on('match found', (placeID) => {
-            let restaurantName;
             for (let i = 0; i < this.state.restaurants.length; i++) {
                 if (this.state.restaurants[i].placeID === placeID) {
-                    restaurantName = this.state.restaurants[i].name;
                     this.setState({ matchedRestaurant: this.state.restaurants[i], matchOpen: true });
                     break;
                 }

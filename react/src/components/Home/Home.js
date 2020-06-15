@@ -26,6 +26,7 @@ class Home extends React.Component {
     }
 
     render() {
+        let githubURL = "https://github.com/kelvinfan001/findalicious#instructions";
         return (
             <div className="main-page">
                 <img
@@ -43,11 +44,15 @@ class Home extends React.Component {
                                 this.props.history.push("/create");
                             }}>
                             CREATE ROOM
-                            </button>
+                        </button>
                         <button
                             onClick={() => this.setState({ formShowing: true })}>
                             JOIN ROOM
-                            </button>
+                        </button>
+                        <button
+                            onClick={() => window.open(githubURL, "_blank")}>
+                            INSTRUCTIONS
+                        </button>
                     </div>
                 }
             </div>
