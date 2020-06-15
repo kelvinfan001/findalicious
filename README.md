@@ -1,4 +1,7 @@
-<h1 align="center"> <a href="https://findalicious.herokuapp.com"> <img src="./readme_assets/findalicious_brushstroke.png" width="70%"></a> </h1>
+<h1 align="center"> <a href="https://findalicious.herokuapp.com"> <img src="./readme_assets/findalicious_brushstroke.png" width="70%"></a> 
+
+<a href="https://www.producthunt.com/posts/findalicious?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-findalicious" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=206475&theme=light" alt="Findalicious - A Tinder-style app for deciding where to eat! | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>
+</h1>
 <p align="center">
 <img alt="Open Source" src="https://img.shields.io/badge/open%20source-❤-brightgreeen">
 <img alt="License" src="https://img.shields.io/github/license/kelvinfan001/findalicious">
@@ -18,7 +21,7 @@ A Tinder-style app for deciding where to eat with your friends. Quickly create a
 
 ### Creating a Room
  1. Select `CREATE ROOM`.
- 2. Allow browser to provide your location to Findalicious. Your location should be displayed if location was found successfully.
+ 2. Allow browser to provide your location to Findalicious.
  3. Select a radius to search for restaurants.
  4. Tap on `CREATE` to create room. 
  5. Your room number should be displayed at the top.
@@ -31,8 +34,8 @@ A Tinder-style app for deciding where to eat with your friends. Quickly create a
 
 ### Swiping
  1. When all your friends are in the room and ready, tap `EVERYONE IS IN`.
- 2. Double tap on a restaurant to scroll through photos.
- 3. Swipe *right* to "LIKE" a restaurant or swipe *left* to dismiss a restaurant.
+ 2. **Double tap** on a restaurant to scroll through photos.
+ 3. **Swipe** *right* to "LIKE" a restaurant or swipe *left* to dismiss a restaurant.
  4. If everyone in the room swiped *right* on ("LIKED") a restaurant, it will show up as a match!
 <p> <img src="./readme_assets/swiping_demo.gif" width="270px"> </p>
 
