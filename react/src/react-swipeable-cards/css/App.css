@@ -13,6 +13,7 @@
   -webkit-transition: opacity 0.1s ease-in-out;
   transition: opacity 0.1s ease-in-out;
 }
+
 .container .cards_container {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
@@ -28,22 +29,8 @@
   align-items: center;
   z-index: 1;
 }
+
 .container .cards_container .card_container {
-  /* display: inline-block;
-  width: 80vw;
-  max-width: 260px;
-  height: 300px;
-  border-radius: 20px;
-  background: #fff;
-  border: 1px solid #e7e7e7;
-  overflow: hidden;
-  position: absolute;
-  will-change: transform;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-  cursor: -webkit-grab;
-  cursor: grab; */
-  /* position: relative; */
   display: inline-block;
   overflow: hidden;
   background-color: #fff;
