@@ -41,7 +41,7 @@ app.use(sslRedirect());
 
 /* Database */
 const mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
-if (mongoURL == null) {
+if (mongoURL === null) {
     mongoURL = 'mongodb://localhost:27017';
 }
 const mongoose = require('mongoose');

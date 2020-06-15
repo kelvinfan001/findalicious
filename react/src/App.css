@@ -56,7 +56,7 @@ h5 {
   box-shadow: 0 0 14px 0 #797986;
 }
 
-.main-page >div {
+.main-page > div {
   width: 220px;
 }
 
@@ -65,32 +65,32 @@ h5 {
 }
 
 @keyframes fastPopUp {
-  0% {transform: scale(0.5)} 
-  100% {transform: scale(1)}
+  0% { transform: scale(0.5) } 
+  100% { transform: scale(1) }
 }
 
 
 @keyframes popUp {
-  0% {transform: scale(0)} 
-  70% {transform: scale(1.1)} 
-  85% {transform: scale(0.94)} 
-  100% {transform: scale(1)}
+  0% { transform: scale(0) } 
+  70% { transform: scale(1.1) } 
+  85% { transform: scale(0.94) } 
+  100% { transform: scale(1) }
 }
 
 input[type=text] {
-    width: 200px;
-    border:0px;
-    border-radius:8px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    outline: none;
-    padding: 17px;
-    box-sizing:border-box;
-    transition:.3s;
-    background-color: rgba(0, 0, 0, 0.13);
-    text-align: center;
-    font-size: medium;
-  }
+  width: 200px;
+  border:0px;
+  border-radius:8px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  outline: none;
+  padding: 17px;
+  box-sizing:border-box;
+  transition:.3s;
+  background-color: rgba(0, 0, 0, 0.13);
+  text-align: center;
+  font-size: medium;
+}
   
 input[type=text]:focus {
   border-color:#9198e5;
@@ -134,7 +134,7 @@ button:active {
   border: 0;
 }
 
-button:disabled{
+button:disabled {
   background-color: rgba(196, 196, 196, 0.514);
   transform: translateY(2px);
   box-shadow: none;
