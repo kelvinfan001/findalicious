@@ -26,7 +26,7 @@ class Home extends React.Component {
     }
 
     render() {
-        let githubURL = "https://github.com/kelvinfan001/findalicious#instructions";
+        let githubURL = "https://kelvinfan001.github.io/findalicious/";
         return (
             <div className="main-page">
                 <img

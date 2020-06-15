@@ -9,7 +9,7 @@
 </p>
 
 ## Site
-https://findalicious.herokuapp.com
+[findalicious.herokuapp.com](https://findalicious.herokuapp.com)
 
 ## Description
 A Tinder-style app for deciding where to eat with your friends. Quickly create a room with your friends and swipe through restaurants in your local area.
