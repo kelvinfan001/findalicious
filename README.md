@@ -1,6 +1,5 @@
 <h1 align="center"> <a href="https://findalicious.herokuapp.com"> <img src="./readme_assets/findalicious_brushstroke.png" width="70%"></a> 
 
-<a href="https://www.producthunt.com/posts/findalicious?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-findalicious" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=206475&theme=light" alt="Findalicious - A Tinder-style app for deciding where to eat! | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>
 </h1>
 <p align="center">
 <img alt="Open Source" src="https://img.shields.io/badge/open%20source-❤-brightgreeen">
