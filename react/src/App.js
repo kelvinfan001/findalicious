@@ -10,6 +10,10 @@ import TestPageComponent from './components/TestPage/TestPage';
 import Swiping from './components/Swiping/Swiping';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
+if (expressServer === null || expressServer === undefined) {
+  // Use our local Docker compose's backend.
+  expressServer = 'http://server:3000';
+}
 let socket = io.connect(expressServer, {
   reconnection: true
 });
