@@ -45,6 +45,9 @@ You can tap on the restaurant photo to open it's Yelp page, or tap on the *direc
 
 If you'd like to continue swiping, tap anywhere in the background to dismiss the pop up if you are not satisfied with the match.
 
+## Hacking
+See the [development doc](./development.md).
+
 ## License
 Copyright © 2020 [Kelvin Fan](https://github.com/kelvinfan001).<br>
 This project is [GPL-3.0](https://github.com/kelvinfan001/findalicious/blob/master/LICENSE) licensed.
