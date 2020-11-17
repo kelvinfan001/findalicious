@@ -19,7 +19,6 @@ const io = require('socket.io')(server,
     });
 // const io = require('socket.io')(server);
 
-
 /* Misc */
 app.use((err, req, res, next) => {
     console.log(chalk.red.bold("ERROR"));
@@ -41,9 +40,11 @@ app.use(sslRedirect());
 
 /* Database */
 let mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.DB_URI;
-if (mongoURL === null) {
-    mongoURL = 'mongodb://localhost:27017';
+if (mongoURL === null || mongoURL === undefined) {
+    // Use our local Docker compose's db.
+    mongoURL = 'mongodb://mongo:27017/findalicious';
 }
+
 const mongoose = require('mongoose');
 mongoose.connect(mongoURL, { useNewUrlParser: true, useFindAndModify: false });
 const db = mongoose.connection;
