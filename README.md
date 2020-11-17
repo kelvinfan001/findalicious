@@ -51,7 +51,7 @@ This project is [GPL-3.0](https://github.com/kelvinfan001/findalicious/blob/mast
 
 ### Inspiration
 
-Shout out to my girlfriend who passive aggressively sent me [this post](https://ifunny.co/picture/okay-so-hear-me-out-an-app-right-it-s-D8bQZLQU7) after we couldn't decide on where to eat.
+Shout out to my girlfriend who passive aggressively sent me [this post](https://ifunny.co/picture/okay-so-hear-me-out-an-app-right-it-s-D8bQZLQU7) after we couldn't decide on where to eat. Really, Chicken Tinder would've been a great name, as suggested by the author of the aforementioned post.
 
 ### Disclaimer
 The author is not responsible for arguments, breakups, shouting, or otherwise emotional trauma due to the usage of this app.
