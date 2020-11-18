@@ -16,6 +16,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "build": "bin/build_react.sh",
     "start": "node bin/www"
   },
   "repository": {
