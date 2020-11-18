@@ -46,7 +46,11 @@ if (mongoURL === null || mongoURL === undefined) {
 }
 
 const mongoose = require('mongoose');
-mongoose.connect(mongoURL, { useNewUrlParser: true, useFindAndModify: false });
+mongoose.connect(mongoURL, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
