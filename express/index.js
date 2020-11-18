@@ -39,10 +39,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(sslRedirect());
 
 /* Database */
-let mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.DB_URI;
+let mongoURL = process.env.DB_URI;
 if (mongoURL === null || mongoURL === undefined) {
-    // Use our local Docker compose's db.
-    mongoURL = 'mongodb://mongo:27017/findalicious';
+    // Use localhost db.
+    mongoURL = 'mongodb://localhost:27017/findalicious';
 }
 
 const mongoose = require('mongoose');
