@@ -15,6 +15,10 @@ services:
       - DB_URI=mongodb://mongo:27017/findalicious
       - GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY
       - YELP_API_KEY=$YELP_API_KEY
+    volumes:
+      - /usr/src/app/node_modules
+      # Mount local /express dir for development
+      - ./express:/usr/src/app/express
     networks:
       - app-network
   mongo:
@@ -40,7 +44,7 @@ services:
       - REACT_APP_EXPRESS_SERVER=http://localhost:3000
     volumes:
       - /usr/src/app/node_modules
-      # Mount local /react dir for quick development
+      # Mount local /react dir for development
       - ./react:/usr/src/app
     ports:
       - "5000:5000"
