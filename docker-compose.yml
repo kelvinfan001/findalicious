@@ -42,6 +42,7 @@ services:
       # For React development server hot-reloading
       - CHOKIDAR_USEPOLLING=true
       - REACT_APP_EXPRESS_SERVER=http://localhost:3000
+      - PORT=5000
     volumes:
       - /usr/src/app/node_modules
       # Mount local /react dir for development
