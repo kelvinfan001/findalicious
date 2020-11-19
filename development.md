@@ -5,7 +5,7 @@
 
 ## Local Development Build Using Docker
 In the project's root directory, simply issue the following commands:
-```
+```shell
 GOOGLE_MAPS_API_KEY=<your key> YELP_API_KEY=<your key> docker-compose build
 docker-compose up
 ```
