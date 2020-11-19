@@ -16,5 +16,6 @@ code editor and changes should be rendered automatically.
 
 A local express server will also be spun up at `localhost:3000` and connected to
 a MongoDB database.
-To develop on the backend, you would need to re-run `docker-compose build` to
-see your changes.
+To develop on the backend, you would need to stop the containers (`docker-compose down`)
+and start them up again (`docker-compose up`) to restart the express server
+container to see changes.
