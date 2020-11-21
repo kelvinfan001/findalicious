@@ -125,12 +125,17 @@ module.exports = (io) => {
                 return;
             }
             // Make room active
-            let query = { roomNumber: socket.room, creatorId: socket.id };
-            Room.findOneAndUpdate(query, { isActive: true }, { new: true }).then(result => {
+            const query = { roomNumber: socket.room, creatorId: socket.id };
+
+            try {
+                const result = await Room.findOneAndUpdate(query, { isActive: true }, { new: true })
+    
                 if (result) {
                     io.sockets.in(socket.room).emit("room started swiping");
                 }
-            }).catch(e => console.error(e));
+            } catch (err) {
+                console.log(err)
+            }
         });
 
         /* Listen on user swipe right */
