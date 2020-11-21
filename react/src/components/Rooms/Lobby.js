@@ -120,7 +120,6 @@ class Lobby extends React.Component {
                     {this.state.participants.length} user{(this.state.participants.length === 1) ? "" : "s"} in this room
                 </h4>
 
-                {/* TODO: DISABLE WHEN NOT ENTERED ROOM FULLY */}
                 <EveryoneIsInButton isCreator={this.state.creatorId === this.props.socket.id} socket={this.props.socket} />
             </div>
         )
