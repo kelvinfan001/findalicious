@@ -9,10 +9,10 @@ const startSwiping = (socket) => socket.emit('initiate swiping');
 
 const EveryoneIsInButton = ({isCreator, socket}) => {
     if (isCreator) {
-        return <button onClick={() => startSwiping(socket)}> EVERYONE IS IN </button>
+        return <button onClick={() => startSwiping(socket)}> EVERYONE IS IN </button>;
     }
     
-    return null
+    return null;
 }
 
 class Lobby extends React.Component {
@@ -93,7 +93,7 @@ class Lobby extends React.Component {
         const { city, radius, creatorId, participants: participantsData} = data;
 
         /* Extract participant IDs, don't need to worry about anything else  */
-        const participants = participantsData.map(participant => participant.socketID)
+        const participants = participantsData.map((participant) => participant.socketID);
 
         this.setState({ city, radius, creatorId, participants });
     }
