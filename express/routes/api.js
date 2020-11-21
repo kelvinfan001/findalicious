@@ -9,10 +9,8 @@ let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 let YELP_API_KEY = process.env.YELP_API_KEY;
 
 router.post('/create-room', async (req, res, next) => {
-    let longitude = req.body.longitude;
-    let latitude = req.body.latitude;
-    let radius = req.body.radius;
-    let city = req.body.city;
+    const { creatorId, longitude, latitude, radius, city } = req.body;
+
     let restaurantsArray;
     try {
         let roomNumber = await generateNewUniqueRoomNumber();
@@ -21,12 +19,13 @@ router.post('/create-room', async (req, res, next) => {
             res.status(404).send("No restaurants found.").end();
         } else {
             Room.create({
-                roomNumber: roomNumber,
-                longitude: longitude,
-                latitude: latitude,
-                radius: radius,
+                roomNumber,
+                longitude,
+                latitude,
+                radius,
                 restaurants: restaurantsArray,
-                city: city
+                city,
+                creatorId
             }).then(data => {
                 res.json(data)
             }).catch(e => {

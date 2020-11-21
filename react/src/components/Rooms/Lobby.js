@@ -6,9 +6,11 @@ class Lobby extends React.Component {
     constructor(props) {
         super(props);
         let roomNumber = this.props.match.params.roomNumber;
+        let creatorId = this.props.match.params.creatorId;
         this.state = {
             city: "Retrieving...",
-            roomNumber: roomNumber,
+            roomNumber,
+            creatorId,
             participants: []
         }
         this.joinRoom = this.joinRoom.bind(this);
