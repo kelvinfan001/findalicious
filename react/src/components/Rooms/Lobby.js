@@ -2,6 +2,19 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 
+
+
+const startSwiping = (socket) => socket.emit('initiate swiping');
+
+
+const EveryoneIsInButton = ({isCreator, socket}) => {
+    if (isCreator) {
+        return <button onClick={() => startSwiping(socket)}> EVERYONE IS IN </button>
+    }
+    
+    return null
+}
+
 class Lobby extends React.Component {
     constructor(props) {
         super(props);
@@ -15,7 +28,6 @@ class Lobby extends React.Component {
         }
         this.joinRoom = this.joinRoom.bind(this);
         this.updateStateInfo = this.updateStateInfo.bind(this);
-        this.startSwiping = this.startSwiping.bind(this);
     }
 
     redirectHome() {
@@ -76,28 +88,19 @@ class Lobby extends React.Component {
     }
 
     updateStateInfo(result) {
-        let data = JSON.parse(result);
-        // Set participants
-        let participantsObjectArray = data.participants;
-        let participantsArray = [];
-        for (let i = 0; i < participantsObjectArray.length; i++) {
-            participantsArray.push(participantsObjectArray[i].socketID)
-        }
-        this.setState({ participants: participantsArray });
-        // Set city
-        this.setState({ city: data.city });
-        // Set radius
-        this.setState({ radius: data.radius });
+        const data = JSON.parse(result);
+
+        const { city, radius, creatorId, participants: participantsData} = data;
+
+        /* Extract participant IDs, don't need to worry about anything else  */
+        const participants = participantsData.map(participant => participant.socketID)
+
+        this.setState({ city, radius, creatorId, participants });
     }
 
     joinRoom(roomNumber) {
         let socket = this.props.socket;
         socket.emit('room', roomNumber);
-    }
-
-    startSwiping() {
-        let socket = this.props.socket;
-        socket.emit('initiate swiping');
     }
 
     render() {
@@ -118,10 +121,7 @@ class Lobby extends React.Component {
                 </h4>
 
                 {/* TODO: DISABLE WHEN NOT ENTERED ROOM FULLY */}
-                <button
-                    onClick={this.startSwiping}>
-                    EVERYONE IS IN
-                </button>
+                <EveryoneIsInButton isCreator={this.state.creatorId === this.props.socket.id} socket={this.props.socket} />
             </div>
         )
     }
