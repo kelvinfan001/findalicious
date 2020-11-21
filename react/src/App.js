@@ -9,6 +9,10 @@ import io from 'socket.io-client';
 import Swiping from './components/Swiping/Swiping';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
+if (expressServer === null || expressServer === undefined) {
+  // Use localhost backend.
+  expressServer = 'http://localhost:3000';
+}
 let socket = io.connect(expressServer, {
   reconnection: true
 });

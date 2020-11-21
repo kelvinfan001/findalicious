@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: ./express/Dockerfile
+    image: findalicious-backend
+    container_name: findalicious-express-backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - DB_URI=mongodb://mongo:27017/findalicious
+      - GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY
+      - YELP_API_KEY=$YELP_API_KEY
+    volumes:
+      - /usr/src/app/node_modules
+      # Mount local /express dir for development
+      - ./express:/usr/src/app/express
+    networks:
+      - app-network
+  mongo:
+    image: mongo
+    container_name: findalicious-mongodb
+    volumes:
+      - data-volume:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+  frontend:
+    build:
+      context: ./react
+      dockerfile: Dockerfile
+    image: findalicious-frontend
+    container_name: findalicious-react-frontend
+    depends_on:
+      - backend
+    environment:
+      # For React development server hot-reloading
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_EXPRESS_SERVER=http://localhost:3000
+      - PORT=5000
+    volumes:
+      - /usr/src/app/node_modules
+      # Mount local /react dir for development
+      - ./react:/usr/src/app
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    stdin_open: true
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    data-volume:
+    node_modules:
+    web-root:
+      driver: local
+      

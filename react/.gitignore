@@ -9,8 +9,7 @@
 /coverage
 
 # production
-# todo: should /build be pushed to deployment server or built locally in the container?
-# /build
+/build
 /src/components/TestPage
 
 # misc

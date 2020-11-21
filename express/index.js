@@ -19,7 +19,6 @@ const io = require('socket.io')(server,
     });
 // const io = require('socket.io')(server);
 
-
 /* Misc */
 app.use((err, req, res, next) => {
     console.log(chalk.red.bold("ERROR"));
@@ -40,12 +39,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(sslRedirect());
 
 /* Database */
-let mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.DB_URI;
-if (mongoURL === null) {
-    mongoURL = 'mongodb://localhost:27017';
+let mongoURL = process.env.DB_URI;
+if (mongoURL === null || mongoURL === undefined) {
+    // Use localhost db.
+    mongoURL = 'mongodb://localhost:27017/findalicious';
 }
+
 const mongoose = require('mongoose');
-mongoose.connect(mongoURL, { useNewUrlParser: true, useFindAndModify: false });
+mongoose.connect(mongoURL, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
