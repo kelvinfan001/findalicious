@@ -125,7 +125,7 @@ module.exports = (io) => {
                 return;
             }
             // Make room active
-            let query = { roomNumber: socket.room };
+            let query = { roomNumber: socket.room, creatorId: socket.id };
             Room.findOneAndUpdate(query, { isActive: true }, { new: true }).then(result => {
                 if (result) {
                     io.sockets.in(socket.room).emit("room started swiping");

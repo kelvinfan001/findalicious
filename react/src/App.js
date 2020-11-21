@@ -6,7 +6,6 @@ import CreateRoom from './components/Rooms/CreateRoom';
 import Lobby from './components/Rooms/Lobby';
 import './App.css';
 import io from 'socket.io-client';
-import TestPageComponent from './components/TestPage/TestPage';
 import Swiping from './components/Swiping/Swiping';
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER;
@@ -26,7 +25,6 @@ class App extends React.Component {
             <Route exact path='/create' render={(props) => (<CreateRoom {...props} socket={socket} />)} />
             <Route exact path='/swiping' render={(props) => (<Swiping {...props} socket={socket} />)} />
             <Route exact path="/rooms" component={RoomNotFound} />
-            <Route exact path="/test" component={TestPageComponent} />
             <Route exact path="/disconnect" component={UserDisconnect} />
             <Route exact path="/already-swiping" component={RoomAlreadyStartedSwiping} />
             <Route component={PageNotFound} />

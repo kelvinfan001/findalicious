@@ -106,7 +106,8 @@ class CreateRoom extends React.Component {
                 longitude: longitude,
                 latitude: latitude,
                 radius: radius,
-                city: currentCity
+                city: currentCity,
+                creatorId: this.props.socket.id
             })
         }).then(result => {
             if (result.status === 200) {
