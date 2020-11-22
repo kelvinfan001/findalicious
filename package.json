@@ -25,6 +25,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "build": "bin/build_react.sh",
     "start": "node bin/www",
     "test:eslint": "eslint --ignore-path .gitignore '**/*.js' --fix"
   },

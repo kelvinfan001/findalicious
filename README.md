@@ -45,13 +45,16 @@ You can tap on the restaurant photo to open it's Yelp page, or tap on the *direc
 
 If you'd like to continue swiping, tap anywhere in the background to dismiss the pop up if you are not satisfied with the match.
 
+## Hacking
+See the [development doc](./development.md).
+
 ## License
 Copyright © 2020 [Kelvin Fan](https://github.com/kelvinfan001).<br>
 This project is [GPL-3.0](https://github.com/kelvinfan001/findalicious/blob/master/LICENSE) licensed.
 
 ### Inspiration
 
-Shout out to my girlfriend who passive aggressively sent me [this post](https://ifunny.co/picture/okay-so-hear-me-out-an-app-right-it-s-D8bQZLQU7) after we couldn't decide on where to eat.
+Shout out to my girlfriend who passive aggressively sent me [this post](https://ifunny.co/picture/okay-so-hear-me-out-an-app-right-it-s-D8bQZLQU7) after we couldn't decide on where to eat. Really, Chicken Tinder would've been a great name, as suggested by the author of the aforementioned post.
 
 ### Disclaimer
 The author is not responsible for arguments, breakups, shouting, or otherwise emotional trauma due to the usage of this app.
