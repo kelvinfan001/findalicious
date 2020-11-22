@@ -12,21 +12,22 @@ module.exports = (io) => {
             // Update participants in room if a user is leaving a room
             let query = { roomNumber: roomNumber };
             try {
-                let result = await Room.findOneAndUpdate(query,
+                const result = await Room.findOneAndUpdate(query,
                     { $pull: { participants: { socketID: socket.id } } },
                     { new: true });
                 if (result) {
-                    // Check if last participant has disconnected, if so, delete room from db
-                    if (result.participants.length === 0) {
+                    const roomInfo = JSON.stringify(result);
+                    /* Check if creator has disconnected, if so, delete room from db and notify other users */
+                    if (result.creatorId === socket.id) {
                         Room.findOneAndDelete(query).then((result) => {
                             if (!result) {
                                 console.error("Failed to delete room.");
                             } else {
                                 console.log(`All users disconnected. Deleted room ${roomNumber}.`);
+                                io.sockets.in(roomNumber).emit('room creator disconnect', roomInfo);
                             }
                         });
                     }
-                    roomInfo = JSON.stringify(result);
                     io.sockets.in(roomNumber).emit('user disconnect', roomInfo);
                     console.log(`User ${socket.id} has left db room ${roomNumber}.`);
                 } else {
@@ -118,7 +119,7 @@ module.exports = (io) => {
         });
 
         /* Listen on user initiate swiping after tapping "EVERYONE IS IN" */
-        socket.on("initiate swiping", () => {
+        socket.on("initiate swiping", async () => {
             if (!socket.room) {
                 console.warn(`User ${socket.id} attempted to initiate swiping without being in a socket room.`);
                 socket.emit('general error', "attempted to initiate swiping without being in a socket room.");

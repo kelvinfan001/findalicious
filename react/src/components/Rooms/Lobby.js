@@ -74,6 +74,13 @@ class Lobby extends React.Component {
             this.updateStateInfo(result);
         });
 
+        /* Listen on creator disconnect */
+        socket.on('room creator disconnect', (result) => {
+            alert('Creator disconnected');
+            console.log('Creator disconnected');
+            this.redirectHome();
+        });
+
         // Listen on attempting to join an already active room
         socket.on('room already swiping', () => {
             // No need to leave room since we are using location.assign. The user will get disconnected and
