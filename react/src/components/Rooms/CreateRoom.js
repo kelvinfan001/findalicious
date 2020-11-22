@@ -106,13 +106,14 @@ class CreateRoom extends React.Component {
                 longitude: longitude,
                 latitude: latitude,
                 radius: radius,
-                city: currentCity
+                city: currentCity,
+                creatorId: this.props.socket.id
             })
         }).then(result => {
             if (result.status === 200) {
                 result.json().then(resultJSON => {
-                    let roomNumber = resultJSON.roomNumber;
-                    let roomURL = "/rooms/" + roomNumber;
+                    const { roomNumber } = resultJSON;
+                    const roomURL = `/rooms/${roomNumber}`;
                     this.goToRoom(roomURL);
                 });
             } else if (result.status === 404) {
