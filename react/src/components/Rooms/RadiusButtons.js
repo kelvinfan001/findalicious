@@ -1,5 +1,6 @@
+import convert from "convert-units";
 import React from "react";
-import { Unit } from "../../Units/Units";
+import { getUnitSetting, Unit } from "../../Units/Units";
 
 class RadiusButtons extends React.Component {
   constructor(props) {
@@ -42,19 +43,34 @@ class RadiusButtons extends React.Component {
     return (
       <div style={containerStyle}>
         <button
-          onClick={this._handleClick.bind(this, 1)}
+          onClick={this._handleClick.bind(
+            this,
+            convert(1)
+              .from(getUnitSetting() === "metric" ? "km" : "mi")
+              .to("km")
+          )}
           style={this.state.active === 1 ? buttonActiveStyle : buttonStyle}
         >
           {Unit(1, { imperial: "mi", metric: "km" })}
         </button>
         <button
-          onClick={this._handleClick.bind(this, 2)}
+          onClick={this._handleClick.bind(
+            this,
+            convert(2)
+              .from(getUnitSetting() === "metric" ? "km" : "mi")
+              .to("km")
+          )}
           style={this.state.active === 2 ? buttonActiveStyle : buttonStyle}
         >
           {Unit(2, { imperial: "mi", metric: "km" })}
         </button>
         <button
-          onClick={this._handleClick.bind(this, 5)}
+          onClick={this._handleClick.bind(
+            this,
+            convert(5)
+              .from(getUnitSetting() === "metric" ? "km" : "mi")
+              .to("km")
+          )}
           style={this.state.active === 5 ? buttonActiveStyle : buttonStyle}
         >
           {Unit(5, { imperial: "mi", metric: "km" })}

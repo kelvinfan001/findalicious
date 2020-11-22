@@ -1,4 +1,4 @@
-const getUnitSetting = () => localStorage.getItem("units");
+export const getUnitSetting = () => localStorage.getItem("units");
 
 export const Unit = (val, types) =>
   getUnitSetting() === "metric"
