@@ -1,199 +1,187 @@
-const express = require('express');
-const fetch = require('node-fetch');
-const router = express.Router();
-const Room = require('../models/room');
-const { Client, Status } = require("@googlemaps/google-maps-services-js");
-require('dotenv').config();
+const express = require('express')
+const fetch = require('node-fetch')
 
-let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
-let YELP_API_KEY = process.env.YELP_API_KEY;
+const router = express.Router()
+const { Client, Status } = require('@googlemaps/google-maps-services-js')
+const Room = require('../models/room')
+require('dotenv').config()
 
-router.post('/create-room', async (req, res, next) => {
-    let longitude = req.body.longitude;
-    let latitude = req.body.latitude;
-    let radius = req.body.radius;
-    let city = req.body.city;
-    let restaurantsArray;
-    try {
-        let roomNumber = await generateNewUniqueRoomNumber();
-        restaurantsArray = await getRestaurants(longitude, latitude, radius);
-        if (restaurantsArray.length === 0) {
-            res.status(404).send("No restaurants found.").end();
-        } else {
-            Room.create({
-                roomNumber: roomNumber,
-                longitude: longitude,
-                latitude: latitude,
-                radius: radius,
-                restaurants: restaurantsArray,
-                city: city
-            }).then(data => {
-                res.json(data)
-            }).catch(e => {
-                console.error(e);
-                res.status(500).end();
-            });
-        }
-    } catch (e) {
-        res.status(500).send(e).end();
-        console.error(e);
-    }
-});
+const { GOOGLE_MAPS_API_KEY } = process.env
+const { YELP_API_KEY } = process.env
 
-router.get('/rooms', (req, res) => {
-    if (req.query.roomNumber) {
-        Room.findOne({ roomNumber: req.query.roomNumber }).then(result => {
-            if (result) {
-                res.json(result);
-            } else {
-                res.status(404).end();
-            }
-        }).catch(e => {
-            res.status(500).end();
-        });
+router.post('/create-room', async (req, res) => {
+  const { longitude } = req.body
+  const { latitude } = req.body
+  const { radius } = req.body
+  const { city } = req.body
+  let restaurantsArray
+  try {
+    const roomNumber = await generateNewUniqueRoomNumber()
+    restaurantsArray = await getRestaurants(longitude, latitude, radius)
+    if (restaurantsArray.length === 0) {
+      res.status(404).send('No restaurants found.').end()
     } else {
-        Room.find({}, ['roomNumber', 'participantCount']).then(
-            data => res.json(data)
-        ).catch(e => {
-            res.status(500).end();
-        });
+      try {
+        const data = await Room.create({
+          roomNumber,
+          longitude,
+          latitude,
+          radius,
+          restaurants: restaurantsArray,
+          city
+        })
+        res.json(data)
+      } catch (err) {
+        console.error(err)
+        res.status(500).end()
+      }
     }
-});
+  } catch (e) {
+    res.status(500).send(e).end()
+    console.error(e)
+  }
+})
+
+router.get('/rooms', async (req, res) => {
+  try {
+    if (req.query.roomNumber) {
+      const result = await Room.findOne({ roomNumber: req.query.roomNumber })
+      if (result) {
+        res.json(result)
+      } else {
+        res.status(404).end()
+      }
+    } else {
+      const data = await Room.find({}, ['roomNumber', 'participantCount'])
+      res.json(data)
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).end()
+  }
+})
 
 router.get('/additionalPhotos', (req, res) => {
-    if (req.query.id) {
-        let url = "https://api.yelp.com/v3/businesses/" + req.query.id;
-        let headers = {
-            "Authorization": "Bearer " + YELP_API_KEY
-        };
-        fetch(url,
-            { method: "GET", headers: headers })
-            .then(results => {
-                if (results.status !== 200) {
-                    throw new Error("Could not get a response from API.");
-                }
-                return results.json();
-            })
-            .then(resultsJSON => {
-                res.json(resultsJSON);
-            })
-            .catch(e => {
-                console.error(e);
-                res.status(500).send(e).end();
-            })
+  if (req.query.id) {
+    const url = `https://api.yelp.com/v3/businesses/${req.query.id}`
+    const headers = {
+      Authorization: `Bearer ${YELP_API_KEY}`
     }
-});
+    try {
+      const results = fetch(url, { method: 'GET', headers })
+      if (results.status !== 200) {
+        throw new Error('Could not get a response from API.')
+      }
+      return res.json(results.json())
+    } catch (err) {
+      console.error(err)
+      res.status(500).send(err).end()
+    }
+  }
+})
 
+router.get('/location', async (req, res) => {
+  const { latitude } = req.query
+  const { longitude } = req.query
+  const latlng = `${latitude},${longitude}`
 
-router.get('/location', (req, res, next) => {
-    let latitude = req.query.latitude;
-    let longitude = req.query.longitude;
-    let latitudelongitude = latitude + "," + longitude;
+  const client = new Client({})
 
-    const client = new Client({});
-
-    client.reverseGeocode({
-        params: {
-            latlng: latitudelongitude,
-            key: GOOGLE_MAPS_API_KEY
-        },
-        body: {
-            radioType: "lte"
-        },
-        timeout: 1000, // milliseconds
-    }).then((r) => {
-        if (r.data.status === Status.OK) {
-            // first result (most precise)
-            let fullAddress = r.data.results[0].formatted_address;
-            let shortAddress = fullAddress.split(",")[0];
-            res.send(shortAddress);
-        } else {
-            console.log(r);
-            console.log(r.data.error_message);
-        }
-    }).catch((e) => {
-        res.status(500).send("An unknown error occurred").end();
-        console.log(e);
-    });
-});
+  try {
+    const { data: geoData } = await client.reverseGeocode({
+      params: {
+        latlng,
+        key: GOOGLE_MAPS_API_KEY
+      },
+      body: {
+        radioType: 'lte'
+      },
+      timeout: 1000 // milliseconds
+    })
+    if (geoData.status === Status.OK) {
+      // first result (most precise)
+      const fullAddress = geoData.results[0].formatted_address
+      const shortAddress = fullAddress.split(',')[0]
+      res.send(shortAddress)
+    } else {
+      console.log(geoData)
+      console.log(geoData.error_message)
+    }
+  } catch (err) {
+    res.status(500).send('An unknown error occurred').end()
+    console.log(err)
+  }
+})
 
 function checkRoomAlreadyExists(roomNumber) {
-    return new Promise((resolve, reject) => {
-        Room.findOne({ roomNumber: roomNumber }).then(result => {
-            if (result) {
-                resolve(true);
-            }
-            resolve(false);
-        }).catch(e => {
-            console.error(e);
-            reject(e);
-        });
-    });
+  return new Promise((resolve, reject) => {
+    Room.findOne({ roomNumber })
+      /* eslint-disable-next-line promise/prefer-await-to-then */
+      .then(result => {
+        if (result) {
+          return resolve(true)
+        }
+        return resolve(false)
+      })
+      .catch(e => {
+        console.error(e)
+        return reject(e)
+      })
+  })
 }
 
 function generateNewUniqueRoomNumber() {
-    let roomNumber = Math.floor(Math.random() * (10000 - 1000)) + 1000;
+  let roomNumber = Math.floor(Math.random() * (10000 - 1000)) + 1000
 
-    return new Promise(async (resolve, reject) => {
-        try {
-            let roomAlreadyExists = await checkRoomAlreadyExists(roomNumber);
-            while (roomAlreadyExists) {
-                roomNumber = Math.floor(Math.random() * 10000);
-                roomAlreadyExists = await checkRoomAlreadyExists(roomNumber);
-            }
-            resolve(roomNumber);
-        } catch (e) {
-            console.error(e);
-            reject(e);
-        }
-    });
+  /* eslint-disable-next-line */
+  return new Promise(async (resolve, reject) => {
+    try {
+      let roomAlreadyExists = await checkRoomAlreadyExists(roomNumber)
+      while (roomAlreadyExists) {
+        roomNumber = Math.floor(Math.random() * 10000)
+        /* eslint-disable-next-line */
+        roomAlreadyExists = await checkRoomAlreadyExists(roomNumber)
+      }
+      resolve(roomNumber)
+    } catch (e) {
+      console.error(e)
+      reject(e)
+    }
+  })
 }
 
-function getRestaurants(longitude, latitude, radius) {
-    let radiusMetres = radius * 1000;
-    let restaurantApiResults = [];
-    let restaurantResults = [];
+async function getRestaurants(longitude, latitude, radius) {
+  const radiusMetres = radius * 1000
 
-    let url = "https://api.yelp.com/v3/businesses/search?open_now=true&categories=restaurants"
-    let headers = {
-        "Authorization": "Bearer " + YELP_API_KEY
-    };
+  const url = 'https://api.yelp.com/v3/businesses/search?open_now=true&categories=restaurants'
+  const headers = {
+    Authorization: `Bearer ${YELP_API_KEY}`
+  }
 
-    return new Promise(function (resolve, reject) {
-        fetch(url +
-            "&latitude=" + latitude +
-            "&longitude=" + longitude +
-            "&radius=" + radiusMetres,
-            { method: "GET", headers: headers })
-            .then(results => {
-                if (results.status !== 200) {
-                    throw new Error("Could not get a response from API.");
-                }
-                return results.json();
-            })
-            .then(resultsJSON => {
-                restaurantApiResults = resultsJSON.businesses;
-                for (let i = 0; i < restaurantApiResults.length; i++) {
-                    let curRestaurant = {
-                        placeID: (restaurantApiResults[i].id),
-                        name: restaurantApiResults[i].name,
-                        yelpURL: restaurantApiResults[i].url,
-                        address: restaurantApiResults[i].location.address1,
-                        distance: restaurantApiResults[i].distance,
-                        photoURL: restaurantApiResults[i].image_url,
-                        price: restaurantApiResults[i].price,
-                        rating: restaurantApiResults[i].rating,
-                        category: restaurantApiResults[i].categories[0].title
-                    };
-                    restaurantResults.push(curRestaurant);
-                }
-                resolve(restaurantResults);
-            })
-            .catch(e => {
-                reject(e);
-                console.error(e);
-            });
-    });
+  const results = await fetch(`${url}&latitude=${latitude}&longitude=${longitude}&radius=${radiusMetres}`, {
+    method: 'GET',
+    headers
+  })
+
+  if (results.status !== 200) {
+    throw new Error('Could not get a response from API.')
+  }
+
+  const resultsJson = results.json()
+
+  const restaurantResults = resultsJson.businesses.map(business => ({
+    placeID: business.id,
+    name: business.name,
+    yelpURL: business.url,
+    address: business.location.address1,
+    distance: business.distance,
+    photoURL: business.image_url,
+    price: business.price,
+    rating: business.rating,
+    category: business.categories[0].title
+  }))
+
+  return restaurantResults
 }
 
-module.exports = router;
+module.exports = router

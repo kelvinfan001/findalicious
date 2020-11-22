@@ -1,0 +1,60 @@
+{
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "plugins": ["import", "prettier", "promise"],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:prettier/recommended"
+  ],
+  "ignorePatterns": ["*.d.ts"],
+  "rules": {
+    "array-callback-return": "off",
+    "camelcase": "off",
+    "class-methods-use-this": "off",
+    "consistent-return": "off",
+    "eqeqeq": "error",
+    "import/extensions": ["error", "ignorePackages", { "ts": "never" }],
+    "import/no-extraneous-dependencies": "error",
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
+    "max-classes-per-file": "off",
+    "no-console": "off",
+    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "no-plusplus": "off",
+    "no-restricted-syntax": "off",
+    "no-use-before-define": "off",
+    "no-useless-constructor": "off",
+    "no-var": "error",
+    "prettier/prettier": "warn",
+    "promise/always-return": "error",
+    "promise/avoid-new": "off",
+    "promise/catch-or-return": "error",
+    "promise/no-callback-in-promise": "error",
+    "promise/no-native": "off",
+    "promise/no-nesting": "error",
+    "promise/no-new-statics": "error",
+    "promise/no-promise-in-callback": "error",
+    "promise/no-return-in-finally": "error",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/prefer-await-to-callbacks": "error",
+    "promise/prefer-await-to-then": "error",
+    "promise/valid-params": "error",
+    "radix": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.spec.ts"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
+}
