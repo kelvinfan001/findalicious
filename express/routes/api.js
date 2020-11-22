@@ -61,7 +61,7 @@ router.get('/rooms', async (req, res) => {
   }
 })
 
-router.get('/additionalPhotos', (req, res) => {
+router.get('/additionalPhotos', async (req, res) => {
   if (req.query.id) {
     const url = `https://api.yelp.com/v3/businesses/${req.query.id}`
     const headers = {
@@ -72,7 +72,7 @@ router.get('/additionalPhotos', (req, res) => {
       if (results.status !== 200) {
         throw new Error('Could not get a response from API.')
       }
-      return res.json(results.json())
+      return res.json(await results.json())
     } catch (err) {
       console.error(err)
       res.status(500).send(err).end()
@@ -167,7 +167,7 @@ async function getRestaurants(longitude, latitude, radius) {
     throw new Error('Could not get a response from API.')
   }
 
-  const resultsJson = results.json()
+  const resultsJson = await results.json()
 
   const restaurantResults = resultsJson.businesses.map(business => ({
     placeID: business.id,

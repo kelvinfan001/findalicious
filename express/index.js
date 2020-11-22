@@ -1,6 +1,8 @@
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const express = require('express')
+
+const app = express()
 const sslRedirect = require('heroku-ssl-redirect')
 const server = require('http').Server(app)
 const mongoose = require('mongoose')
@@ -15,8 +17,6 @@ const io = require('socket.io')(server, {
 })
 const routes = require('./routes/api')
 require('dotenv').config()
-
-const app = express()
 
 // const io = require('socket.io')(server);
 
