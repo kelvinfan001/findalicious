@@ -1,6 +1,6 @@
 # Dockerfile for Express backend.
 
-FROM node:10.16-alpine
+FROM node:14.15-alpine
 
 WORKDIR /usr/src/app
 
