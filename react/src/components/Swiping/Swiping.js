@@ -1,12 +1,12 @@
 import React from 'react'
 import './Swiping.css'
-import EndCard from './EndCard'
-import { Card, CardWrapper } from '../../react-swipeable-cards'
 import Popup from 'reactjs-popup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDirections } from '@fortawesome/free-solid-svg-icons'
+import { Card, CardWrapper } from '../../react-swipeable-cards'
+import EndCard from './EndCard'
 
-let expressServer = process.env.REACT_APP_EXPRESS_SERVER
+const expressServer = process.env.REACT_APP_EXPRESS_SERVER
 
 class Swiping extends React.Component {
   constructor(props) {
@@ -38,80 +38,79 @@ class Swiping extends React.Component {
     this.setState({ matchOpen: false })
   }
 
-  getEndCard() {
+  static getEndCard() {
     return <EndCard />
   }
 
   onSwipeRight(restaurant) {
-    let socket = this.props.socket
+    const { socket } = this.props
     socket.emit('swipe', restaurant.placeID)
-    console.log('removing: ' + restaurant.placeID + ' after swiping right')
+    console.log(`removing: ${restaurant.placeID} after swiping right`)
   }
 
   onSwipeLeft(restaurant) {
-    let socket = this.props.socket
+    const { socket } = this.props
     socket.emit('swipe')
-    console.log('removing: ' + restaurant.placeID + ' after swiping left')
+    console.log(`removing: ${restaurant.placeID} after swiping left`)
   }
 
-  onDoubleTap(restaurant) {
-    let restaurantsArray = this.state.restaurants
-    let restaurantIndex = restaurantsArray.indexOf(restaurant)
-    let url = expressServer + '/api/additionalPhotos/?id=' + restaurant.placeID
-    if (!restaurantsArray[restaurantIndex].additionalPhotos) {
-      // haven't fetched additional photos yet
-      fetch(url, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(result => {
-          if (result.status === 200) {
-            result.json().then(resultJSON => {
-              let additionalPhotos = resultJSON.photos
-              restaurantsArray[restaurantIndex].additionalPhotos = additionalPhotos
-              restaurantsArray[restaurantIndex].photoURL = additionalPhotos[1]
-              restaurantsArray[restaurantIndex].curPhotoIndex = 1
-              this.setState({ restaurants: restaurantsArray })
-            })
-          } else {
-            // Yelp API server did not find business details.
-            console.error('Yelp API server did not find business details.')
+  async onDoubleTap(restaurant) {
+    const restaurantsArray = this.state.restaurants
+    const restaurantIndex = restaurantsArray.indexOf(restaurant)
+    const url = `${expressServer}/api/additionalPhotos/?id=${restaurant.placeID}`
+    try {
+      if (!restaurantsArray[restaurantIndex].additionalPhotos) {
+        // haven't fetched additional photos yet
+        const result = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
           }
         })
-        .catch(e => {
-          console.log(e)
-        })
-    } else {
-      // additional photos have already been fetched
-      // cycle through additional photos
-      if (restaurantsArray[restaurantIndex].curPhotoIndex === 2) {
-        restaurantsArray[restaurantIndex].curPhotoIndex = 0
+        if (result.status === 200) {
+          const resultJSON = await result.json()
+          const additionalPhotos = resultJSON.photos
+          restaurantsArray[restaurantIndex].additionalPhotos = additionalPhotos
+          /* eslint-disable-next-line prefer-destructuring */
+          restaurantsArray[restaurantIndex].photoURL = additionalPhotos[1]
+          restaurantsArray[restaurantIndex].curPhotoIndex = 1
+          this.setState({ restaurants: restaurantsArray })
+        } else {
+          // Yelp API server did not find business details.
+          console.error('Yelp API server did not find business details.')
+        }
       } else {
-        restaurantsArray[restaurantIndex].curPhotoIndex += 1
+        // additional photos have already been fetched
+        // cycle through additional photos
+        if (restaurantsArray[restaurantIndex].curPhotoIndex === 2) {
+          restaurantsArray[restaurantIndex].curPhotoIndex = 0
+        } else {
+          restaurantsArray[restaurantIndex].curPhotoIndex += 1
+        }
+        const { curPhotoIndex } = restaurantsArray[restaurantIndex]
+        const { additionalPhotos } = restaurantsArray[restaurantIndex]
+        restaurantsArray[restaurantIndex].photoURL = additionalPhotos[curPhotoIndex]
+        this.setState({ restaurants: restaurantsArray })
       }
-      let curPhotoIndex = restaurantsArray[restaurantIndex].curPhotoIndex
-      let additionalPhotos = restaurantsArray[restaurantIndex].additionalPhotos
-      restaurantsArray[restaurantIndex].photoURL = additionalPhotos[curPhotoIndex]
-      this.setState({ restaurants: restaurantsArray })
+    } catch (err) {
+      console.log(err)
     }
     console.log('Finding next photo')
   }
 
-  redirectHome() {
+  static redirectHome() {
     window.location.assign('/')
   }
 
   componentDidMount() {
-    let socket = this.props.socket
+    const { socket } = this.props
     if (!this.props.location.state.roomNumber) {
       this.props.history.push('/')
     }
 
-    let roomNumber = this.props.location.state.roomNumber
-    fetch(expressServer + '/api/rooms/?roomNumber=' + roomNumber, {
+    const { roomNumber } = this.props.location.state
+    fetch(`${expressServer}/api/rooms/?roomNumber=${roomNumber}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -198,15 +197,15 @@ class Swiping extends React.Component {
       top: '0%'
     }
 
-    let restaurant = this.state.matchedRestaurant
+    const restaurant = this.state.matchedRestaurant
 
-    let googleDirectionParameterArray = restaurant.name.split(' ')
+    const googleDirectionParameterArray = restaurant.name.split(' ')
     let googleDirectionsParameter = ''
     for (let word = 0; word < googleDirectionParameterArray.length - 1; word++) {
-      googleDirectionsParameter += googleDirectionParameterArray[word] + '+'
+      googleDirectionsParameter += `${googleDirectionParameterArray[word]}+`
     }
     googleDirectionsParameter += googleDirectionParameterArray[googleDirectionParameterArray.length - 1]
-    let googleDirectionsURL = 'https://www.google.com/maps/dir/?api=1&destination=' + googleDirectionsParameter
+    const googleDirectionsURL = `https://www.google.com/maps/dir/?api=1&destination=${googleDirectionsParameter}`
 
     return (
       <div>
@@ -215,7 +214,7 @@ class Swiping extends React.Component {
             <Card
               key={restaurant.placeID}
               data={restaurant}
-              style={{ backgroundImage: 'url(' + restaurant.photoURL + ')' }}
+              style={{ backgroundImage: `url(${restaurant.photoURL})` }}
               onSwipeRight={this.onSwipeRight.bind(this)}
               onSwipeLeft={this.onSwipeLeft.bind(this)}
               onDoubleTap={this.onDoubleTap.bind(this)}

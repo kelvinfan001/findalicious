@@ -4,7 +4,7 @@ import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 class EndCard extends React.Component {
-  render() {
+  static render() {
     const textStyle = {
       margin: '20px',
       marginTop: '5px',
@@ -12,8 +12,8 @@ class EndCard extends React.Component {
     }
     return (
       <div>
-        <img src={process.env.PUBLIC_URL + 'logo.png'} className="logo" alt="Findalicious Icon" />
-        <h3> THAT'S ALL WE FOUND </h3>
+        <img src={`${process.env.PUBLIC_URL}logo.png`} className="logo" alt="Findalicious Icon" />
+        <h3> THAT{"'"}S ALL WE FOUND </h3>
         <p style={textStyle}> Your friends might still be swiping...</p>
 
         <Link to="/">

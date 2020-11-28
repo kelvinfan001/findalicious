@@ -1,11 +1,11 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
-import RadiusButtons from './RadiusButtons'
 import LoadingOverlay from 'react-loading-overlay'
 import BeatLoader from 'react-spinners/BeatLoader'
+import RadiusButtons from './RadiusButtons'
 
-let expressServer = process.env.REACT_APP_EXPRESS_SERVER
+const expressServer = process.env.REACT_APP_EXPRESS_SERVER
 
 class CreateRoom extends React.Component {
   constructor(props) {
@@ -24,18 +24,18 @@ class CreateRoom extends React.Component {
   }
 
   updateRadius(radius) {
-    this.setState({ radius: radius })
+    this.setState({ radius })
   }
 
-  redirectHome() {
+  static redirectHome() {
     window.location.assign('/')
   }
 
   componentDidMount() {
-    let parentThis = this
+    const parentThis = this
 
     // Check if already joined a room (e.g. if user clicked browser prev page to this page after joining a room)
-    let socket = this.props.socket
+    const { socket } = this.props
     socket.emit('check joined room', hasJoinedRoom => {
       if (hasJoinedRoom) {
         // Leave the previous room since client is at home page.
@@ -44,30 +44,27 @@ class CreateRoom extends React.Component {
     })
 
     // Geolocation and reverse geocoding
-    let options = {
+    const options = {
       enableHighAccuracy: true
     }
 
     async function success(pos) {
-      let coords = pos.coords
-      let latitude = coords.latitude
-      let longitude = coords.longitude
-      let state = { latitude: latitude, longitude: longitude, currentCity: 'Coordinates Retrieved...' }
+      const { coords } = pos
+      const { latitude } = coords
+      const { longitude } = coords
+      const state = { latitude, longitude, currentCity: 'Coordinates Retrieved...' }
       parentThis.setState(state)
       try {
-        let geocodeResult = await fetch(
-          expressServer + '/api/location?longitude=' + longitude + '&latitude=' + latitude,
-          {
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            }
+        const geocodeResult = await fetch(`${expressServer}/api/location?longitude=${longitude}&latitude=${latitude}`, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
           }
-        )
+        })
         if (geocodeResult.status === 200) {
           geocodeResult.text().then(geocodeResultText => {
-            let state = { currentCity: geocodeResultText, locationRetrieved: true }
+            const state = { currentCity: geocodeResultText, locationRetrieved: true }
             parentThis.setState(state)
           })
         } else {
@@ -94,29 +91,29 @@ class CreateRoom extends React.Component {
   }
 
   createJoinRoom() {
-    let longitude = this.state.longitude
-    let latitude = this.state.latitude
-    let radius = this.state.radius
-    let currentCity = this.state.currentCity
+    const { longitude } = this.state
+    const { latitude } = this.state
+    const { radius } = this.state
+    const { currentCity } = this.state
     this.setState({ loading: true })
-    fetch(expressServer + '/api/create-room', {
+    fetch(`${expressServer}/api/create-room`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        longitude: longitude,
-        latitude: latitude,
-        radius: radius,
+        longitude,
+        latitude,
+        radius,
         city: currentCity
       })
     })
       .then(result => {
         if (result.status === 200) {
           result.json().then(resultJSON => {
-            let roomNumber = resultJSON.roomNumber
-            let roomURL = '/rooms/' + roomNumber
+            const { roomNumber } = resultJSON
+            const roomURL = `/rooms/${roomNumber}`
             this.goToRoom(roomURL)
           })
         } else if (result.status === 404) {

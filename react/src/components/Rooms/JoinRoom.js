@@ -21,13 +21,18 @@ class JoinRoomForm extends React.Component {
       this.setState({ roomNumber: '' })
       return
     }
-    let roomURL = '/rooms/' + this.state.roomNumber
+    const roomURL = `/rooms/${this.state.roomNumber}`
     this.props.history.push(roomURL)
   }
 
   render() {
     return (
-      <form onSubmit={this.submit} ref={node => (this.setWrapperRef = node)}>
+      <form
+        onSubmit={this.submit}
+        ref={node => {
+          this.setWrapperRef = node
+        }}
+      >
         <input
           className="pop-up"
           type="text"

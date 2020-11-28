@@ -9,13 +9,13 @@ class Home extends React.Component {
     }
   }
 
-  redirectHome() {
+  static redirectHome() {
     window.location.assign('/')
   }
 
   componentDidMount() {
     // Check if already joined a room (e.g. if user clicked browser prev page to this page after joining a room)
-    let socket = this.props.socket
+    const { socket } = this.props
     socket.emit('check joined room', hasJoinedRoom => {
       if (hasJoinedRoom) {
         // Leave the previous room since client is at home page.
@@ -25,11 +25,11 @@ class Home extends React.Component {
   }
 
   render() {
-    let githubURL = 'https://kelvinfan001.github.io/findalicious/'
+    const githubURL = 'https://kelvinfan001.github.io/findalicious/'
     return (
       <div className="main-page">
         <img
-          src={process.env.PUBLIC_URL + 'logo.png'}
+          src={`${process.env.PUBLIC_URL}logo.png`}
           className="logo"
           alt="Findalicious Icon"
           onClick={() => this.setState({ formShowing: false })}
@@ -40,7 +40,7 @@ class Home extends React.Component {
           <div>
             <button
               className="pop-up"
-              onClick={e => {
+              onClick={() => {
                 this.props.history.push('/create')
               }}
             >

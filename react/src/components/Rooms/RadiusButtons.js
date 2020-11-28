@@ -10,7 +10,7 @@ class RadiusButtons extends React.Component {
 
   _handleClick(radius) {
     this.setState({ active: radius })
-    var updateRadius = this.props.updateRadius
+    const { updateRadius } = this.props
     updateRadius(radius)
   }
 

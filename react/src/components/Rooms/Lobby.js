@@ -5,10 +5,10 @@ import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 class Lobby extends React.Component {
   constructor(props) {
     super(props)
-    let roomNumber = this.props.match.params.roomNumber
+    const { roomNumber } = this.props.match.params
     this.state = {
       city: 'Retrieving...',
-      roomNumber: roomNumber,
+      roomNumber,
       participants: []
     }
     this.joinRoom = this.joinRoom.bind(this)
@@ -16,13 +16,13 @@ class Lobby extends React.Component {
     this.startSwiping = this.startSwiping.bind(this)
   }
 
-  redirectHome() {
+  static redirectHome() {
     window.location.assign('/')
   }
 
   componentDidMount() {
-    let socket = this.props.socket
-    let parentThis = this
+    const { socket } = this.props
+    const parentThis = this
 
     // Check if already joined a room (e.g. if user clicked browser prev page to this page after joining a room)
     socket.emit('check joined room', hasJoinedRoom => {
@@ -74,10 +74,10 @@ class Lobby extends React.Component {
   }
 
   updateStateInfo(result) {
-    let data = JSON.parse(result)
+    const data = JSON.parse(result)
     // Set participants
-    let participantsObjectArray = data.participants
-    let participantsArray = []
+    const participantsObjectArray = data.participants
+    const participantsArray = []
     for (let i = 0; i < participantsObjectArray.length; i++) {
       participantsArray.push(participantsObjectArray[i].socketID)
     }
@@ -89,12 +89,12 @@ class Lobby extends React.Component {
   }
 
   joinRoom(roomNumber) {
-    let socket = this.props.socket
+    const { socket } = this.props
     socket.emit('room', roomNumber)
   }
 
   startSwiping() {
-    let socket = this.props.socket
+    const { socket } = this.props
     socket.emit('initiate swiping')
   }
 
@@ -107,7 +107,7 @@ class Lobby extends React.Component {
           <h4> Looking for restaurants near</h4>
           <FontAwesomeIcon icon={faLocationArrow} size="xs" />
           <h4 style={{ display: 'inline-block', margin: '2px' }}>{this.state.city}</h4>
-          <h4 style={{ padding: '0px' }}>{this.state.radius ? '(' + this.state.radius + 'KM radius)' : ''}</h4>
+          <h4 style={{ padding: '0px' }}>{this.state.radius ? `(${this.state.radius}KM radius)` : ''}</h4>
         </div>
         <h4>
           {this.state.participants.length} user{this.state.participants.length === 1 ? '' : 's'} in this room

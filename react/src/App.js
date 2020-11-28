@@ -1,11 +1,11 @@
 import React from 'react'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
+import io from 'socket.io-client'
 import Home from './components/Home/Home'
 import { RoomNotFound, PageNotFound, UserDisconnect, RoomAlreadyStartedSwiping } from './components/NotFound/NotFound'
 import CreateRoom from './components/Rooms/CreateRoom'
 import Lobby from './components/Rooms/Lobby'
 import './App.css'
-import io from 'socket.io-client'
 import Swiping from './components/Swiping/Swiping'
 
 let expressServer = process.env.REACT_APP_EXPRESS_SERVER
@@ -13,12 +13,12 @@ if (expressServer === null || expressServer === undefined) {
   // Use localhost backend.
   expressServer = 'http://localhost:3000'
 }
-let socket = io.connect(expressServer, {
+const socket = io.connect(expressServer, {
   reconnection: true
 })
 
 class App extends React.Component {
-  render() {
+  static render() {
     return (
       <Router>
         <div>
