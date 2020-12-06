@@ -9,7 +9,8 @@ class Home extends React.Component {
     }
   }
 
-  static redirectHome() {
+  /* eslint-disable-next-line class-methods-use-this */
+  redirectHome() {
     window.location.assign('/')
   }
 

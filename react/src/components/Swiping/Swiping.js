@@ -38,7 +38,8 @@ class Swiping extends React.Component {
     this.setState({ matchOpen: false })
   }
 
-  static getEndCard() {
+  /* eslint-disable-next-line class-methods-use-this */
+  getEndCard() {
     return <EndCard />
   }
 
@@ -99,7 +100,8 @@ class Swiping extends React.Component {
     console.log('Finding next photo')
   }
 
-  static redirectHome() {
+  /* eslint-disable-next-line class-methods-use-this */
+  redirectHome() {
     window.location.assign('/')
   }
 

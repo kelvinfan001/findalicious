@@ -18,7 +18,8 @@ const socket = io.connect(expressServer, {
 })
 
 class App extends React.Component {
-  static render() {
+  /* eslint-disable-next-line class-methods-use-this */
+  render() {
     return (
       <Router>
         <div>

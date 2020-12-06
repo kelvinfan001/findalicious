@@ -27,7 +27,8 @@ class Lobby extends React.Component {
     this.updateStateInfo = this.updateStateInfo.bind(this)
   }
 
-  static redirectHome() {
+  /* eslint-disable-next-line class-methods-use-this */
+  redirectHome() {
     window.location.assign('/')
   }
 

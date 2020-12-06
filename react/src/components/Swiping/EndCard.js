@@ -4,7 +4,8 @@ import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 class EndCard extends React.Component {
-  static render() {
+  /* eslint-disable-next-line class-methods-use-this */
+  render() {
     const textStyle = {
       margin: '20px',
       marginTop: '5px',

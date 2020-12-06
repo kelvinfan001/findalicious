@@ -27,7 +27,8 @@ class CreateRoom extends React.Component {
     this.setState({ radius })
   }
 
-  static redirectHome() {
+  /* eslint-disable-next-line class-methods-use-this */
+  redirectHome() {
     window.location.assign('/')
   }
 
