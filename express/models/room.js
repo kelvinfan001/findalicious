@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
-
-const { Schema } = mongoose
+const Schema = mongoose.Schema
 
 // create schema for room
 const RoomSchema = new Schema({
@@ -30,6 +29,7 @@ const RoomSchema = new Schema({
     }
   ],
   created: { type: Date, default: Date.now },
+  creatorId: String,
   isActive: { type: Boolean, default: false }
 })
 

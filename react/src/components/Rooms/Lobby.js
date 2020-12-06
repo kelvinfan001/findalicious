@@ -2,18 +2,29 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 
+const startSwiping = socket => socket.emit('initiate swiping')
+
+const EveryoneIsInButton = ({ isCreator, socket }) => {
+  if (isCreator) {
+    return <button onClick={() => startSwiping(socket)}> EVERYONE IS IN </button>
+  }
+
+  return null
+}
+
 class Lobby extends React.Component {
   constructor(props) {
     super(props)
     const { roomNumber } = this.props.match.params
+    const { creatorId } = this.props.match.params
     this.state = {
       city: 'Retrieving...',
       roomNumber,
+      creatorId,
       participants: []
     }
     this.joinRoom = this.joinRoom.bind(this)
     this.updateStateInfo = this.updateStateInfo.bind(this)
-    this.startSwiping = this.startSwiping.bind(this)
   }
 
   static redirectHome() {
@@ -60,6 +71,13 @@ class Lobby extends React.Component {
       this.updateStateInfo(result)
     })
 
+    /* Listen on creator disconnect */
+    socket.on('room creator disconnect', () => {
+      alert('Creator disconnected')
+      console.log('Creator disconnected')
+      this.redirectHome()
+    })
+
     // Listen on attempting to join an already active room
     socket.on('room already swiping', () => {
       // No need to leave room since we are using location.assign. The user will get disconnected and
@@ -75,27 +93,18 @@ class Lobby extends React.Component {
 
   updateStateInfo(result) {
     const data = JSON.parse(result)
-    // Set participants
-    const participantsObjectArray = data.participants
-    const participantsArray = []
-    for (let i = 0; i < participantsObjectArray.length; i++) {
-      participantsArray.push(participantsObjectArray[i].socketID)
-    }
-    this.setState({ participants: participantsArray })
-    // Set city
-    this.setState({ city: data.city })
-    // Set radius
-    this.setState({ radius: data.radius })
+
+    const { city, radius, creatorId, participants: participantsData } = data
+
+    /* Extract participant IDs, don't need to worry about anything else  */
+    const participants = participantsData.map(participant => participant.socketID)
+
+    this.setState({ city, radius, creatorId, participants })
   }
 
   joinRoom(roomNumber) {
     const { socket } = this.props
     socket.emit('room', roomNumber)
-  }
-
-  startSwiping() {
-    const { socket } = this.props
-    socket.emit('initiate swiping')
   }
 
   render() {
@@ -113,8 +122,7 @@ class Lobby extends React.Component {
           {this.state.participants.length} user{this.state.participants.length === 1 ? '' : 's'} in this room
         </h4>
 
-        {/* TODO: DISABLE WHEN NOT ENTERED ROOM FULLY */}
-        <button onClick={this.startSwiping}>EVERYONE IS IN</button>
+        <EveryoneIsInButton isCreator={this.state.creatorId === this.props.socket.id} socket={this.props.socket} />
       </div>
     )
   }

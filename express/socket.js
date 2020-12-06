@@ -9,7 +9,7 @@ module.exports = io => {
     /* Helper function for leaving room in database */
     async function leaveDbRoom(roomNumber) {
       // Update participants in room if a user is leaving a room
-      const query = { roomNumber }
+      let query = { roomNumber: roomNumber }
       try {
         const result = await Room.findOneAndUpdate(
           query,
@@ -17,16 +17,18 @@ module.exports = io => {
           { new: true }
         )
         if (result) {
-          // Check if last participant has disconnected, if so, delete room from db
-          if (result.participants.length === 0) {
-            const deleteRes = await Room.findOneAndDelete(query)
-            if (!deleteRes) {
-              console.error('Failed to delete room.')
-            } else {
-              console.log(`All users disconnected. Deleted room ${roomNumber}.`)
-            }
-          }
           const roomInfo = JSON.stringify(result)
+          /* Check if creator has disconnected, if so, delete room from db and notify other users */
+          if (result.creatorId === socket.id) {
+            Room.findOneAndDelete(query).then(result => {
+              if (!result) {
+                console.error('Failed to delete room.')
+              } else {
+                console.log(`All users disconnected. Deleted room ${roomNumber}.`)
+                io.sockets.in(roomNumber).emit('room creator disconnect', roomInfo)
+              }
+            })
+          }
           io.sockets.in(roomNumber).emit('user disconnect', roomInfo)
           console.log(`User ${socket.id} has left db room ${roomNumber}.`)
         } else {
@@ -47,8 +49,6 @@ module.exports = io => {
       socket.leave(socket.room)
       console.log(`User ${socket.id} has left socket room ${socket.room}.`)
       leaveDbRoom(socket.room)
-
-      /* eslint-disable-next-line */
       socket.room = 0 // set to zero so currentRoomNumber is falsey.
     })
 
@@ -64,21 +64,21 @@ module.exports = io => {
     /* Listen on attempt to join room */
     socket.on('room', async roomNumber => {
       // Quit and return if not a number. However, this should never happen due to checks at client side.
-      if (Number.isNaN(roomNumber)) {
-        const errMsg = 'Invalid room number'
+      if (isNaN(roomNumber)) {
+        let errMsg = 'Invalid room number'
         socket.emit('invalid room error', errMsg)
         console.log(`User ${socket.id} entered an invalid room nubmer.`)
         return
       }
 
-      const query = { roomNumber }
+      let query = { roomNumber: roomNumber }
       let isActive
       try {
         // Check if room is already active
-        const result = await Room.findOne(query)
+        let result = await Room.findOne(query)
         if (!result) {
           console.log(`User ${socket.id} attempted to join a nonexistent room.`)
-          const errMsg = 'Attempt to join nonexistent room'
+          let errMsg = 'Attempt to join nonexistent room'
           socket.emit('invalid room error', errMsg)
           return
         }
@@ -87,20 +87,23 @@ module.exports = io => {
           socket.emit('room already swiping', 'Room is already active')
         } else {
           // If not active, update participants in room and get info on roomNumber
-          const roomInfo = JSON.stringify(
-            await Room.findOneAndUpdate(query, { $push: { participants: { socketID: socket.id } } }, { new: true })
-          )
-          socket.join(roomNumber) // join client into socket room roomNumber
-          io.sockets.in(roomNumber).emit('room info', roomInfo)
-
-          /* eslint-disable-next-line */
-          socket.room = roomNumber
-          // currentRoomNumber = roomNumber;
-          console.log(`User ${socket.id} has joined db and socket room ${roomNumber}.`)
+          let roomInfo
+          Room.findOneAndUpdate(query, { $push: { participants: { socketID: socket.id } } }, { new: true })
+            .then(result => {
+              roomInfo = JSON.stringify(result)
+              socket.join(roomNumber) // join client into socket room roomNumber
+              io.sockets.in(roomNumber).emit('room info', roomInfo)
+              socket.room = roomNumber
+              // currentRoomNumber = roomNumber;
+              console.log(`User ${socket.id} has joined db and socket room ${roomNumber}.`)
+            })
+            .catch(e => {
+              console.error(e)
+              socket.emit('general error', e)
+            })
         }
       } catch (e) {
         console.error(e)
-        socket.emit('general error', e)
       }
     })
 
@@ -112,8 +115,6 @@ module.exports = io => {
         console.log(`User ${socket.id} has left socket room ${socket.room}.`)
         // Leave database room
         leaveDbRoom(socket.room)
-
-        /* eslint-disable-next-line */
         socket.room = 0 // set to zero so currentRoomNumber is falsey.
       }
     })
@@ -126,14 +127,16 @@ module.exports = io => {
         return
       }
       // Make room active
-      const query = { roomNumber: socket.room }
+      const query = { roomNumber: socket.room, creatorId: socket.id }
+
       try {
         const result = await Room.findOneAndUpdate(query, { isActive: true }, { new: true })
+
         if (result) {
           io.sockets.in(socket.room).emit('room started swiping')
         }
       } catch (err) {
-        console.error(err)
+        console.log(err)
       }
     })
 
@@ -151,28 +154,24 @@ module.exports = io => {
       }
       try {
         let query = { roomNumber: socket.room, 'restaurants.placeID': placeID }
-        const updateResult = await Room.findOneAndUpdate(
-          query,
-          { $inc: { 'restaurants.$.likeCount': 1 } },
-          { new: true }
-        )
+        let updateResult = await Room.findOneAndUpdate(query, { $inc: { 'restaurants.$.likeCount': 1 } }, { new: true })
         if (!updateResult) {
           socket.emit('general error', 'Could not update database.')
           return
         }
         // TODO: make checking if match more efficient.
         // Check for any matches
-        const participantCount = updateResult.participants.length
+        let participantCount = updateResult.participants.length
         query = {
           roomNumber: socket.room,
           restaurants: {
             $elemMatch: {
-              placeID,
+              placeID: placeID,
               likeCount: participantCount
             }
           }
         }
-        const queryResult = await Room.find(query)
+        let queryResult = await Room.find(query)
         if (queryResult.length > 0) {
           io.sockets.in(socket.room).emit('match found', placeID)
         }
