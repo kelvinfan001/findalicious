@@ -1,0 +1,20 @@
+{
+    "name": "findalicious",
+    "version": "0.1.0",
+    "description": "Swipe through restaurants with friends and decide on where to eat!",
+    "scripts": {
+        "heroku-prebuild": "cd express && npm install",
+        "start": "node bin/www",
+        "build": "bin/build_react.sh"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kelvinfan001/findalicious.git"
+    },
+    "author": "Kelvin Fan",
+    "license": "GNU General Public License v3.0",
+    "bugs": {
+        "url": "https://github.com/kelvinfan001/findalicious/issues"
+    },
+    "homepage": "https://github.com/kelvinfan001/findalicious#readme"
+}
