@@ -12,7 +12,7 @@
         "url": "git+https://github.com/kelvinfan001/findalicious.git"
     },
     "author": "Kelvin Fan",
-    "license": "GNU General Public License v3.0",
+    "license": "GPL-3.0-or-later",
     "bugs": {
         "url": "https://github.com/kelvinfan001/findalicious/issues"
     },
