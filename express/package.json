@@ -24,7 +24,8 @@
     "prettier": "^2.2.0"
   },
   "scripts": {
-    "test:eslint": "eslint --ignore-path .gitignore '**/*.js' --fix"
+    "test:eslint": "eslint --ignore-path .gitignore '**/*.js' --fix",
+    "start": "node bin/www"
   },
   "repository": {
     "type": "git",

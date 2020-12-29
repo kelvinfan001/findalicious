@@ -1,4 +1,4 @@
-var app = require('../express/index');
+var app = require('../index');
 var port = process.env.PORT || 3000,
     ip = process.env.IP || '0.0.0.0',
     mongoURLLabel = "";

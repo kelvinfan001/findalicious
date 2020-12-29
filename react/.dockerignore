@@ -1,1 +1,4 @@
 node_modules
+build
+.eslintrc.js
+.prettierrc.json
