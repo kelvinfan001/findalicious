@@ -7,9 +7,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-# Note dev dependencies are also installed because `react-scripts` actually
-# requires eslint.
-RUN npm install --silent
+RUN npm install --silent --production
 
 EXPOSE 5000
 
