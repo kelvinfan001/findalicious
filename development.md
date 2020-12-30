@@ -1,12 +1,12 @@
 ## Prerequisites
 - Docker daemon or Podman
-- Google API Key
-- Yelp API Key
+- [Google Maps API Key](https://developers.google.com/maps/documentation/embed/get-api-key)
+- [Yelp API Key](https://www.yelp.ca/developers/documentation/v3/authentication)
 
 ## Local Development Build Using Docker
 In the project's root directory, simply issue the following commands:
 ```terminal
-GOOGLE_MAPS_API_KEY=<your key> YELP_API_KEY=<your key> docker-compose build && docker-compose up
+GOOGLE_MAPS_API_KEY=<your key> YELP_API_KEY=<your key> docker-compose up
 ```
 
 A React development server will be spun up to serve the front end in development mode at `localhost:5000`.
