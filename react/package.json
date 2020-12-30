@@ -1,5 +1,5 @@
 {
-  "name": "findalicious-client",
+  "name": "findalicious-frontend",
   "description": "React frontend for Findalicious",
   "private": true,
   "dependencies": {

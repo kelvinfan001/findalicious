@@ -1,5 +1,5 @@
 {
-  "name": "findalicious-server",
+  "name": "findalicious-backend",
   "description": "Express backend for Findalicious",
   "main": "index.js",
   "dependencies": {
