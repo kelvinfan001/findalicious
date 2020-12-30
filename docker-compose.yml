@@ -3,10 +3,10 @@ version: '3.7'
 services:
   backend:
     build:
-      context: ./
-      dockerfile: ./express/Dockerfile
+      context: ./express
+      dockerfile: Dockerfile
     image: findalicious-backend
-    container_name: findalicious-express-backend
+    container_name: findalicious-backend
     ports:
       - "3000:3000"
     depends_on:
@@ -16,16 +16,20 @@ services:
       - GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY
       - YELP_API_KEY=$YELP_API_KEY
     volumes:
-      - /usr/src/app/node_modules
       # Mount local /express dir for development
-      - ./express:/usr/src/app/express
+      - ./express/bin:/usr/src/app/bin:z
+      - ./express/index.js:/usr/src/app/index.js:z
+      - ./express/socket.js:/usr/src/app/socket.js:z
+      - ./express/models:/usr/src/app/models:z
+      - ./express/routes:/usr/src/app/routes:z
     networks:
       - app-network
   mongo:
     image: mongo
     container_name: findalicious-mongodb
     volumes:
-      - data-volume:/data/db
+      - database:/data/db
+      - database-config:/data/configdb
     ports:
       - "27017:27017"
     networks:
@@ -35,7 +39,7 @@ services:
       context: ./react
       dockerfile: Dockerfile
     image: findalicious-frontend
-    container_name: findalicious-react-frontend
+    container_name: findalicious-frontend
     depends_on:
       - backend
     environment:
@@ -44,9 +48,9 @@ services:
       - REACT_APP_EXPRESS_SERVER=http://localhost:3000
       - PORT=5000
     volumes:
-      - /usr/src/app/node_modules
       # Mount local /react dir for development
-      - ./react:/usr/src/app
+      - ./react/src:/usr/src/app/src:z
+      - ./react/public:/usr/src/app/public:z
     ports:
       - "5000:5000"
     networks:
@@ -58,8 +62,5 @@ networks:
         driver: bridge
 
 volumes:
-    data-volume:
-    node_modules:
-    web-root:
-      driver: local
-      
+  database:
+  database-config:

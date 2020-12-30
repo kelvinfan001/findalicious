@@ -4,15 +4,15 @@
     "description": "Swipe through restaurants with friends and decide on where to eat!",
     "scripts": {
         "heroku-prebuild": "cd express && npm install",
-        "start": "node bin/www",
-        "build": "bin/build_react.sh"
+        "start": "cd express && npm start",
+        "build": "cd react && npm install && npm run-script build"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/kelvinfan001/findalicious.git"
     },
     "author": "Kelvin Fan",
-    "license": "GNU General Public License v3.0",
+    "license": "GPL-3.0-or-later",
     "bugs": {
         "url": "https://github.com/kelvinfan001/findalicious/issues"
     },
