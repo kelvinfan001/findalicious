@@ -9,7 +9,9 @@ In the project's root directory, simply issue the following commands:
 GOOGLE_MAPS_API_KEY=<your key> YELP_API_KEY=<your key> docker-compose up
 ```
 
-A React development server will be spun up to serve the front end in development mode at `localhost:5000`.
+You can now play around with the project at http://localhost:5000/.
+
+A React development server will be spun up in development mode to serve the front end at `localhost:5000`.
 Hot-reloading is supported; simply make your front end edits in your code editor and changes should be rendered automatically. 
 
 A local express server will also be spun up at `localhost:3000` and connected to a MongoDB database.
