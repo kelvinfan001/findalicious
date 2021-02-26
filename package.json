@@ -16,5 +16,6 @@
     "bugs": {
         "url": "https://github.com/kelvinfan001/findalicious/issues"
     },
-    "homepage": "https://github.com/kelvinfan001/findalicious#readme"
+    "homepage": "https://github.com/kelvinfan001/findalicious#readme",
+    "dependencies": {}
 }
